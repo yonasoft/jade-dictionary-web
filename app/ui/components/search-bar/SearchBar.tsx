@@ -1,12 +1,14 @@
 import React from "react";
 import { ActionIcon, TextInput, rem, useMantineTheme } from "@mantine/core";
-import { Spotlight} from "@mantine/spotlight";
+import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { IconArrowRight, IconSearch } from "@tabler/icons-react";
 
 type Props = {};
 
 const SearchBar = (props: Props) => {
-	const theme = useMantineTheme();
+  const theme = useMantineTheme();
+
+  const actions: SpotlightActionData[] = [];
 
   return (
     <>
@@ -23,6 +25,7 @@ const SearchBar = (props: Props) => {
         }
         rightSection={
           <ActionIcon
+            onClick={spotlight.open}
             size={32}
             radius="xl"
             color={theme.primaryColor}
@@ -36,7 +39,7 @@ const SearchBar = (props: Props) => {
         }
       />
       <Spotlight
-        actions={[]}
+        actions={actions}
         nothingFound="Nothing found..."
         highlightQuery
         searchProps={{

@@ -26,7 +26,7 @@ const ThemeToggler = (props: Props) => {
           setColorScheme(computedColorScheme === "light" ? "dark" : "light")
         }
         variant="default"
-        size="xl"
+        size="lg"
         aria-label="Toggle color scheme"
       >
         <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />

@@ -6,9 +6,10 @@ import {
 import classes from "./Navbar.module.css";
 import React from "react";
 import Link from "next/link";
+import { LinkData } from "@/app/lib/definitions";
 
 type Props = {
-  link: Link;
+  link: LinkData;
 };
 
 const MenuItem = ({ link }: Props) => {

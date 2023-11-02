@@ -17,8 +17,10 @@ import UserMenu from "./UserMenu";
 import ThemeToggler from "./ThemeToggler";
 import SearchBar from "../search-bar/SearchBar";
 import Link from "next/link";
+import {LinkData} from "../../../lib/definitions";
+import ResultTypeSelector from "./ResultTypeSelector";
 
-const links: Array<Link> = [
+const links: Array<LinkData> = [
   { link: "/", label: "Home" },
   {
     link: "/",
@@ -62,6 +64,7 @@ const Navbar = () => {
             </Group>
 
             <Group visibleFrom="md">
+              <ResultTypeSelector />
               <UserMenu />
               <ThemeToggler />
             </Group>
