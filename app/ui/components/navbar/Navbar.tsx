@@ -16,6 +16,7 @@ import JadeLogo from "../JadeLogo";
 import UserMenu from "./UserMenu";
 import ThemeToggler from "./ThemeToggler";
 import SearchBar from "../search-bar/SearchBar";
+import Link from "next/link";
 
 const links: Array<Link> = [
   { link: "/", label: "Home" },
@@ -46,10 +47,11 @@ const Navbar = () => {
       <header className={classes.header}>
         <Container className="align-content: center" size="xl">
           <Group h="56" justify="space-between" gap="sm">
-            <JadeLogo h="48" />
+            <Link href="\">
+              <JadeLogo h="48" />
+            </Link>
 
-            <Group
-              visibleFrom="sm" gap={10}>
+            <Group visibleFrom="sm" gap={10}>
               {links.map((link, index) => (
                 <MenuItem link={link} key={index} />
               ))}
