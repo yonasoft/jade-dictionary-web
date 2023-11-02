@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ActionIcon, TextInput, rem, useMantineTheme } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
@@ -7,7 +9,6 @@ type Props = {};
 
 const SearchBar = (props: Props) => {
   const theme = useMantineTheme();
-
   const actions: SpotlightActionData[] = [];
 
   return (
