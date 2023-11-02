@@ -1,9 +1,6 @@
 import {
   Menu,
-  Group,
   Center,
-  Burger,
-  Container,
   AccordionChevron,
 } from "@mantine/core";
 import classes from "./Navbar.module.css";

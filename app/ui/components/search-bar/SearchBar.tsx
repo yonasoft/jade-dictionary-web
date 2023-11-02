@@ -1,7 +1,7 @@
 import React from "react";
 import { ActionIcon, TextInput, rem, useMantineTheme } from "@mantine/core";
+import { Spotlight} from "@mantine/spotlight";
 import { IconArrowRight, IconSearch } from "@tabler/icons-react";
-import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 
 type Props = {};
 
