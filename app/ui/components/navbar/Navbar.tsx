@@ -13,9 +13,9 @@ import classes from "./Navbar.module.css";
 import MenuItem from "./MenuItem";
 import { useDisclosure } from "@mantine/hooks";
 import JadeLogo from "../JadeLogo";
-import SearchButton from "./SearchButton";
 import UserMenu from "./UserMenu";
 import ThemeToggler from "./ThemeToggler";
+import SearchBar from "../search-bar/SearchBar";
 
 const links: Array<Link> = [
   { link: "/", label: "Home" },
@@ -56,7 +56,7 @@ const Navbar = () => {
             </Group>
 
             <Group visibleFrom="xs">
-              <SearchButton />
+              <SearchBar />
             </Group>
 
             <Group visibleFrom="md">
