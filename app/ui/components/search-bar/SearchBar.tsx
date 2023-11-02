@@ -4,11 +4,11 @@ import React from "react";
 import { ActionIcon, TextInput, rem, useMantineTheme } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { IconArrowRight, IconSearch } from "@tabler/icons-react";
+import { theme } from "@/app/lib/theme";
 
 type Props = {};
 
 const SearchBar = (props: Props) => {
-  const theme = useMantineTheme();
   const actions: SpotlightActionData[] = [];
 
   return (
