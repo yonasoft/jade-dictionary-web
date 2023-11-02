@@ -26,10 +26,11 @@ const SearchBar = (props: Props) => {
         rightSection={
           <ActionIcon
             onClick={spotlight.open}
-            size={32}
+            size="lg"
             radius="xl"
-            color={"#459D57"}
+            color="#459D57"
             variant="filled"
+            aria-label="Search"
           >
             <IconArrowRight
               style={{ width: rem(18), height: rem(18) }}
