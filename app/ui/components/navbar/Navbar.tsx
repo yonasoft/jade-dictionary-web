@@ -1,12 +1,9 @@
 "use client";
 import React from "react";
 import {
-  Menu,
   Group,
-  Center,
   Burger,
   Container,
-  AccordionChevron,
   Drawer,
 } from "@mantine/core";
 import classes from "./Navbar.module.css";
