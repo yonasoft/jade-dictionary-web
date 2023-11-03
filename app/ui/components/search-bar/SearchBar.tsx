@@ -26,6 +26,7 @@ const SearchBar = (props: Props) => {
         }
         rightSection={
           <ActionIcon
+            className="bg:current-color hover:bg:current-color-500"
             onClick={spotlight.open}
             size="lg"
             radius="xl"
