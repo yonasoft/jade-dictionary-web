@@ -5,6 +5,7 @@ import { ActionIcon, TextInput, rem } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { IconArrowRight, IconSearch } from "@tabler/icons-react";
 import { theme } from "@/app/lib/theme";
+import classes from "./SearchBar.module.css";
 
 type Props = {};
 
@@ -26,11 +27,10 @@ const SearchBar = (props: Props) => {
         }
         rightSection={
           <ActionIcon
-            className="bg:current-color hover:bg:current-color-500"
+            className={classes.myActionIcon}
             onClick={spotlight.open}
             size="lg"
             radius="xl"
-            color={theme.primaryColor}
             variant="filled"
             aria-label="Search"
           >
