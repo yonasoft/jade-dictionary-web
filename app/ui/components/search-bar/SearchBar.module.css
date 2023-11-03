@@ -1,0 +1,7 @@
+.action-icon {
+  background-color: var(--mantine-color-jadeGreen) !important; /* Assuming this is the base color */
+}
+
+.action-icon:hover {
+  background-color: var(--mantine-color-jadeGreen-500) !important; 
+}
