@@ -1,7 +1,7 @@
-.action-icon {
-  background-color: var(--mantine-color-jadeGreen) !important; /* Assuming this is the base color */
+.icon {
+  background-color: #459d57 !important; /* Assuming this is the base color */
 }
 
-.action-icon:hover {
-  background-color: var(--mantine-color-jadeGreen-500) !important; 
+.icon:hover {
+  background-color: #2c793e !important; 
 }
