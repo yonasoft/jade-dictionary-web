@@ -4,6 +4,7 @@ import React from "react";
 import { ActionIcon, TextInput, rem } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { IconArrowRight, IconSearch } from "@tabler/icons-react";
+import { theme } from "@/app/lib/theme";
 
 type Props = {};
 
@@ -28,13 +29,14 @@ const SearchBar = (props: Props) => {
             onClick={spotlight.open}
             size="lg"
             radius="xl"
-            color="#459D57"
+            color={theme.primaryColor}
             variant="filled"
             aria-label="Search"
           >
             <IconArrowRight
               style={{ width: rem(18), height: rem(18) }}
               stroke={1.5}
+              color="white"
             />
           </ActionIcon>
         }
