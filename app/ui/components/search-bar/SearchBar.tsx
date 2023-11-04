@@ -19,7 +19,7 @@ const SearchBar = (props: Props) => {
       <TextInput
         className="flex-1 max-w-[20rem] w-full"
         radius="xl"
-        placeholder="Search for a word..."
+        placeholder="Search..."
         rightSectionWidth={42}
         leftSection={
           <IconSearch

@@ -111,9 +111,8 @@ const Navbar = () => {
       >
         <Drawer.Content className={RemoveScroll.classNames.zeroRight}>
           <Drawer.Header>
-            <JadeLogo h="56" />
+            <JadeLogo h="48" />
             <Group className="grow" justify="flex-end" hiddenFrom="sm">
-              <ResultTypeSelector />
               <ThemeToggler />
               <UserMenu />
             </Group>
@@ -121,6 +120,9 @@ const Navbar = () => {
           </Drawer.Header>
 
           <Drawer.Body>
+            <Group className="grow px-3" justify="center" hiddenFrom="sm">
+              <ResultTypeSelector />
+            </Group>
             {links.map((link, index) => (
               <NavLink
                 key={index}
