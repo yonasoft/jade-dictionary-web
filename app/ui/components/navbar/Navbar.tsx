@@ -123,7 +123,7 @@ const Navbar = () => {
                 key={index}
                 label={link.label}
                 leftSection={
-                  <ActionIcon color="#459d57">{link.icon}</ActionIcon>
+                  <ActionIcon className="navlink-icon">{link.icon}</ActionIcon>
                 }
                 component={Link}
                 href={link.link}
