@@ -57,8 +57,8 @@ const Navbar = () => {
   return (
     <>
       <header className={classes.header}>
-        <Container className="align-content: center" size="">
-          <Group h="56" justify="space-between" gap={20}>
+        <Container className="align-content: center" size="lg">
+          <Group h="56" justify="space-between">
             <Group justify="flex-start">
               <Link href="\">
                 <JadeLogo h="48" />
@@ -71,7 +71,10 @@ const Navbar = () => {
               </Group>
             </Group>
 
-            <Group className="grow" justify="center" visibleFrom="xs">
+            <Group
+              className="flex flex-1 justify-center items-center max-w-full"
+              justify="center"
+            >
               <SearchBar />
             </Group>
 

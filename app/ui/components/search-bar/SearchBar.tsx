@@ -15,10 +15,10 @@ const SearchBar = (props: Props) => {
   const actions: SpotlightActionData[] = [];
 
   return (
-    <div className="grow">
+    <>
       <TextInput
+        className="flex-1 max-w-[20rem] w-full"
         radius="xl"
-        size="sm"
         placeholder="Search for a word..."
         rightSectionWidth={42}
         leftSection={
@@ -58,7 +58,7 @@ const SearchBar = (props: Props) => {
           placeholder: "Search...",
         }}
       />
-    </div>
+    </>
   );
 };
 
