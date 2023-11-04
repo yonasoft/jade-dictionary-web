@@ -58,7 +58,7 @@ const Navbar = () => {
     <>
       <header className={classes.header}>
         <Container className="align-content: center" size="lg">
-          <Group h="56" justify="space-between">
+          <Group h="48" justify="space-between">
             <Group justify="flex-start">
               <Link href="\">
                 <JadeLogo h="48" />
@@ -85,6 +85,7 @@ const Navbar = () => {
             </Group>
 
             <Burger
+              size="sm"
               opened={drawerOpened}
               onClick={toggleDrawer}
               hiddenFrom="md"
@@ -111,7 +112,7 @@ const Navbar = () => {
       >
         <Drawer.Content className={RemoveScroll.classNames.zeroRight}>
           <Drawer.Header>
-            <JadeLogo h="48" />
+            <JadeLogo h="40" />
             <Group className="grow" justify="flex-end" hiddenFrom="sm">
               <ThemeToggler />
               <UserMenu />
