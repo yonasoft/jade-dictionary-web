@@ -123,7 +123,9 @@ const Navbar = () => {
                 key={index}
                 label={link.label}
                 leftSection={
-                  <ActionIcon className="navlink-icon">{link.icon}</ActionIcon>
+                  <ActionIcon className={classes.navicon}>
+                    {link.icon}
+                  </ActionIcon>
                 }
                 component={Link}
                 href={link.link}
