@@ -5,6 +5,11 @@ import {
   Burger,
   Container,
   Drawer,
+  ScrollArea,
+  RemoveScroll,
+  NavLink,
+  ActionIcon,
+  Flex,
 } from "@mantine/core";
 import classes from "./Navbar.module.css";
 import MenuItem from "./MenuItem";
@@ -14,19 +19,27 @@ import UserMenu from "./UserMenu";
 import ThemeToggler from "./ThemeToggler";
 import SearchBar from "../search-bar/SearchBar";
 import Link from "next/link";
-import {LinkData} from "../../../lib/definitions";
+import { LinkData } from "../../../lib/definitions";
 import ResultTypeSelector from "./ResultTypeSelector";
+import { IconGoGame, IconHelp, IconHome, IconList } from "@tabler/icons-react";
 
 const links: Array<LinkData> = [
-  { link: "/", label: "Home" },
+  {
+    link: "/",
+    label: "Home",
+    icon: <IconHome />,
+  },
+
   {
     link: "/",
     label: "Lists",
+    icon: <IconList />,
   },
-  { link: "/", label: "Practice" },
+  { link: "/", label: "Practice", icon: <IconGoGame /> },
   {
     link: "#1",
     label: "Support",
+    icon: <IconHelp />,
     links: [
       { link: "/", label: "Contact Us" },
       { link: "/", label: "Donate" },
@@ -44,26 +57,28 @@ const Navbar = () => {
   return (
     <>
       <header className={classes.header}>
-        <Container className="align-content: center" size="xl">
-          <Group h="56" justify="space-between" gap="sm">
-            <Link href="\">
-              <JadeLogo h="48" />
-            </Link>
+        <Container className="align-content: center" size="">
+          <Group h="56" justify="space-between" gap={20}>
+            <Group justify="flex-start">
+              <Link href="\">
+                <JadeLogo h="48" />
+              </Link>
 
-            <Group visibleFrom="sm" gap={10}>
-              {links.map((link, index) => (
-                <MenuItem link={link} key={index} />
-              ))}
+              <Group visibleFrom="md">
+                {links.map((link, index) => (
+                  <MenuItem link={link} key={index} />
+                ))}
+              </Group>
             </Group>
 
-            <Group visibleFrom="xs">
+            <Group className="grow" justify="center" visibleFrom="xs">
               <SearchBar />
             </Group>
 
-            <Group visibleFrom="md">
+            <Group justify="flex-end" visibleFrom="sm">
               <ResultTypeSelector />
-              <UserMenu />
               <ThemeToggler />
+              <UserMenu />
             </Group>
 
             <Burger
@@ -79,11 +94,52 @@ const Navbar = () => {
         opened={drawerOpened}
         onClose={closeDrawer}
         size="100%"
-        padding="md"
-        title="Navigation"
-        hiddenFrom="md"
+        padding="xs"
         zIndex={1000000}
-      ></Drawer>
+        position="left"
+        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+        transitionProps={{
+          transition: "rotate-left",
+          duration: 150,
+          timingFunction: "linear",
+        }}
+        closeOnClickOutside
+        closeOnEscape
+      >
+        <Drawer.Content className={RemoveScroll.classNames.zeroRight}>
+          <Drawer.Header>
+            <JadeLogo h="56" />
+            <Group className="grow" justify="flex-end" hiddenFrom="sm">
+              <ResultTypeSelector />
+              <ThemeToggler />
+              <UserMenu />
+            </Group>
+            <Drawer.CloseButton />
+          </Drawer.Header>
+
+          <Drawer.Body>
+            {links.map((link, index) => (
+              <NavLink
+                key={index}
+                label={link.label}
+                leftSection={<ActionIcon>{link.icon}</ActionIcon>}
+                component={Link}
+                href={link.link}
+              >
+                {link.links?.map((item, index) => (
+                  <NavLink
+                    key={index}
+                    label={item.label}
+                    component={Link}
+                    href={item.link}
+                    className={classes.subLink}
+                  />
+                ))}
+              </NavLink>
+            ))}
+          </Drawer.Body>
+        </Drawer.Content>
+      </Drawer>
     </>
   );
 };

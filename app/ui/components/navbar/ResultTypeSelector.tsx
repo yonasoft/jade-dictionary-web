@@ -17,6 +17,7 @@ const ResultTypeSelector = (props: Props) => {
       size="xs"
       onChange={() => {}}
       data={data}
+      defaultValue={data[0].value}
       classNames={classes}
     />
   );

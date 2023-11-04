@@ -1,4 +1,6 @@
-import { SegmentedControlItem } from "@mantine/core";
+import { ActionIconGroupProps, InputDescriptionProps, SegmentedControlItem } from "@mantine/core";
+import { Icon, TablerIconsProps } from "@tabler/icons-react";
+import React from "react";
 
 export enum QueryType {
 	English = 'English',
@@ -9,4 +11,4 @@ export enum ResultType {
 	Simplified = 'Simplified',
 	Traditional = 'Traditional',
 }
-export type LinkData = {link:string, label:string, links?:LinkData[]};
+export type LinkData = {link:string, label:string, links?:LinkData[], icon?:React.ReactNode};

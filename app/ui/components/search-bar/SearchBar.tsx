@@ -13,11 +13,11 @@ const SearchBar = (props: Props) => {
   const actions: SpotlightActionData[] = [];
 
   return (
-    <>
+    <div className="grow">
       <TextInput
         radius="xl"
-        size="md"
-        placeholder="Search questions"
+        size="sm"
+        placeholder="Search for a word..."
         rightSectionWidth={42}
         leftSection={
           <IconSearch
@@ -29,7 +29,7 @@ const SearchBar = (props: Props) => {
           <ActionIcon
             className={classes.icon}
             onClick={spotlight.open}
-            size="lg"
+            size="md"
             radius="xl"
             variant="filled"
             aria-label="Search"
@@ -56,7 +56,7 @@ const SearchBar = (props: Props) => {
           placeholder: "Search...",
         }}
       />
-    </>
+    </div>
   );
 };
 

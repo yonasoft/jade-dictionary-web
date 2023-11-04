@@ -10,7 +10,6 @@ import {
 } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
 
-
 type Props = {};
 
 const ThemeToggler = (props: Props) => {
