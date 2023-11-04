@@ -122,7 +122,9 @@ const Navbar = () => {
               <NavLink
                 key={index}
                 label={link.label}
-                leftSection={<ActionIcon>{link.icon}</ActionIcon>}
+                leftSection={
+                  <ActionIcon color="#459d57">{link.icon}</ActionIcon>
+                }
                 component={Link}
                 href={link.link}
               >
@@ -132,7 +134,6 @@ const Navbar = () => {
                     label={item.label}
                     component={Link}
                     href={item.link}
-                    className={classes.subLink}
                   />
                 ))}
               </NavLink>

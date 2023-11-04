@@ -7,7 +7,9 @@ import { IconArrowRight, IconSearch } from "@tabler/icons-react";
 import { theme } from "@/app/lib/theme";
 import classes from "./SearchBar.module.css";
 
-type Props = {};
+type Props = {
+  width?: number;
+};
 
 const SearchBar = (props: Props) => {
   const actions: SpotlightActionData[] = [];
