@@ -42,17 +42,19 @@ const NavDrawer = ({ links, opened, handlers }: Props) => {
         </Drawer.Header>
 
         <Drawer.Body>
-          <Divider my="sm" />
+          <Divider className="my-2" size="sm" hiddenFrom="sm" />
           <Group className="grow my-1" justify="center" hiddenFrom="sm">
             <ResultTypeSelector />
           </Group>
-          <Divider my="sm" />
+          <Divider className="my-3" size="sm" hiddenFrom="sm" />
+
           <DrawerNavLinks links={links} />
-          <Divider my="sm" />
-          <Group className="grow py-2" justify="center" gap="xs">
+
+          <Divider className="my-3" size="sm" hiddenFrom="sm" />
+
+          <Group className="grow py-y" justify="center" hiddenFrom="sm">
             <AuthButtons />
           </Group>
-          <Divider my="sm" />
         </Drawer.Body>
       </Drawer.Content>
     </Drawer>
