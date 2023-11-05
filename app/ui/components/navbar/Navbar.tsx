@@ -1,31 +1,19 @@
 "use client";
 import React from "react";
-import {
-  Group,
-  Burger,
-  Container,
-  Drawer,
-  ScrollArea,
-  RemoveScroll,
-  NavLink,
-  ActionIcon,
-  Flex,
-} from "@mantine/core";
+import { Group, Burger, Container } from "@mantine/core";
 import classes from "./Navbar.module.css";
-import MenuItem from "./MenuItem";
+import MenuItem from "./nav-items/menu-item/MenuItem";
 import { useDisclosure } from "@mantine/hooks";
 import JadeLogo from "../JadeLogo";
-import UserMenu from "./UserMenu";
-import ThemeToggler from "./ThemeToggler";
+import UserMenu from "./nav-items/auth-items/UserMenu";
+import ThemeToggler from "./nav-items/theme-toggler/ThemeToggler";
 import SearchBar from "../search-bar/SearchBar";
 import Link from "next/link";
-import ResultTypeSelector from "./ResultTypeSelector";
+import ResultTypeSelector from "./nav-items/result-selector/ResultTypeSelector";
 import { IconGoGame, IconHelp, IconHome, IconList } from "@tabler/icons-react";
-import NavLinkItem from "./DrawerNavLinks";
 import { LinkData } from "@/app/lib/definitions";
-import DrawerNavLinks from "./DrawerNavLinks";
-import NavDrawer from "./NavDrawer";
-import AuthButtons from "./AuthButtons";
+import NavDrawer from "./drawer/NavDrawer";
+import AuthButtons from "./nav-items/auth-items/AuthButtons";
 
 const links: Array<LinkData> = [
   {

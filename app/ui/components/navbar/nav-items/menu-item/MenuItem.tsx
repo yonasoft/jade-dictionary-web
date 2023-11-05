@@ -1,9 +1,5 @@
-import {
-  Menu,
-  Center,
-  AccordionChevron,
-} from "@mantine/core";
-import classes from "./Navbar.module.css";
+import { Menu, Center, AccordionChevron } from "@mantine/core";
+import classes from "./MenuItem.module.css";
 import React from "react";
 import Link from "next/link";
 import { LinkData } from "@/app/lib/definitions";

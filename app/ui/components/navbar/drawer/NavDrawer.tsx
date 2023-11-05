@@ -1,12 +1,11 @@
 import { LinkData } from "@/app/lib/definitions";
 import { Drawer, Group, RemoveScroll } from "@mantine/core";
 import React from "react";
-import JadeLogo from "../JadeLogo";
+import JadeLogo from "../../JadeLogo";
 import DrawerNavLinks from "./DrawerNavLinks";
-import ResultTypeSelector from "./ResultTypeSelector";
-import ThemeToggler from "./ThemeToggler";
-import UserMenu from "./UserMenu";
-import AuthButtons from "./AuthButtons";
+import ResultTypeSelector from "../nav-items/result-selector/ResultTypeSelector";
+import ThemeToggler from "../nav-items/theme-toggler/ThemeToggler";
+import AuthButtons from "../nav-items/auth-items/AuthButtons";
 
 type Props = {
   links: Array<LinkData>;

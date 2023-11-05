@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import classes from "./Navbar.module.css";
+import classes from "./ThemeToggler.module.css";
 import cx from "clsx";
 import {
   ActionIcon,
