@@ -36,19 +36,19 @@ const NavDrawer = ({ links, opened, handlers }: Props) => {
         <Drawer.Header>
           <JadeLogo h="40" />
           <Group className="grow" justify="flex-end" hiddenFrom="sm">
-            <Group className="grow" justify="center" gap="xs">
-              <AuthButtons />
-            </Group>
             <ThemeToggler />
           </Group>
           <Drawer.CloseButton />
         </Drawer.Header>
 
         <Drawer.Body>
-          <Group className="grow px-3" justify="center" hiddenFrom="sm">
+          <Group className="grow my-2" justify="center" hiddenFrom="sm">
             <ResultTypeSelector />
           </Group>
           <DrawerNavLinks links={links} />
+          <Group className="grow my-3" justify="center" gap="xs">
+            <AuthButtons />
+          </Group>
         </Drawer.Body>
       </Drawer.Content>
     </Drawer>
