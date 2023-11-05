@@ -1,5 +1,5 @@
 import React from "react";
-import { Drawer, Group, RemoveScroll } from "@mantine/core";
+import { Center, Drawer, Group, RemoveScroll } from "@mantine/core";
 
 import { LinkData } from "@/app/lib/definitions";
 import JadeLogo from "../../JadeLogo";
@@ -36,8 +36,10 @@ const NavDrawer = ({ links, opened, handlers }: Props) => {
         <Drawer.Header>
           <JadeLogo h="40" />
           <Group className="grow" justify="flex-end" hiddenFrom="sm">
+            <Group className="grow" justify="center" gap="xs">
+              <AuthButtons />
+            </Group>
             <ThemeToggler />
-            <AuthButtons />
           </Group>
           <Drawer.CloseButton />
         </Drawer.Header>
