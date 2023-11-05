@@ -35,19 +35,16 @@ const NavDrawer = ({ links, opened, handlers }: Props) => {
       <Drawer.Content className={RemoveScroll.classNames.zeroRight}>
         <Drawer.Header>
           <JadeLogo h="40" />
-          <Group className="grow mx-1" justify="flex-end" hiddenFrom="sm">
+          <Group className="grow " justify="flex-end" hiddenFrom="sm">
+            <Group className="grow" justify="center">
+              <ResultTypeSelector />
+            </Group>
             <ThemeToggler />
           </Group>
           <Drawer.CloseButton />
         </Drawer.Header>
 
         <Drawer.Body>
-          <Divider className="my-2" size="sm" hiddenFrom="sm" />
-          <Group className="grow my-1" justify="center" hiddenFrom="sm">
-            <ResultTypeSelector />
-          </Group>
-          <Divider className="my-3" size="sm" hiddenFrom="sm" />
-
           <DrawerNavLinks links={links} />
 
           <Divider className="my-3" size="sm" hiddenFrom="sm" />
