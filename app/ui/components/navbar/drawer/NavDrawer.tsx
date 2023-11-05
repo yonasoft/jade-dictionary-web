@@ -41,9 +41,7 @@ const NavDrawer = ({ links, opened, handlers }: Props) => {
     >
       <Drawer.Overlay />
       <Drawer.Content
-        className={
-          `${RemoveScroll.classNames.fullWidth} ${RemoveScroll.classNames.zeroRight}`
-        }
+        className={`${RemoveScroll.classNames.fullWidth} ${RemoveScroll.classNames.zeroRight}`}
       >
         <Drawer.Header>
           <Group className="grow" justify="space-between">
