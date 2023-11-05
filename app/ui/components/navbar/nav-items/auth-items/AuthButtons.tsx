@@ -3,7 +3,7 @@
 import React from "react";
 import { Button } from "@mantine/core";
 
-import classes from "./AuthButtons.module.css";
+import classes from "./AuthItems.module.css";
 
 type Props = {};
 
