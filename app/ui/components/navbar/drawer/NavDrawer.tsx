@@ -1,5 +1,5 @@
 import React from "react";
-import { Center, Drawer, Group, RemoveScroll } from "@mantine/core";
+import { Center, Divider, Drawer, Group, RemoveScroll } from "@mantine/core";
 
 import { LinkData } from "@/app/lib/definitions";
 import JadeLogo from "../../JadeLogo";
@@ -42,13 +42,17 @@ const NavDrawer = ({ links, opened, handlers }: Props) => {
         </Drawer.Header>
 
         <Drawer.Body>
-          <Group className="grow my-2" justify="center" hiddenFrom="sm">
+          <Divider my="sm" />
+          <Group className="grow my-1" justify="center" hiddenFrom="sm">
             <ResultTypeSelector />
           </Group>
+          <Divider my="sm" />
           <DrawerNavLinks links={links} />
-          <Group className="grow my-3" justify="center" gap="xs">
+          <Divider my="sm" />
+          <Group className="grow py-2" justify="center" gap="xs">
             <AuthButtons />
           </Group>
+          <Divider my="sm" />
         </Drawer.Body>
       </Drawer.Content>
     </Drawer>
