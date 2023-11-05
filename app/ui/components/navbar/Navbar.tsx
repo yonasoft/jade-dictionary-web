@@ -25,6 +25,7 @@ import NavLinkItem from "./DrawerNavLinks";
 import { LinkData } from "@/app/lib/definitions";
 import DrawerNavLinks from "./DrawerNavLinks";
 import NavDrawer from "./NavDrawer";
+import AuthButtons from "./AuthButtons";
 
 const links: Array<LinkData> = [
   {
@@ -83,7 +84,7 @@ const Navbar = () => {
             <Group justify="flex-end" visibleFrom="sm">
               <ResultTypeSelector />
               <ThemeToggler />
-              <UserMenu />
+              <AuthButtons />
             </Group>
 
             <Burger

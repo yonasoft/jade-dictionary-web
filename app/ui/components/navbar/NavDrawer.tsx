@@ -6,6 +6,7 @@ import DrawerNavLinks from "./DrawerNavLinks";
 import ResultTypeSelector from "./ResultTypeSelector";
 import ThemeToggler from "./ThemeToggler";
 import UserMenu from "./UserMenu";
+import AuthButtons from "./AuthButtons";
 
 type Props = {
   links: Array<LinkData>;
@@ -36,7 +37,7 @@ const NavDrawer = ({ links, opened, handlers }: Props) => {
           <JadeLogo h="40" />
           <Group className="grow" justify="flex-end" hiddenFrom="sm">
             <ThemeToggler />
-            <UserMenu />
+            <AuthButtons />
           </Group>
           <Drawer.CloseButton />
         </Drawer.Header>
