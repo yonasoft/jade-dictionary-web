@@ -1,7 +1,7 @@
 import React from "react";
 import { SegmentedControl, SegmentedControlItem } from "@mantine/core";
-import classes from "./ResultTypeSelector.module.css";
 import { ResultType } from "@/app/lib/definitions";
+import classes from "./ResultTypeSelector.module.css";
 
 type Props = {};
 

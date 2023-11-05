@@ -1,7 +1,6 @@
 "use client";
+
 import React from "react";
-import classes from "./ThemeToggler.module.css";
-import cx from "clsx";
 import {
   ActionIcon,
   useMantineColorScheme,
@@ -9,6 +8,9 @@ import {
   Group,
 } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
+import cx from "clsx";
+
+import classes from "./ThemeToggler.module.css";
 
 type Props = {};
 

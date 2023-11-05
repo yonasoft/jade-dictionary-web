@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
+
 import { ActionIcon, TextInput, rem } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { IconArrowRight, IconSearch } from "@tabler/icons-react";
-import { theme } from "@/app/lib/theme";
+
 import classes from "./SearchBar.module.css";
 
 type Props = {

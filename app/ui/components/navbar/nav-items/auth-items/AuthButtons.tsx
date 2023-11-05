@@ -1,6 +1,8 @@
 "user client";
-import { Button } from "@mantine/core";
+
 import React from "react";
+import { Button } from "@mantine/core";
+
 
 type Props = {};
 

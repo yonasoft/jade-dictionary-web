@@ -1,17 +1,21 @@
 "use client";
+
 import React from "react";
+import Link from "next/link";
+
 import { Group, Burger, Container } from "@mantine/core";
-import classes from "./Navbar.module.css";
-import MenuItem from "./nav-items/menu-item/MenuItem";
 import { useDisclosure } from "@mantine/hooks";
+import { IconGoGame, IconHelp, IconHome, IconList } from "@tabler/icons-react";
+import { LinkData } from "@/app/lib/definitions";
+
+import classes from "./Navbar.module.css";
+
+import MenuItem from "./nav-items/menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
 import UserMenu from "./nav-items/auth-items/UserMenu";
 import ThemeToggler from "./nav-items/theme-toggler/ThemeToggler";
 import SearchBar from "../search-bar/SearchBar";
-import Link from "next/link";
 import ResultTypeSelector from "./nav-items/result-selector/ResultTypeSelector";
-import { IconGoGame, IconHelp, IconHome, IconList } from "@tabler/icons-react";
-import { LinkData } from "@/app/lib/definitions";
 import NavDrawer from "./drawer/NavDrawer";
 import AuthButtons from "./nav-items/auth-items/AuthButtons";
 

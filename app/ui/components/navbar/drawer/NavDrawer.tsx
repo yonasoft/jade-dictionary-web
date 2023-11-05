@@ -1,6 +1,7 @@
-import { LinkData } from "@/app/lib/definitions";
-import { Drawer, Group, RemoveScroll } from "@mantine/core";
 import React from "react";
+import { Drawer, Group, RemoveScroll } from "@mantine/core";
+
+import { LinkData } from "@/app/lib/definitions";
 import JadeLogo from "../../JadeLogo";
 import DrawerNavLinks from "./DrawerNavLinks";
 import ResultTypeSelector from "../nav-items/result-selector/ResultTypeSelector";

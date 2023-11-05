@@ -1,4 +1,5 @@
 "user client";
+
 import { Avatar } from "@mantine/core";
 import React from "react";
 
