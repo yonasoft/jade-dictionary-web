@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Center,
-  Divider,
-  Drawer,
-  Group,
-  RemoveScroll,
-} from "@mantine/core";
+import { Box, Divider, Drawer, Group, RemoveScroll } from "@mantine/core";
 
 import { LinkData } from "@/app/lib/definitions";
 import JadeLogo from "../../JadeLogo";
@@ -14,23 +7,23 @@ import DrawerNavLinks from "./DrawerNavLinks";
 import ResultTypeSelector from "../nav-items/result-selector/ResultTypeSelector";
 import ThemeToggler from "../nav-items/theme-toggler/ThemeToggler";
 import AuthButtons from "../nav-items/auth-items/AuthButtons";
+import { on } from "events";
 
 type Props = {
   links: Array<LinkData>;
   opened: boolean;
-  handlers: { open: () => void; close: () => void };
+  onClose: () => void;
 };
 
-const NavDrawer = ({ links, opened, handlers }: Props) => {
+const NavDrawer = ({ links, opened, onClose }: Props) => {
   return (
-    <Drawer
+    <Drawer.Root
       opened={opened}
-      onClose={handlers.close}
+      onClose={onClose}
       size="100%"
       padding="xs"
-      zIndex={1000000}
+      zIndex={1000}
       position="left"
-      overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
       transitionProps={{
         transition: "rotate-left",
         duration: 150,
@@ -60,11 +53,15 @@ const NavDrawer = ({ links, opened, handlers }: Props) => {
           <DrawerNavLinks links={links} />
           <Divider className="my-3" size="sm" hiddenFrom="sm" />
           <Group className="grow my-2" justify="center" hiddenFrom="sm">
-            <AuthButtons />
+            <AuthButtons
+              additionalOnClick={() => {
+                onClose();
+              }}
+            />
           </Group>
         </Drawer.Body>
       </Drawer.Content>
-    </Drawer>
+    </Drawer.Root>
   );
 };
 

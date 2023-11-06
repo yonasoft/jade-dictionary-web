@@ -47,7 +47,7 @@ const links: Array<LinkData> = [
 ];
 
 const Navbar = () => {
-  const [drawerOpened, handlers] = useDisclosure(false);
+  const [drawerOpened, drawerHandlers] = useDisclosure(false);
 
   return (
     <>
@@ -75,20 +75,25 @@ const Navbar = () => {
 
             <Group justify="flex-end" visibleFrom="sm">
               <ResultTypeSelector />
-              <ThemeToggler />
               <AuthButtons />
+              <ThemeToggler />
             </Group>
 
             <Burger
               size="sm"
               opened={drawerOpened}
-              onClick={handlers.toggle}
+              onClick={drawerHandlers.toggle}
               hiddenFrom="md"
             />
           </Group>
         </Container>
       </header>
-      <NavDrawer links={links} opened={drawerOpened} handlers={handlers} />
+
+      <NavDrawer
+        links={links}
+        opened={drawerOpened}
+        onClose={drawerHandlers.close}
+      />
     </>
   );
 };
