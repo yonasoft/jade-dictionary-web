@@ -7,7 +7,6 @@ import DrawerNavLinks from "./DrawerNavLinks";
 import ResultTypeSelector from "../nav-items/result-selector/ResultTypeSelector";
 import ThemeToggler from "../nav-items/theme-toggler/ThemeToggler";
 import AuthButtons from "../nav-items/auth-items/AuthButtons";
-import { on } from "events";
 
 type Props = {
   links: Array<LinkData>;

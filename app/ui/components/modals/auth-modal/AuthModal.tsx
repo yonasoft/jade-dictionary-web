@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { modals } from "@mantine/modals";
-import { Modal, Paper, Tabs, Text } from "@mantine/core";
+import { Tabs, Text } from "@mantine/core";
 import SignUpTab from "./SignUpTab";
 import LoginTab from "./LoginTab";
 
