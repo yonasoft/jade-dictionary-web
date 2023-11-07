@@ -6,9 +6,9 @@ type Props = {
 };
 
 const JadeLogo = ({ h = "16" }: Props) => {
-  const isLargeScreen = useMediaQuery("(min-width: 640px)");
+  const isSmallScreen = useMediaQuery("(max-width: 639px)");
 
-  const logoSrc = isLargeScreen ? "/image/jadelogo.png" : "/image/jadeicon.png";
+  const logoSrc = isSmallScreen ? "/image/jadeicon.png" : "/image/jadelogo.png";
 
   return <Image src={logoSrc} h={h} w="auto" alt="Jade Logo" />;
 };
