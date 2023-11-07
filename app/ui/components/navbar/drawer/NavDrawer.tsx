@@ -4,7 +4,7 @@ import { Box, Divider, Drawer, Group, RemoveScroll } from "@mantine/core";
 import { LinkData } from "@/app/lib/definitions";
 import JadeLogo from "../../JadeLogo";
 import DrawerNavLinks from "./DrawerNavLinks";
-import ResultTypeSelector from "../nav-items/result-selector/ResultTypeSelector";
+import ResultTypeSelector from "../nav-items/result-selector/ScriptTypeSelector";
 import ThemeToggler from "../nav-items/theme-toggler/ThemeToggler";
 import AuthButtons from "../nav-items/auth-items/AuthButtons";
 

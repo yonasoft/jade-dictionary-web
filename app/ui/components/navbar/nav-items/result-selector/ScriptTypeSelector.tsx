@@ -8,15 +8,15 @@ import {
   SegmentedControlItem,
   Group,
 } from "@mantine/core";
-import { ResultType } from "@/app/lib/definitions";
-import classes from "./ResultTypeSelector.module.css";
+import { ScriptType } from "@/app/lib/definitions";
+import classes from "./ScriptTypeSelector.module.css";
 
 type Props = {};
 
-const ResultTypeSelector = (props: Props) => {
+const ScriptTypeSelector = (props: Props) => {
   const data: Array<SegmentedControlItem> = [
-    { value: ResultType.Simplified, label: "Simplified" },
-    { value: ResultType.Traditional, label: "Traditional" },
+    { value: ScriptType.Simplified, label: "Simplified" },
+    { value: ScriptType.Traditional, label: "Traditional" },
   ];
 
   return (
@@ -49,4 +49,4 @@ const ResultTypeSelector = (props: Props) => {
   );
 };
 
-export default ResultTypeSelector;
+export default ScriptTypeSelector;

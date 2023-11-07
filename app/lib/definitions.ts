@@ -7,7 +7,7 @@ export enum QueryType {
 	Hanzi = 'Hanzi',
 	Pinyin = 'Pinyin',
 }
-export enum ResultType {
+export enum ScriptType {
 	Simplified = 'Simplified',
 	Traditional = 'Traditional',
 }

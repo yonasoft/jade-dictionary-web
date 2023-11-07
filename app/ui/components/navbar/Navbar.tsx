@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import Link from "next/link";
 
@@ -15,7 +14,7 @@ import JadeLogo from "../JadeLogo";
 import UserMenu from "./nav-items/auth-items/UserMenu";
 import ThemeToggler from "./nav-items/theme-toggler/ThemeToggler";
 import SearchBar from "../search-bar/SearchBar";
-import ResultTypeSelector from "./nav-items/result-selector/ResultTypeSelector";
+import ResultTypeSelector from "./nav-items/result-selector/ScriptTypeSelector";
 import NavDrawer from "./drawer/NavDrawer";
 import AuthButtons from "./nav-items/auth-items/AuthButtons";
 
