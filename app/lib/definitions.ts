@@ -11,4 +11,4 @@ export enum ScriptType {
 	Simplified = 'Simplified',
 	Traditional = 'Traditional',
 }
-export type LinkData = {link:string, label:string, links?:LinkData[], icon?:React.ReactNode};
+export type LinkData = {link:string, label:string, sublinks?:LinkData[], icon?:React.ReactNode};

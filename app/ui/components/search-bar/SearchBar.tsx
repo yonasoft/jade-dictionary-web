@@ -17,6 +17,7 @@ import {
 import { IconArrowRight, IconHome, IconSearch } from "@tabler/icons-react";
 
 import classes from "./SearchBar.module.css";
+import SearchSpotlight from "./SearchSpotlight";
 
 type Props = {
   width?: number;
@@ -81,25 +82,7 @@ const SearchBar = (props: Props) => {
           </HoverCard.Dropdown>
         </HoverCard>
       </div>
-
-      <Spotlight.Root
-        query={""}
-        onSpotlightOpen={() => {}}
-        onQueryChange={() => {}}
-        closeOnClickOutside
-        closeOnEscape
-        scrollable
-      >
-        <Spotlight.Search
-          placeholder="Search via English, Pinyin, or Chinese..."
-          rightSection={<IconSearch stroke={1.5} />}
-        />
-
-        <Spotlight.ActionsList>
-          <SpotlightAction label="lol" highlightQuery></SpotlightAction>
-          <Spotlight.Empty>Nothing found...</Spotlight.Empty>
-        </Spotlight.ActionsList>
-      </Spotlight.Root>
+      <SearchSpotlight />
     </>
   );
 };

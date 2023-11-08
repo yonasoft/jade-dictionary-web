@@ -35,7 +35,7 @@ const links: Array<LinkData> = [
     link: "#1",
     label: "Support",
     icon: <IconHelp />,
-    links: [
+    sublinks: [
       { link: "/", label: "Contact Us" },
       { link: "/", label: "Donate" },
       { link: "/", label: "Help" },
@@ -46,7 +46,10 @@ const links: Array<LinkData> = [
 ];
 
 const Navbar = () => {
-  const [drawerOpened, drawerHandlers] = useDisclosure(false);
+  const [drawerOpened, { open, close, toggle }] = useDisclosure(false);
+
+  const renderMenuItems = () =>
+    links.map((link) => <MenuItem link={link} key={link.label} />);
 
   return (
     <>
@@ -54,15 +57,11 @@ const Navbar = () => {
         <Container className="align-middle" size="lg">
           <Group h="56" justify="space-between">
             <Group justify="flex-start">
-              <Link href="\">
+              <Link href="\" aria-label="Jade Logo">
                 <JadeLogo h="48" />
               </Link>
 
-              <Group visibleFrom="md">
-                {links.map((link, index) => (
-                  <MenuItem link={link} key={index} />
-                ))}
-              </Group>
+              <Group visibleFrom="md">{renderMenuItems()}</Group>
             </Group>
 
             <Group
@@ -77,22 +76,17 @@ const Navbar = () => {
               <AuthButtons />
               <ThemeToggler />
             </Group>
-
             <Burger
               size="sm"
               opened={drawerOpened}
-              onClick={drawerHandlers.toggle}
+              onClick={toggle}
               hiddenFrom="md"
             />
           </Group>
         </Container>
       </header>
 
-      <NavDrawer
-        links={links}
-        opened={drawerOpened}
-        onClose={drawerHandlers.close}
-      />
+      <NavDrawer links={links} opened={drawerOpened} onClose={close} />
     </>
   );
 };

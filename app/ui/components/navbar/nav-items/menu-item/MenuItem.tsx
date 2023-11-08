@@ -1,9 +1,7 @@
 import React from "react";
 import Link from "next/link";
-
 import { Menu, Center, AccordionChevron } from "@mantine/core";
 import { LinkData } from "@/app/lib/definitions";
-
 import classes from "./MenuItem.module.css";
 
 type Props = {
@@ -11,44 +9,39 @@ type Props = {
 };
 
 const MenuItem = ({ link }: Props) => {
-  if (link.links !== undefined) {
-    const menuLinks = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
-    ));
+  const generateMenuLinks = (sublinks: Array<LinkData>) =>
+    sublinks.map((item) => <Menu.Item key={item.link}>{item.label}</Menu.Item>);
 
+  if (link.sublinks && link.sublinks.length > 0) {
     return (
-      <Menu
-        key={link.label}
-        trigger="hover"
-        transitionProps={{ exitDuration: 0 }}
-        withinPortal
-      >
+      <Menu trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
         <Menu.Target>
           <a
             href={link.link}
             className={classes.link}
-            onClick={(event) => event.preventDefault()}
+            onClick={(e) => e.preventDefault()}
           >
             <Center>
               <span className={classes.linkLabel}>{link.label}</span>
-              <AccordionChevron size="0.9rem" />
+              <AccordionChevron size="14px" />
             </Center>
           </a>
         </Menu.Target>
-        <Menu.Dropdown>{menuLinks}</Menu.Dropdown>
+        <Menu.Dropdown>{generateMenuLinks(link.sublinks)}</Menu.Dropdown>
       </Menu>
     );
+  } else {
+    return (
+      <Link
+        key={link.label}
+        href={link.link}
+        className={classes.link}
+        onClick={(event) => event.preventDefault()}
+      >
+        {link.label}
+      </Link>
+    );
   }
-  return (
-    <Link
-      key={link.label}
-      href={link.link}
-      className={classes.link}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </Link>
-  );
 };
 
 export default MenuItem;
