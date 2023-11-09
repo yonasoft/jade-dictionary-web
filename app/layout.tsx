@@ -7,7 +7,6 @@ import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import Navbar from "./ui/components/navbar/Navbar";
 import { theme } from "./lib/theme";
-import AuthModal from "./ui/components/modals/auth-modal/AuthModal";
 
 const murecho = Murecho({ subsets: ["latin"] });
 
