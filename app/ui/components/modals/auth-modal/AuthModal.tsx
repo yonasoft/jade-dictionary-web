@@ -35,7 +35,7 @@ const AuthModal = ({ needSignUp }: Props) => {
           <Tabs.Tab value="login">Login</Tabs.Tab>
           <Tabs.Tab value="signup">Sign Up</Tabs.Tab>
         </Tabs.List>
-        {needSignUp ? <SignUpTab /> : <LoginTab />}
+        {isSignUp ? <SignUpTab /> : <LoginTab />}
       </Tabs>
     </>
   );
