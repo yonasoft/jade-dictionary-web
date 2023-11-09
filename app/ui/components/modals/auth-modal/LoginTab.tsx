@@ -9,7 +9,7 @@ type Props = {};
 const LoginTab = (props: Props) => {
   return (
     <div>
-      <Button className={classes.authButton} onClick={signInWithGoogle} />
+      <Button className={classes.authButtons} onClick={signInWithGoogle} />
     </div>
   );
 };
