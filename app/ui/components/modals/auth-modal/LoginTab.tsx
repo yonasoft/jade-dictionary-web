@@ -2,7 +2,7 @@
 import { signInWithGoogle } from "@/app/lib/firebase/authentication";
 import { Button } from "@mantine/core";
 import React from "react";
-import classes from "./AuthModal.module.scss";
+import classes from "./AuthModal.module.css";
 
 type Props = {};
 
