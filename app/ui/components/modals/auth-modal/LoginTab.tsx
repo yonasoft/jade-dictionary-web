@@ -1,5 +1,5 @@
 "use client";
-import { signInWithGoogle } from "@/app/lib/firebase/auth";
+import { signInWithGoogle } from "@/app/lib/firebase/authentication";
 import { Button } from "@mantine/core";
 import React from "react";
 type Props = {};
