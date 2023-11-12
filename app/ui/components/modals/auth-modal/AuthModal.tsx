@@ -1,14 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import { Tabs, Text } from "@mantine/core";
+import { Button, Divider, Tabs, Text } from "@mantine/core";
 import SignUpTab from "./SignUpTab";
 import LoginTab from "./LoginTab";
+import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 
 type Props = {
   needSignUp: boolean;
 };
 
 const AuthModal = ({ needSignUp }: Props) => {
+  const firebase = useFirebaseContext();
   const [isSignUp, setIsSignUp] = useState(needSignUp);
 
   return (
@@ -37,6 +39,9 @@ const AuthModal = ({ needSignUp }: Props) => {
         </Tabs.List>
         {isSignUp ? <SignUpTab /> : <LoginTab />}
       </Tabs>
+      <Divider my="xs" label="Sign in with..." labelPosition="center" />
+      <Button className="py-2" fullWidth></Button>
+      <Button className="py-2" fullWidth></Button>
     </>
   );
 };

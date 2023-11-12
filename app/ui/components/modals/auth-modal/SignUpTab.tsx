@@ -9,11 +9,9 @@ type Props = {};
 const SignUpTab = (props: Props) => {
   const form = useForm({
     initialValues: {
-      userName: "",
-      firstName: "",
-      lastName: "",
       email: "",
       password: "",
+      passwordConfirmation: "",
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
@@ -30,19 +28,7 @@ const SignUpTab = (props: Props) => {
         <TextInput
           required
           label="Email"
-          placeholder="hello@mantine.dev"
-          value={form.values.email}
-          onChange={(event) =>
-            form.setFieldValue("email", event.currentTarget.value)
-          }
-          error={form.errors.email && "Invalid email"}
-          radius="md"
-        />
-
-        <TextInput
-          required
-          label="Email"
-          placeholder="hello@mantine.dev"
+          placeholder="johndoe123@gmail.com"
           value={form.values.email}
           onChange={(event) =>
             form.setFieldValue("email", event.currentTarget.value)
@@ -56,6 +42,20 @@ const SignUpTab = (props: Props) => {
           label="Password"
           placeholder="Your password"
           value={form.values.password}
+          onChange={(event) =>
+            form.setFieldValue("password", event.currentTarget.value)
+          }
+          error={
+            form.errors.password &&
+            "Password should include at least 6 characters"
+          }
+          radius="md"
+        />
+        <PasswordInput
+          required
+          label="Confirm Password"
+          placeholder="Confirm your password"
+          value={form.values.passwordConfirmation}
           onChange={(event) =>
             form.setFieldValue("password", event.currentTarget.value)
           }

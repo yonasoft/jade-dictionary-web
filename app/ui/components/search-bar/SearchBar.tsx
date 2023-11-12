@@ -65,7 +65,7 @@ const SearchBar = (props: Props) => {
             </Text>
             <List type="unordered" listStyleType="disc" size="sm">
               <List.Item>
-                <Text size="sm">
+                <Text size="sm" >
                   Press&nbsp;
                   <strong>Ctrl+K</strong>&nbsp; for quick access
                 </Text>

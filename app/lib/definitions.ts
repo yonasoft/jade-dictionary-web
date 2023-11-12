@@ -12,3 +12,4 @@ export enum ScriptType {
 	Traditional = 'Traditional',
 }
 export type LinkData = {link:string, label:string, sublinks?:LinkData[], icon?:React.ReactNode};
+export type signInMethod = 'email' | 'google' | 'facebook';

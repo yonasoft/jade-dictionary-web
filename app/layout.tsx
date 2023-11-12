@@ -1,4 +1,3 @@
-import React from "react";
 import type { Metadata } from "next";
 import { Murecho } from "next/font/google";
 import "@mantine/core/styles.css";
@@ -7,6 +6,7 @@ import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import Navbar from "./ui/components/navbar/Navbar";
 import { theme } from "./lib/theme";
+import { FirebaseContextProvider } from "./providers/FirebaseProvider";
 
 const murecho = Murecho({ subsets: ["latin"] });
 
@@ -32,10 +32,12 @@ export default function RootLayout({
       </head>
       <body className={`${murecho.className} antialiased`}>
         <MantineProvider theme={theme} defaultColorScheme="dark">
-          <ModalsProvider>
-            <Navbar />
-            {children}
-          </ModalsProvider>
+          <FirebaseContextProvider>
+            <ModalsProvider>
+              <Navbar />
+              {children}
+            </ModalsProvider>
+          </FirebaseContextProvider>
         </MantineProvider>
       </body>
     </html>

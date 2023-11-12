@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 
 export const initializeFirebase = () => {
@@ -16,6 +17,7 @@ export const initializeFirebase = () => {
 		};
 
 		const app = initializeApp(firebaseConfig);
+		const db = getFirestore(app);
 
 		if (typeof window !== 'undefined') {
 			isSupported().then((supported) => {
@@ -29,5 +31,3 @@ export const initializeFirebase = () => {
 		return getApp();
 	}
 }
-
-export const firebaseApp = initializeFirebase();
