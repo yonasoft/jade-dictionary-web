@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 
 import { Group, Burger, Container } from "@mantine/core";
@@ -17,6 +17,8 @@ import SearchBar from "../search-bar/SearchBar";
 import ResultTypeSelector from "./nav-items/result-selector/ScriptTypeSelector";
 import NavDrawer from "./drawer/NavDrawer";
 import AuthButtons from "./nav-items/auth-items/AuthButtons";
+import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
+import AuthItems from "./nav-items/auth-items/AuthItems";
 
 const links: Array<LinkData> = [
   {
@@ -73,7 +75,7 @@ const Navbar = () => {
 
             <Group justify="flex-end" visibleFrom="sm">
               <ResultTypeSelector />
-              <AuthButtons />
+              <AuthItems  />
               <ThemeToggler />
             </Group>
             <Burger

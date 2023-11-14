@@ -10,7 +10,9 @@ type Props = {
 
 const MenuItem = ({ link }: Props) => {
   const generateMenuLinks = (sublinks: Array<LinkData>) =>
-    sublinks.map((item) => <Menu.Item key={item.link}>{item.label}</Menu.Item>);
+    sublinks.map((item, index) => (
+      <Menu.Item key={index}>{item.label}</Menu.Item>
+    ));
 
   if (link.sublinks && link.sublinks.length > 0) {
     return (

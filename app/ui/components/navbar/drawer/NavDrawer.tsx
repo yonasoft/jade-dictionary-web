@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Box, Divider, Drawer, Group, RemoveScroll } from "@mantine/core";
 
@@ -7,6 +8,7 @@ import DrawerNavLinks from "./DrawerNavLinks";
 import ResultTypeSelector from "../nav-items/result-selector/ScriptTypeSelector";
 import ThemeToggler from "../nav-items/theme-toggler/ThemeToggler";
 import AuthButtons from "../nav-items/auth-items/AuthButtons";
+import AuthItems from "../nav-items/auth-items/AuthItems";
 
 type Props = {
   links: Array<LinkData>;
@@ -52,11 +54,7 @@ const NavDrawer = ({ links, opened, onClose }: Props) => {
           <DrawerNavLinks links={links} />
           <Divider className="my-3" size="sm" hiddenFrom="sm" />
           <Group className="grow my-2" justify="center" hiddenFrom="sm">
-            <AuthButtons
-              additionalOnClick={() => {
-                onClose();
-              }}
-            />
+            <AuthItems additionalOnClick={onClose} />
           </Group>
         </Drawer.Body>
       </Drawer.Content>

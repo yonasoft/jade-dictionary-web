@@ -4,6 +4,8 @@ import { Button, Divider, Tabs, Text } from "@mantine/core";
 import SignUpTab from "./SignUpTab";
 import LoginTab from "./LoginTab";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
+import { GoogleButton } from "./GoogleButton";
+import { FacebookButton } from "./FacebookButton";
 
 type Props = {
   needSignUp: boolean;
@@ -40,8 +42,8 @@ const AuthModal = ({ needSignUp }: Props) => {
         {isSignUp ? <SignUpTab /> : <LoginTab />}
       </Tabs>
       <Divider my="xs" label="Sign in with..." labelPosition="center" />
-      <Button className="py-2" fullWidth></Button>
-      <Button className="py-2" fullWidth></Button>
+      <GoogleButton radius="xl">Google</GoogleButton>
+      <FacebookButton radius="xl">Facebook</FacebookButton>
     </>
   );
 };

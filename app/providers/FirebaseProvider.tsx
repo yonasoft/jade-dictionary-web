@@ -1,93 +1,120 @@
 "use client";
-import React, { useState, useContext, createContext } from "react";
+import React, { useState, useContext, createContext, useEffect } from "react";
 import { initializeFirebase } from "../lib/firebase/init";
 import { User } from "@firebase/auth";
-import { getAuth } from "firebase/auth";
+import {
+  Auth,
+  connectAuthEmulator,
+  getAuth,
+  onAuthStateChanged,
+} from "firebase/auth";
 import {
   loginEmailAndPassword,
   setupEmulators,
   signInWithGoogle,
   signInWithFacebook,
-  signOut,
+  signOutUser,
   createNewUserWithEmailAndPassword,
 } from "../lib/firebase/authentication";
-import { signInMethod } from "../lib/definitions";
 
 type Props = {
   children: React.ReactNode;
 };
 
-type FirebaseContext = {
-  user: User | undefined;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+type FirebaseContextType = {
+  currentUser: User | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+  createUserEmailPassword: (
+    email: string,
+    password: string
+  ) => Promise<{ user: User | null; error: any }>;
+  signInWithEmailPassword: (
+    email: string,
+    password: string
+  ) => Promise<{ user: User | null; error: any }>;
+  isLoggedIn: () => boolean;
+  signOut: () => Promise<void>;
 };
 
-export const FirebaseContext = createContext<FirebaseContext | undefined>(
+export const FirebaseContext = createContext<FirebaseContextType | undefined>(
   undefined
 );
 
-export const FirebaseContextProvider = ({ children }: Props) => {
+export const FirebaseContextProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const app = initializeFirebase();
   const auth = getAuth(app);
   setupEmulators(auth);
 
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [currentUser, setCurrentUser] = useState(auth.currentUser);
 
-  const signIn = async (
-    signInMethod: signInMethod,
-    email?: string,
-    password?: string
-  ) => {
-    try {
-      let result;
-      switch (signInMethod) {
-        case "email":
-          result = await loginEmailAndPassword(
-            auth,
-            email as string,
-            password as string
-          );
-          break;
-        case "google":
-          await signInWithGoogle(auth);
-          break;
-        case "facebook":
-          await signInWithFacebook(auth);
-          break;
-        default:
-          break;
-      }
-    } catch (error) {
-      console.error("Authentication error:", error);
-      // Handle error, potentially update context state
-    }
-  };
+  useEffect(() => {
+    monitorAuthState();
+  }, []);
 
-  const signOutUser = async () => {
+  const createUserEmailPassword = async (
+    email: string,
+    password: string
+  ): Promise<{ user: User | null; error: any }> => {
     try {
-      await signOut(auth);
-      // Handle successful sign out, update context state
-    } catch (error) {
-      console.error("Sign out error:", error);
-      // Handle sign out error
-    }
-  };
-
-  const createUserEmailPasaword = async (email: string, password: string) => {
-    try {
-      await createNewUserWithEmailAndPassword(auth, email, password);
-      // Handle successful user creation, update context state
+      const { user, error } = await createNewUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      return { user: user, error: null };
     } catch (error) {
       console.error("Error creating user:", error);
-      // Handle user creation error
+      return { user: null, error: error };
     }
+  };
+
+  const signInWithEmailPassword = async (
+    email: string,
+    password: string
+  ): Promise<{ user: User | null; error: any }> => {
+    try {
+      const user = await loginEmailAndPassword(auth, email, password);
+      return { user, error: null };
+    } catch (error) {
+      console.error("Error signing in with email and password:", error);
+      return { user: null, error };
+    }
+  };
+
+  const isLoggedIn = () => {
+    return auth.currentUser ? true : false;
+  };
+
+  const signOut = async () => {
+    try {
+      await signOutUser(auth);
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+  };
+
+  const monitorAuthState = async () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
   };
 
   return (
     <FirebaseContext.Provider
       value={{
-        user,
-        setUser,
+        currentUser,
+        setCurrentUser,
+        createUserEmailPassword,
+        signInWithEmailPassword,
+        isLoggedIn,
+        signOut,
       }}
     >
       {children}
@@ -97,9 +124,9 @@ export const FirebaseContextProvider = ({ children }: Props) => {
 
 export const useFirebaseContext = () => {
   const context = useContext(FirebaseContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error(
-      "ueseFirebaseContext must be used within a FirebaseContextProvider"
+      "useFirebaseContext must be used within a FirebaseContextProvider"
     );
   }
   return context;

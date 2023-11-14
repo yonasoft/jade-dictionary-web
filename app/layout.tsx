@@ -30,7 +30,10 @@ export default function RootLayout({
         />
         <ColorSchemeScript />
       </head>
-      <body className={`${murecho.className} antialiased`}>
+      <body
+        className={`${murecho.className} antialiased`}
+        suppressHydrationWarning={true}
+      >
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <FirebaseContextProvider>
             <ModalsProvider>

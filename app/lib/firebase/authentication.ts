@@ -13,96 +13,63 @@ import {
   sendSignInLinkToEmail,
   User,
   Auth,
+  signOut,
 } from "firebase/auth";
-import { FirebaseApp } from "firebase/app";
 
 
-export const setupEmulators = async (auth: Auth) => {
-  connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+export async function setupEmulators(auth:Auth) {
+  const authUrl = 'http://127.0.0.1:9099'
+  await fetch(authUrl)
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true })
 }
 
-export const createNewUserWithEmailAndPassword = async (auth: Auth, email: string, password: string) => {
-	await createUserWithEmailAndPassword(auth, email, password)
-		.then((userCredential) => {
-      const user = userCredential.user;
-		})
-		.catch((error) => {
-			const errorCode = error.code;
-			const errorMessage = error.message;
-      console.log(errorCode, errorMessage)
-
-		});
-}
-export const loginEmailAndPassword = async (auth:Auth, email: string, password: string): Promise<{ user: User | null; error: any }> => {
-	await signInWithEmailAndPassword(auth, email, password)
-	.then((userCredential) => { 
-    const user = userCredential.user;
-    return { user: user };
-	})
-	.catch((error) => {
-		const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode, errorMessage)
-    return { error: error };
-  });
-  return { user: null, error: null };
+export const createNewUserWithEmailAndPassword = async (auth: Auth, email: string, password: string):Promise<{user:User|null, error: any}> => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    console.log(userCredential)
+    return { user: userCredential.user, error: null }
+  } 
+  catch (error) {
+    console.log(error)
+    return {user: null, error: error}
+  }
 }
 
-export const signInWithGoogle = async (auth:Auth) => { 
-	const provider = new GoogleAuthProvider();
+export const loginEmailAndPassword = async (auth: Auth, email: string, password: string): Promise<User> => {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+};
 
-	await signInWithRedirect(auth, provider);
-  await getRedirectResult(auth)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access Google APIs.
-      const credential = GoogleAuthProvider.credentialFromResult(result as UserCredential);
-      const token = credential?.accessToken;
+export const signInWithGoogle = async (auth: Auth): Promise<{ user: User | null; error: any }> => { 
+    try {
+        const provider = new GoogleAuthProvider();
+        await signInWithRedirect(auth, provider);
+        const result = await getRedirectResult(auth);
+    
+        return { user: result?.user as User, error: null };
+    } catch (error: any) {
+        console.error(error.code, error.message);
+        return { user: null, error };
+    }
+};
 
-      // The signed-in user info.
-      const user = result?.user;
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-    }).catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-    });
-}
+export const signInWithFacebook = async (auth: Auth): Promise<{ user: User | null; error: any }> => { 
+    try {
+        const provider = new FacebookAuthProvider();
+        await signInWithRedirect(auth, provider);
+        const result = await getRedirectResult(auth);
+        return { user: result?.user as User, error: null };
+    } catch (error: any) {
+        console.error(error);
+        return { user: null, error };
+    }
+};
 
-export const signInWithFacebook = (auth:Auth) => { 
-  const provider = new FacebookAuthProvider();
-  signInWithRedirect(auth, provider);
-  getRedirectResult(auth)
-  .then((result) => {
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    const credential = FacebookAuthProvider.credentialFromResult(result as UserCredential);
-    const token = credential?.accessToken;
-
-    const user = result?.user;
-    // IdP data available using getAdditionalUserInfo(result)
-    // ...
-  }).catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // AuthCredential type that was used.
-    const credential = FacebookAuthProvider.credentialFromError(error);
-    // ...
-  });
-}
-
-
-export const signOut = (auth:Auth) => {
-  auth.signOut().then(() => {
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-  });
-}
+export const signOutUser = async (auth: Auth): Promise<void> => {
+        signOut(auth).then(() => {
+        // Sign-out successful.
+            console.log("Signed out successfully")
+        }).catch((error) => {
+          console.error(error)
+        });
+};

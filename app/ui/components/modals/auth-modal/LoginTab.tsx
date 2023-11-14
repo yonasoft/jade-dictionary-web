@@ -14,6 +14,7 @@ import {
   FirebaseContext,
   useFirebaseContext,
 } from "@/app/providers/FirebaseProvider";
+import { modals } from "@mantine/modals";
 
 type Props = {};
 
@@ -28,9 +29,27 @@ const LoginTab = (props: Props) => {
     },
   });
 
+  const signIn = async () => {
+    const { email, password } = form.values;
+
+    try {
+      const result = await firebase.signInWithEmailPassword(email, password);
+      modals.closeAll();
+      if (result.error) {
+        setErrorMessage(
+          "The email and password you entered did not match our records. Please double-check and try again."
+        );
+      } else {
+        setErrorMessage("");
+      }
+    } catch (error) {
+      setErrorMessage("An unexpected error occurred.");
+    }
+  };
+
   return (
     <>
-      <form onSubmit={form.onSubmit(() => {})}>
+      <form>
         <TextInput
           className="mb-2"
           required
@@ -58,7 +77,7 @@ const LoginTab = (props: Props) => {
           </Text>
         </Center>
         <Checkbox className="jadeCheckbox my-1" label="Remember me" />
-        <Button className="jadeButtons my-2" fullWidth onClick={() => {}}>
+        <Button className="jadeButtons my-2" onClick={signIn} fullWidth>
           Login
         </Button>
       </form>
