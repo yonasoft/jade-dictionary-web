@@ -5,6 +5,7 @@ import { Button, Center, PasswordInput, TextInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import React, { useState } from "react";
+import "AuthMododal.module.css"
 
 type Props = {};
 
