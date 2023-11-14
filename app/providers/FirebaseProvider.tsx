@@ -45,7 +45,6 @@ export const FirebaseContextProvider: React.FC<{
 }> = ({ children }) => {
   const app = initializeFirebase();
   const auth = getAuth(app);
-  setupEmulators(auth);
 
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
 
