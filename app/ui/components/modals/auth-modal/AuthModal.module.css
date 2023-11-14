@@ -1,7 +1,7 @@
 .jadeCheckbox:checked {
-  background-color: #459d57 !important;
+  background-color: var(--jade-color) !important;
 }
 
 .jadeButtons {
-  background-color: #459d57 !important;
+  background-color: var(--jade-color) !important;
 }
