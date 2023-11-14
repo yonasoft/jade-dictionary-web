@@ -15,7 +15,7 @@ import {
   useFirebaseContext,
 } from "@/app/providers/FirebaseProvider";
 import { modals } from "@mantine/modals";
-import "./AuthModal.module.css";
+import classes from "./AuthModal.module.css";
 
 type Props = {};
 
@@ -78,7 +78,11 @@ const LoginTab = (props: Props) => {
           </Text>
         </Center>
         <Checkbox className="jadeCheckbox my-1" label="Remember me" />
-        <Button className="jadeButtons my-2" onClick={signIn} fullWidth>
+        <Button
+          className={`${classes.jadeButtons} my-2`}
+          onClick={signIn}
+          fullWidth
+        >
           Login
         </Button>
       </form>

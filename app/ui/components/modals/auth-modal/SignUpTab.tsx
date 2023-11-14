@@ -5,7 +5,7 @@ import { Button, Center, PasswordInput, TextInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import React, { useState } from "react";
-import "./AuthModal.module.css";
+import classes from "./AuthModal.module.css";
 
 type Props = {};
 
@@ -108,7 +108,11 @@ const SignUpTab = (props: Props) => {
             {errorMessage}
           </Text>
         </Center>
-        <Button className="jadeButtons my-2" onClick={signUp} fullWidth>
+        <Button
+          className={`${classes.jadeButtons} my-2`}
+          onClick={signUp}
+          fullWidth
+        >
           Sign Up
         </Button>
       </form>
