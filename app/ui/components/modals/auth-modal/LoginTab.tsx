@@ -15,7 +15,7 @@ import {
   useFirebaseContext,
 } from "@/app/providers/FirebaseProvider";
 import { modals } from "@mantine/modals";
-import "AuthMododal.module.css";
+import "AuthModal.module.css";
 
 type Props = {};
 
