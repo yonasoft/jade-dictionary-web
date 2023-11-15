@@ -56,7 +56,7 @@ const SignUpTab = (props: Props) => {
     }
 
     try {
-      const result = await firebase.createUserEmailPassword(email, password);
+      const result = await firebase.handleCreateUserEmailPassword(email, password);
       modals.closeAll();
     } catch (error: any) {
       setErrorMessage(error.message);

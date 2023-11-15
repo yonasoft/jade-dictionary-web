@@ -1,3 +1,4 @@
+import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Button, ButtonProps } from "@mantine/core";
 import {} from "@mantine/ds";
 import { IconBrandFacebook } from "@tabler/icons-react";
@@ -5,6 +6,8 @@ import { IconBrandFacebook } from "@tabler/icons-react";
 export function FacebookButton(
   props: ButtonProps & React.ComponentPropsWithoutRef<"button">
 ) {
+  const firebase = useFirebaseContext();
+
   return (
     <Button
       className="my-2"
@@ -17,6 +20,7 @@ export function FacebookButton(
       variant="default"
       {...props}
       fullWidth
+      onClick={firebase.handleSignInWithFacebook}
     />
   );
 }

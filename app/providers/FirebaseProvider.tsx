@@ -24,14 +24,16 @@ type Props = {
 type FirebaseContextType = {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
-  createUserEmailPassword: (
+  handleCreateUserEmailPassword: (
     email: string,
     password: string
   ) => Promise<{ user: User | null; error: any }>;
-  signInWithEmailPassword: (
+  handleSignInWithEmailPassword: (
     email: string,
     password: string
   ) => Promise<{ user: User | null; error: any }>;
+  handleSignInWithGoogle: () => void;
+  handleSignInWithFacebook: () => void;
   isLoggedIn: () => boolean;
   signOut: () => Promise<void>;
 };
@@ -52,7 +54,7 @@ export const FirebaseContextProvider: React.FC<{
     monitorAuthState();
   }, []);
 
-  const createUserEmailPassword = async (
+  const handleCreateUserEmailPassword = async (
     email: string,
     password: string
   ): Promise<{ user: User | null; error: any }> => {
@@ -69,7 +71,7 @@ export const FirebaseContextProvider: React.FC<{
     }
   };
 
-  const signInWithEmailPassword = async (
+  const handleSignInWithEmailPassword = async (
     email: string,
     password: string
   ): Promise<{ user: User | null; error: any }> => {
@@ -80,6 +82,14 @@ export const FirebaseContextProvider: React.FC<{
       console.error("Error signing in with email and password:", error);
       return { user: null, error };
     }
+  };
+
+  const handleSignInWithGoogle = () => {
+    signInWithGoogle(auth);
+  };
+
+  const handleSignInWithFacebook = () => {
+    signInWithFacebook(auth);
   };
 
   const isLoggedIn = () => {
@@ -110,8 +120,10 @@ export const FirebaseContextProvider: React.FC<{
       value={{
         currentUser,
         setCurrentUser,
-        createUserEmailPassword,
-        signInWithEmailPassword,
+        handleCreateUserEmailPassword,
+        handleSignInWithEmailPassword,
+        handleSignInWithGoogle,
+        handleSignInWithFacebook,
         isLoggedIn,
         signOut,
       }}

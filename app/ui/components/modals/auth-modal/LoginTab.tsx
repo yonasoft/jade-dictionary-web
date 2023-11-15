@@ -34,7 +34,7 @@ const LoginTab = (props: Props) => {
     const { email, password } = form.values;
 
     try {
-      const result = await firebase.signInWithEmailPassword(email, password);
+      const result = await firebase.handleSignInWithEmailPassword(email, password);
       modals.closeAll();
       if (result.error) {
         setErrorMessage(

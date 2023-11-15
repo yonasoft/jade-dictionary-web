@@ -41,35 +41,54 @@ export const loginEmailAndPassword = async (auth: Auth, email: string, password:
 };
 
 export const signInWithGoogle = async (auth: Auth): Promise<{ user: User | null; error: any }> => { 
-    try {
-        const provider = new GoogleAuthProvider();
-        await signInWithRedirect(auth, provider);
-        const result = await getRedirectResult(auth);
-    
-        return { user: result?.user as User, error: null };
-    } catch (error: any) {
-        console.error(error.code, error.message);
-        return { user: null, error };
+  const provider = new GoogleAuthProvider();
+  try {
+    // Initiate the sign-in process
+    await signInWithRedirect(auth, provider);
+
+    // Once the user is redirected back to your app, get the sign-in result
+    const result = await getRedirectResult(auth);
+    if (result) {
+      // Successfully signed in
+      return { user: result.user, error: null };
+    } else {
+      // No result, possibly because the sign-in was not initiated now
+      return { user: null, error: null };
     }
+  } catch (error: any) {
+    // Handle any errors that occurred during sign-in
+    console.error(error);
+    return { user: null, error };
+  }
 };
 
 export const signInWithFacebook = async (auth: Auth): Promise<{ user: User | null; error: any }> => { 
-    try {
-        const provider = new FacebookAuthProvider();
-        await signInWithRedirect(auth, provider);
-        const result = await getRedirectResult(auth);
-        return { user: result?.user as User, error: null };
-    } catch (error: any) {
-        console.error(error);
-        return { user: null, error };
+
+  const provider = new FacebookAuthProvider();
+  try {
+    // Initiate the sign-in process
+    await signInWithRedirect(auth, provider);
+
+    // Once the user is redirected back to your app, get the sign-in result
+    const result = await getRedirectResult(auth);
+    if (result) {
+      // Successfully signed in
+      return { user: result.user, error: null };
+    } else {
+      // No result, possibly because the sign-in was not initiated now
+      return { user: null, error: null };
     }
+  } catch (error: any) {
+    // Handle any errors that occurred during sign-in
+    console.error(error);
+    return { user: null, error };
+  }
 };
 
 export const signOutUser = async (auth: Auth): Promise<void> => {
-        signOut(auth).then(() => {
-        // Sign-out successful.
-            console.log("Signed out successfully")
-        }).catch((error) => {
+  signOut(auth).then(() => {
+    console.log("Signed out successfully")
+  }).catch((error) => {
           console.error(error)
-        });
+  });
 };
