@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useContext, createContext, useEffect } from "react";
 import { initializeFirebase } from "../lib/firebase/init";
+import { getFirestore, doc, updateDoc, Firestore } from "firebase/firestore";
 import { User } from "@firebase/auth";
 import {
   Auth,
@@ -15,6 +16,7 @@ import {
   signInWithFacebook,
   signOutUser,
   createNewUserWithEmailAndPassword,
+  monitorAuthState,
 } from "../lib/firebase/authentication";
 
 type Props = {
@@ -24,18 +26,8 @@ type Props = {
 type FirebaseContextType = {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
-  handleCreateUserEmailPassword: (
-    email: string,
-    password: string
-  ) => Promise<{ user: User | null; error: any }>;
-  handleSignInWithEmailPassword: (
-    email: string,
-    password: string
-  ) => Promise<{ user: User | null; error: any }>;
-  handleSignInWithGoogle: () => void;
-  handleSignInWithFacebook: () => void;
-  isLoggedIn: () => boolean;
-  signOut: () => Promise<void>;
+  auth: Auth;
+  db: Firestore;
 };
 
 export const FirebaseContext = createContext<FirebaseContextType | undefined>(
@@ -47,85 +39,24 @@ export const FirebaseContextProvider: React.FC<{
 }> = ({ children }) => {
   const app = initializeFirebase();
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
 
   useEffect(() => {
-    monitorAuthState();
+    monitorAuthState(auth, setCurrentUser);
   }, []);
 
-  const handleCreateUserEmailPassword = async (
-    email: string,
-    password: string
-  ): Promise<{ user: User | null; error: any }> => {
-    try {
-      const { user, error } = await createNewUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      return { user: user, error: null };
-    } catch (error) {
-      console.error("Error creating user:", error);
-      return { user: null, error: error };
-    }
-  };
 
-  const handleSignInWithEmailPassword = async (
-    email: string,
-    password: string
-  ): Promise<{ user: User | null; error: any }> => {
-    try {
-      const user = await loginEmailAndPassword(auth, email, password);
-      return { user, error: null };
-    } catch (error) {
-      console.error("Error signing in with email and password:", error);
-      return { user: null, error };
-    }
-  };
 
-  const handleSignInWithGoogle = () => {
-    signInWithGoogle(auth);
-  };
-
-  const handleSignInWithFacebook = () => {
-    signInWithFacebook(auth);
-  };
-
-  const isLoggedIn = () => {
-    return auth.currentUser ? true : false;
-  };
-
-  const signOut = async () => {
-    try {
-      await signOutUser(auth);
-    } catch (error) {
-      console.error("Sign out error:", error);
-    }
-  };
-
-  const monitorAuthState = async () => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(user);
-        setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-      }
-    });
-  };
 
   return (
     <FirebaseContext.Provider
       value={{
         currentUser,
         setCurrentUser,
-        handleCreateUserEmailPassword,
-        handleSignInWithEmailPassword,
-        handleSignInWithGoogle,
-        handleSignInWithFacebook,
-        isLoggedIn,
-        signOut,
+        auth,
+        db,
       }}
     >
       {children}

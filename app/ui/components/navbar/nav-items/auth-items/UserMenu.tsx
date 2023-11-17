@@ -1,4 +1,5 @@
 "use client";
+import { signOutUser } from "@/app/lib/firebase/authentication";
 import {
   FirebaseContext,
   useFirebaseContext,
@@ -12,12 +13,14 @@ import {
   IconUser,
   IconUserCircle,
 } from "@tabler/icons-react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 type Props = {};
 
 const UserMenu = (props: Props) => {
   const firebase = useFirebaseContext();
+
+  useEffect(() => {}, [firebase.currentUser]);
 
   return (
     <>
@@ -67,7 +70,9 @@ const UserMenu = (props: Props) => {
                 stroke={1.5}
               />
             }
-            onClick={firebase.signOut}
+            onClick={() => {
+              signOutUser(firebase.auth);
+            }}
           >
             Logout
           </Menu.Item>

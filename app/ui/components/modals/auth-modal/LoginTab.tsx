@@ -16,6 +16,7 @@ import {
 } from "@/app/providers/FirebaseProvider";
 import { modals } from "@mantine/modals";
 import classes from "./AuthModal.module.css";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 type Props = {};
 
@@ -34,15 +35,12 @@ const LoginTab = (props: Props) => {
     const { email, password } = form.values;
 
     try {
-      const result = await firebase.handleSignInWithEmailPassword(email, password);
+      const result = await signInWithEmailAndPassword(
+        firebase.auth,
+        email,
+        password
+      );
       modals.closeAll();
-      if (result.error) {
-        setErrorMessage(
-          "The email and password you entered did not match our records. Please double-check and try again."
-        );
-      } else {
-        setErrorMessage("");
-      }
     } catch (error) {
       setErrorMessage("An unexpected error occurred.");
     }

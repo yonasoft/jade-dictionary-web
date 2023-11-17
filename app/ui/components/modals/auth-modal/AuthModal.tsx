@@ -43,7 +43,7 @@ const AuthModal = ({ needSignUp }: Props) => {
       </Tabs>
       <Divider my="xs" label="Sign in with..." labelPosition="center" />
       <GoogleButton radius="xl">Google</GoogleButton>
-      <FacebookButton radius="xl">Facebook</FacebookButton>
+      {/* <FacebookButton radius="xl">Facebook</FacebookButton> */}
     </>
   );
 };

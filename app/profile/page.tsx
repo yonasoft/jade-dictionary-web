@@ -8,16 +8,19 @@ import {
   Group,
   rem,
   Text,
+  Image,
+  Center,
+  FileInput,
+  Input,
 } from "@mantine/core";
-import { IconUserCircle } from "@tabler/icons-react";
-import React from "react";
+import { IconPencil, IconUpload, IconUserCircle } from "@tabler/icons-react";
+import React, { useState } from "react";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
+import DisplayInformation from "./DisplayInformation";
 
 type Props = {};
 
 const Profile = (props: Props) => {
-  const firebase = useFirebaseContext();
-
   return (
     <>
       <Container size="lg">
@@ -30,7 +33,6 @@ const Profile = (props: Props) => {
         >
           <Group justify="flex-start">
             <IconUserCircle
-              size="xs"
               style={{ width: rem(30), height: rem(30) }}
               stroke={1.5}
               color="gray"
@@ -38,8 +40,11 @@ const Profile = (props: Props) => {
             <Text size="md">Profile</Text>
           </Group>
           <Grid className="py-3">
-            <Grid.Col span={{ base: 12, sm: 3, md: 4 }}>xd</Grid.Col>
-            <Grid.Col span={{ base: 12, sm: 9, md: 8 }}>
+            <Grid.Col span={{ base: 12, sm: 4, md: 3 }}>
+              <DisplayInformation />
+            </Grid.Col>
+
+            <Grid.Col span={{ base: 12, sm: 8, md: 9 }}>
               <Grid>
                 <Grid.Col span={{ base: 12, sm: 6 }}>lol</Grid.Col>
                 <Grid.Col span={{ base: 12, sm: 6 }}>lol2</Grid.Col>

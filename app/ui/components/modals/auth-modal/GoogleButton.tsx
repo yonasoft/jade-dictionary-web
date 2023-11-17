@@ -1,8 +1,9 @@
+import { signInWithGoogle } from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Button, ButtonProps } from "@mantine/core";
+import { modals } from "@mantine/modals";
 
 function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
-
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +35,6 @@ function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 export function GoogleButton(
   props: ButtonProps & React.ComponentPropsWithoutRef<"button">
 ) {
-
   const firebase = useFirebaseContext();
 
   return (
@@ -44,7 +44,10 @@ export function GoogleButton(
       variant="default"
       {...props}
       fullWidth
-      onClick={firebase.handleSignInWithGoogle}
+      onClick={() => {
+        signInWithGoogle(firebase.auth, firebase.db);
+        modals.closeAll();
+      }}
     />
   );
 }

@@ -5,7 +5,7 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 
 export const initializeFirebase = () => {
-	if (!getApps().length) {
+
 		const firebaseConfig = {
 			apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 			authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -17,7 +17,6 @@ export const initializeFirebase = () => {
 		};
 
 		const app = initializeApp(firebaseConfig);
-		const db = getFirestore(app);
 
 		if (typeof window !== 'undefined') {
 			isSupported().then((supported) => {
@@ -25,9 +24,6 @@ export const initializeFirebase = () => {
 					const analytics = getAnalytics(app);
 				}
 			});
-			return app
 		}
-	} else {
-		return getApp();
-	}
+		return app
 }

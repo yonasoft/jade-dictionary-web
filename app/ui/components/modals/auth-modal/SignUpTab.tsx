@@ -6,6 +6,7 @@ import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import React, { useState } from "react";
 import classes from "./AuthModal.module.css";
+import { createNewUserWithEmailAndPassword } from "@/app/lib/firebase/authentication";
 
 type Props = {};
 
@@ -56,10 +57,19 @@ const SignUpTab = (props: Props) => {
     }
 
     try {
-      const result = await firebase.handleCreateUserEmailPassword(email, password);
+      const { user, error } = await createNewUserWithEmailAndPassword(
+        firebase.auth,
+        firebase.db,
+        email,
+        password
+      );
+      if (error) {
+        setErrorMessage(error);
+        return; // Stop further execution if there is an error
+      }
       modals.closeAll();
     } catch (error: any) {
-      setErrorMessage(error.message);
+      setErrorMessage("An unexpected error occurred.");
     }
   };
 

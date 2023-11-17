@@ -1,6 +1,8 @@
+import { signInWithFacebook } from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Button, ButtonProps } from "@mantine/core";
 import {} from "@mantine/ds";
+import { modals } from "@mantine/modals";
 import { IconBrandFacebook } from "@tabler/icons-react";
 
 export function FacebookButton(
@@ -20,7 +22,10 @@ export function FacebookButton(
       variant="default"
       {...props}
       fullWidth
-      onClick={firebase.handleSignInWithFacebook}
+      onClick={() => {
+        signInWithFacebook(firebase.auth, firebase.db);
+         modals.closeAll();
+      }}
     />
   );
 }
