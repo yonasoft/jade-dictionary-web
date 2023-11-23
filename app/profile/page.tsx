@@ -12,15 +12,25 @@ import {
   Center,
   FileInput,
   Input,
+  Button,
 } from "@mantine/core";
 import { IconPencil, IconUpload, IconUserCircle } from "@tabler/icons-react";
 import React, { useState } from "react";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import DisplayInformation from "./DisplayInformation";
+import { useForm } from "@mantine/form";
+import UserInformation from "./ProfileSettings";
+import ProfileSettings from "./ProfileSettings";
 
 type Props = {};
 
 const Profile = (props: Props) => {
+  const firebase = useFirebaseContext();
+
+  if (!firebase.currentUser) {
+    return <div></div>;
+  }
+
   return (
     <>
       <Container size="lg">
@@ -45,13 +55,7 @@ const Profile = (props: Props) => {
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, sm: 8, md: 9 }}>
-              <Grid>
-                <Grid.Col span={{ base: 12, sm: 6 }}>lol</Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6 }}>lol2</Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6 }}>lol3</Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6 }}>lol4</Grid.Col>
-                <Grid.Col span={{ base: 12, sm: 6 }}>lol5</Grid.Col>
-              </Grid>
+              <ProfileSettings />
             </Grid.Col>
           </Grid>
         </Card>

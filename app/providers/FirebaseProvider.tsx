@@ -18,6 +18,12 @@ import {
   createNewUserWithEmailAndPassword,
   monitorAuthState,
 } from "../lib/firebase/authentication";
+import {
+  FirebaseStorage,
+  StorageReference,
+  getStorage,
+  ref,
+} from "firebase/storage";
 
 type Props = {
   children: React.ReactNode;
@@ -28,6 +34,7 @@ type FirebaseContextType = {
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   auth: Auth;
   db: Firestore;
+  storage: FirebaseStorage;
 };
 
 export const FirebaseContext = createContext<FirebaseContextType | undefined>(
@@ -40,15 +47,13 @@ export const FirebaseContextProvider: React.FC<{
   const app = initializeFirebase();
   const auth = getAuth(app);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
-  const [currentUser, setCurrentUser] = useState(auth.currentUser);
+  const [currentUser, setCurrentUser] = useState<null | User>(auth.currentUser);
 
   useEffect(() => {
     monitorAuthState(auth, setCurrentUser);
-  }, []);
-
-
-
+  }, [auth]);
 
   return (
     <FirebaseContext.Provider
@@ -57,6 +62,7 @@ export const FirebaseContextProvider: React.FC<{
         setCurrentUser,
         auth,
         db,
+        storage,
       }}
     >
       {children}

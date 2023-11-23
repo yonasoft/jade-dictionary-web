@@ -14,35 +14,45 @@ import {
   FileInput,
   Input,
   Button,
+  Avatar,
 } from "@mantine/core";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import {
+  IconCheck,
+  IconClearAll,
   IconDeviceFloppy,
   IconPencil,
+  IconRefresh,
   IconUpload,
   IconUserCircle,
+  IconX,
 } from "@tabler/icons-react";
 import { updateUserProfile } from "../lib/firebase/authentication";
 import { doc, getDoc } from "firebase/firestore/lite";
-import { updateUserToDB } from "../lib/firebase/firestore";
+import {
+  deleteOldProfilePicture,
+  updateUserToDB,
+  uploadNewProfilePicture,
+} from "../lib/firebase/storage";
 import { User, updateProfile } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { FirestoreUserData } from "../lib/definitions";
 
 type Props = {};
 
 const DisplayInformation = (props: Props) => {
   const firebase = useFirebaseContext();
-  const [editDisplayName, setEditDisplayName] = useState(false);
 
+  const [editDisplayName, setEditDisplayName] = useState(false);
   const [displayName, setDisplayName] = useState(
     firebase.currentUser?.displayName || ""
   );
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
-    setDisplayName(firebase.currentUser?.displayName || "");
-  }, [firebase.currentUser]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [hideSuccess, setHideSuccess] = useState(true);
+
+  useEffect(() => {}, [firebase.currentUser]);
 
   const checkDisplayNameExists = async (displayName: string) => {
     const usersRef = collection(firebase.db, "users");
@@ -53,29 +63,56 @@ const DisplayInformation = (props: Props) => {
 
   const onSave = async () => {
     try {
-      const displayNameExists = await checkDisplayNameExists(displayName);
-      if (displayNameExists) {
-        setErrorMessage("Display name already in use. Please choose another.");
-        return;
+      if (isNewDisplayName()) {
+        const displayNameExists = await checkDisplayNameExists(displayName);
+        if (displayNameExists) {
+          setErrorMessage(
+            "Display name already in use. Please choose another."
+          );
+          return;
+        }
+      }
+
+      let photoURL = firebase.currentUser?.photoURL;
+
+      if (photoFile) {
+        await deleteOldProfilePicture(
+          firebase.storage,
+          firebase.db,
+          firebase.currentUser?.uid?.toString() as string
+        );
+
+        photoURL = await uploadNewProfilePicture(firebase.storage, photoFile);
       }
 
       if (firebase.auth.currentUser) {
+        // Update Firebase Auth profile
         await updateUserProfile(firebase.auth, {
           displayName: displayName,
-          photoUrl: firebase.currentUser?.photoURL as string,
+          photoUrl: photoURL as string,
         });
 
-        const updatedUser = {
-          ...firebase.auth.currentUser,
+        // Create updated user data for Firestore
+        const updatedUserData: FirestoreUserData = {
+          uid: firebase.auth.currentUser.uid,
+          email: firebase.auth.currentUser.email,
           displayName: displayName,
+          photoURL: photoURL as string,
+          photoFileName: photoFile?.name as string,
         };
-        await updateUserToDB(firebase.db, updatedUser);
+        await updateUserToDB(firebase.db, updatedUserData);
       }
       setEditDisplayName(false);
+      setHideSuccess(false);
+      setErrorMessage("");
     } catch (error) {
       console.error("Error updating user profile:", error);
       setErrorMessage("An error occurred while updating the profile.");
     }
+  };
+
+  const isNewDisplayName = () => {
+    return displayName !== firebase.currentUser?.displayName;
   };
 
   return (
@@ -87,22 +124,44 @@ const DisplayInformation = (props: Props) => {
         wrap="wrap"
         gap="sm"
       >
-        <Input.Wrapper label="Display Name">
+        <Input.Wrapper label="Display Name" fw={400}>
           {editDisplayName ? (
-            <Input
-              value={displayName}
-              onChange={(e) => setDisplayName(e.currentTarget.value)}
-            />
+            <Flex justify="center" align="center" direction="row">
+              <Input
+                value={displayName}
+                onChange={(e) => setDisplayName(e.currentTarget.value)}
+              />
+              <IconCheck
+                className="mx-2"
+                onClick={() => {
+                  setEditDisplayName(false);
+                }}
+                style={{ width: rem(18), height: rem(18) }}
+                stroke={1.5}
+                color="green"
+              />
+              <IconX
+                className="mx-2"
+                onClick={() => {
+                  setDisplayName(firebase.currentUser?.displayName as string);
+                  setEditDisplayName(false);
+                }}
+                style={{ width: rem(18), height: rem(18) }}
+                stroke={1.5}
+                color="red"
+              />
+            </Flex>
           ) : (
-            <Group>
-              <Text>{displayName}</Text>
+            <Flex justify="center" align="center" direction="row">
+              <Text>{firebase.currentUser?.displayName}</Text>
 
               <IconPencil
+                className="mx-2"
                 onClick={() => setEditDisplayName(true)}
                 style={{ width: rem(18), height: rem(18) }}
                 stroke={1.5}
               />
-            </Group>
+            </Flex>
           )}
         </Input.Wrapper>
 
@@ -110,22 +169,13 @@ const DisplayInformation = (props: Props) => {
           {errorMessage}
         </Text>
 
-        {firebase.currentUser?.photoURL ? (
-          <Image
-            radius="md"
-            h={150}
-            w={150}
-            src={firebase.currentUser?.photoURL}
-          />
-        ) : (
-          <Card withBorder>
-            <IconUserCircle
-              style={{ width: rem(150), height: rem(150) }}
-              stroke={1.5}
-              color="gray"
-            />
-          </Card>
-        )}
+        <Avatar
+          src={firebase.currentUser?.photoURL || ""}
+          alt="no image here"
+          size={150}
+          radius="xl"
+        />
+
         <FileInput
           accept="image/png,image/jpeg"
           rightSection={
@@ -134,12 +184,16 @@ const DisplayInformation = (props: Props) => {
               stroke={1.5}
             />
           }
+          value={photoFile}
           onChange={setPhotoFile}
           label="Upload Profile Picture"
           placeholder="Upload"
           rightSectionPointerEvents="none"
         />
         <Button onClick={onSave}>Save</Button>
+        <Text size="sm" color="green" hidden={hideSuccess}>
+          Profile updated successfully.
+        </Text>
       </Flex>
     </Card>
   );

@@ -13,6 +13,7 @@ import {
   IconUser,
   IconUserCircle,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import React, { useContext, useEffect } from "react";
 
 type Props = {};
@@ -20,7 +21,9 @@ type Props = {};
 const UserMenu = (props: Props) => {
   const firebase = useFirebaseContext();
 
-  useEffect(() => {}, [firebase.currentUser]);
+  useEffect(() => {
+    console.log(firebase.currentUser);
+  }, [firebase.currentUser]);
 
   return (
     <>
@@ -32,16 +35,23 @@ const UserMenu = (props: Props) => {
         zIndex={2000}
       >
         <Menu.Target>
-          <Group className="bg-slate-100 rounded-xl">
-            <Avatar src={null} alt="no image here" radius="xl" />
-            <Text size="sm">
-              {firebase.currentUser?.displayName || firebase.currentUser?.email}
-            </Text>
-            <IconChevronDown
-              style={{ width: rem(14), height: rem(14) }}
-              stroke={1.5}
-            />
-          </Group>
+          <Link href="/profile">
+            <Group className="bg-slate-100 rounded-xl">
+              <Avatar
+                src={firebase.currentUser?.photoURL || ""}
+                alt="no image here"
+                radius="xl"
+              />
+              <Text size="sm">
+                {firebase.currentUser?.displayName ||
+                  firebase.currentUser?.email}
+              </Text>
+              <IconChevronDown
+                style={{ width: rem(14), height: rem(14) }}
+                stroke={1.5}
+              />
+            </Group>
+          </Link>
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Item
@@ -53,8 +63,7 @@ const UserMenu = (props: Props) => {
             }
           >
             <Group>
-              <Avatar radius="xl" src="" />
-
+              <Avatar radius="xl" src={firebase.currentUser?.photoURL || ""} />
               <div>
                 <Text fw={500}>{firebase.currentUser?.displayName}</Text>
                 <Text size="xs" c="dimmed">

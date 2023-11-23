@@ -11,4 +11,12 @@ export enum ScriptType {
 	Simplified = 'Simplified',
 	Traditional = 'Traditional',
 }
-export type LinkData = {link:string, label:string, sublinks?:LinkData[], icon?:React.ReactNode};
+export type LinkData = { link: string, label: string, sublinks?: LinkData[], icon?: React.ReactNode };
+
+export interface FirestoreUserData {
+	uid: string;
+	email: string | null;
+	displayName: string | null;
+	photoURL: string | null;
+	photoFileName: string| null;
+}

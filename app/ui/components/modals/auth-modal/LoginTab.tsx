@@ -16,12 +16,19 @@ import {
 } from "@/app/providers/FirebaseProvider";
 import { modals } from "@mantine/modals";
 import classes from "./AuthModal.module.css";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserLocalPersistence,
+  browserSessionPersistence,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 type Props = {};
 
 const LoginTab = (props: Props) => {
   const firebase = useFirebaseContext();
+
+  const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const form = useForm({
@@ -35,6 +42,12 @@ const LoginTab = (props: Props) => {
     const { email, password } = form.values;
 
     try {
+      // Set session persistence based on remember me checkbox
+      const persistenceType = rememberMe
+        ? browserLocalPersistence
+        : browserSessionPersistence;
+      await setPersistence(firebase.auth, persistenceType);
+
       const result = await signInWithEmailAndPassword(
         firebase.auth,
         email,
@@ -75,7 +88,12 @@ const LoginTab = (props: Props) => {
             {errorMessage}
           </Text>
         </Center>
-        <Checkbox className="jadeCheckbox my-1" label="Remember me" />
+        <Checkbox
+          className="jadeCheckbox my-1"
+          label="Remember me"
+          checked={rememberMe}
+          onChange={(event) => setRememberMe(event.currentTarget.checked)}
+        />
         <Button
           className={`${classes.jadeButtons} my-2`}
           onClick={signIn}

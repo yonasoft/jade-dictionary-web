@@ -16,9 +16,13 @@ import {
   signOut,
   updateProfile,
   updateEmail,
+  updatePassword,
+  verifyBeforeUpdateEmail,
+  reauthenticateWithCredential,
+  AuthCredential,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
-import { addNewUserToDB } from "./firestore";
+import { addNewUserToDB } from "./storage";
 import { Dispatch, SetStateAction } from "react";
 
 
@@ -54,12 +58,10 @@ export const signInWithGoogle = async (auth: Auth, db:Firestore, ): Promise<{ us
   try {
     const result = await signInWithPopup(auth, provider)
     if (result) {
-      // Successfully signed in
       console.log(result);
       await addNewUserToDB(db, result.user);
       return { user: result.user, error: null };
     } else {
-      // No result, possibly because the sign-in was not initiated now
       return { user: null, error: null };
     }
   } catch (error: any) {
@@ -110,7 +112,21 @@ export const updateUserProfile = async (auth: Auth, data: { displayName: string,
   });
 }
 
-export const updateUserEmail = async (auth: Auth, email:string) => { 
+export const reauthenticate= async (user: User) => { 
+        const credential = new AuthCredential();
+
+      reauthenticateWithCredential(user as User, credential)
+        .then(() => {
+          // User re-authenticated.
+        })
+        .catch((error) => {
+          // An error ocurred
+          // ...
+        });
+}
+
+export const updateUserEmail = async (auth: Auth, email: string) => { 
+
   updateEmail(auth.currentUser as User, email).then(() => {
     // Email updated!
     // ...
@@ -118,6 +134,15 @@ export const updateUserEmail = async (auth: Auth, email:string) => {
     // An error occurred
     // ...
   });
+}
+
+export const updateUserPassword = async (auth:Auth, password: string) => { 
+  updatePassword(auth.currentUser as User, password).then(() => {
+  // Update successful.
+}).catch((error) => {
+  // An error ocurred
+  // ...
+});
 }
 
 export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<User|null>>) => {
