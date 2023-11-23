@@ -37,6 +37,7 @@ import {
 import { User, updateProfile } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { FirestoreUserData } from "../lib/definitions";
+import classes from "./page.module.css";
 
 type Props = {};
 
@@ -190,7 +191,9 @@ const DisplayInformation = (props: Props) => {
           placeholder="Upload"
           rightSectionPointerEvents="none"
         />
-        <Button onClick={onSave}>Save</Button>
+        <Button className={`${classes.jadeButtons} my-2`} onClick={onSave}>
+          Save
+        </Button>
         <Text size="sm" color="green" hidden={hideSuccess}>
           Profile updated successfully.
         </Text>

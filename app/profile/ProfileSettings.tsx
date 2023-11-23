@@ -14,6 +14,7 @@ import {
   User,
   reauthenticateWithCredential,
 } from "firebase/auth";
+import classes from "./page.module.css";
 
 type Props = {};
 
@@ -186,7 +187,10 @@ const ProfileSettings = (props: Props) => {
           </Grid.Col>
         </Grid>
         <Center className="mt-auto">
-          <Button className="mt-3 w-fit" onClick={updateInformation}>
+          <Button
+            className={`${classes.jadeButtons} mt-3 w-fit`}
+            onClick={updateInformation}
+          >
             Save
           </Button>
         </Center>
