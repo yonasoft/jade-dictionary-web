@@ -28,13 +28,29 @@ const UserMenu = (props: Props) => {
   return (
     <>
       <Menu
+        shadow="md"
         transitionProps={{ transition: "pop" }}
         withArrow
         zIndex={3000}
       >
         <Menu.Target>
           <Link href="/profile">
-            <Group className="bg-slate-100 rounded-xl">
+            <Group className="bg-stone-100 rounded-xl" darkHidden>
+              <Avatar
+                src={firebase.currentUser?.photoURL || ""}
+                alt="no image here"
+                radius="xl"
+              />
+              <Text size="sm">
+                {firebase.currentUser?.displayName ||
+                  firebase.currentUser?.email}
+              </Text>
+              <IconChevronDown
+                style={{ width: rem(14), height: rem(14) }}
+                stroke={1.5}
+              />
+            </Group>
+            <Group className="bg-stone-800 rounded-xl" lightHidden>
               <Avatar
                 src={firebase.currentUser?.photoURL || ""}
                 alt="no image here"

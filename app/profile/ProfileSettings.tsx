@@ -67,7 +67,7 @@ const ProfileSettings = (props: Props) => {
 
   const validatePassword = () => {
     const { password, passwordConfirmation } = form.values;
-    setPasswordError(""); 
+    setPasswordError("");
 
     if (password !== passwordConfirmation) {
       setPasswordError("Passwords do not match.");
@@ -117,79 +117,77 @@ const ProfileSettings = (props: Props) => {
   };
 
   return (
-    <>
-      <Card className="h-full" shadow="md" radius="md">
-        {emailError && (
-          <Text color="red" size="sm">
-            {emailError}
-          </Text>
-        )}
-        {passwordError && (
-          <Text color="red" size="sm">
-            {passwordError}
-          </Text>
-        )}
-        {successMessage && (
-          <Text color="green" size="sm">
-            {successMessage}
-          </Text>
-        )}
-        <Grid>
-          <Grid.Col span={{ base: 12, sm: 6 }}>
-            <Input.Wrapper label="E-mail" fw={400}>
-              <Input
-                value={form.values.email}
-                onChange={(e) =>
-                  form.setFieldValue("email", e.currentTarget.value)
-                }
-              />
-            </Input.Wrapper>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, sm: 6 }}>
-            <Input.Wrapper label="Confirm E-mail" fw={400}>
-              <Input
-                value={form.values.emailConfirmation}
-                onChange={(e) =>
-                  form.setFieldValue("emailConfirmation", e.currentTarget.value)
-                }
-              />
-            </Input.Wrapper>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, sm: 6 }}>
-            <Input.Wrapper label="Password" fw={400}>
-              <Input
-                value={form.values.password}
-                onChange={(e) =>
-                  form.setFieldValue("password", e.currentTarget.value)
-                }
-              />
-            </Input.Wrapper>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, sm: 6 }}>
-            {" "}
-            <Input.Wrapper label="Password Confirmation" fw={400}>
-              <Input
-                value={form.values.passwordConfirmation}
-                onChange={(e) =>
-                  form.setFieldValue(
-                    "passwordConfirmation",
-                    e.currentTarget.value
-                  )
-                }
-              />
-            </Input.Wrapper>
-          </Grid.Col>
-        </Grid>
-        <Center className="mt-auto">
-          <Button
-            className={`${classes.jadeButtons} mt-3 w-fit`}
-            onClick={updateInformation}
-          >
-            Save
-          </Button>
-        </Center>
-      </Card>
-    </>
+    <Card className="h-full" shadow="md" radius="md">
+      {emailError && (
+        <Text color="red" size="sm">
+          {emailError}
+        </Text>
+      )}
+      {passwordError && (
+        <Text color="red" size="sm">
+          {passwordError}
+        </Text>
+      )}
+      {successMessage && (
+        <Text color="green" size="sm">
+          {successMessage}
+        </Text>
+      )}
+      <Grid grow>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <Input.Wrapper label="E-mail" fw={400}>
+            <Input
+              value={form.values.email}
+              onChange={(e) =>
+                form.setFieldValue("email", e.currentTarget.value)
+              }
+            />
+          </Input.Wrapper>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <Input.Wrapper label="Confirm E-mail" fw={400}>
+            <Input
+              value={form.values.emailConfirmation}
+              onChange={(e) =>
+                form.setFieldValue("emailConfirmation", e.currentTarget.value)
+              }
+            />
+          </Input.Wrapper>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <Input.Wrapper label="Password" fw={400}>
+            <Input
+              value={form.values.password}
+              onChange={(e) =>
+                form.setFieldValue("password", e.currentTarget.value)
+              }
+            />
+          </Input.Wrapper>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          {" "}
+          <Input.Wrapper label="Password Confirmation" fw={400}>
+            <Input
+              value={form.values.passwordConfirmation}
+              onChange={(e) =>
+                form.setFieldValue(
+                  "passwordConfirmation",
+                  e.currentTarget.value
+                )
+              }
+            />
+          </Input.Wrapper>
+        </Grid.Col>
+      </Grid>
+      <Center className="mt-auto">
+        <Button
+          className={`${classes.jadeButtons} mt-3 w-fit`}
+          onClick={updateInformation}
+        >
+          Save
+        </Button>
+      </Center>
+    </Card>
   );
 };
 

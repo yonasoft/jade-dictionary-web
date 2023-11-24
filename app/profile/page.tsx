@@ -33,7 +33,7 @@ const Profile = (props: Props) => {
 
   return (
     <Container size="lg">
-      <Card className="profile" shadow="sm" padding="sm" radius="md" withBorder>
+      <Card shadow="sm" padding="sm" radius="md" withBorder>
         <Group justify="flex-start">
           <IconUserCircle
             style={{ width: rem(30), height: rem(30) }}
@@ -42,7 +42,7 @@ const Profile = (props: Props) => {
           />
           <Text size="md">Profile</Text>
         </Group>
-        <Grid className="py-3">
+        <Grid grow>
           <Grid.Col span={{ base: 12, sm: 4, md: 3 }}>
             <DisplayInformation />
           </Grid.Col>

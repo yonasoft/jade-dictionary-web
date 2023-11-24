@@ -111,89 +111,94 @@ const DisplayInformation = (props: Props) => {
     return displayName !== firebase.currentUser?.displayName;
   };
 
-  return (
-    <Card shadow="md" radius="md">
-      <Flex
-        justify="center"
-        align="center"
-        direction="column"
-        wrap="wrap"
-        gap="sm"
-      >
-        <Input.Wrapper label="Display Name" fw={400}>
-          {editDisplayName ? (
-            <Flex justify="center" align="center" direction="row">
-              <Input
-                value={displayName}
-                onChange={(e) => setDisplayName(e.currentTarget.value)}
-              />
-              <IconCheck
-                className="mx-2"
-                onClick={() => {
-                  setEditDisplayName(false);
-                }}
-                style={{ width: rem(18), height: rem(18) }}
-                stroke={1.5}
-                color="green"
-              />
-              <IconX
-                className="mx-2"
-                onClick={() => {
-                  setDisplayName(firebase.currentUser?.displayName as string);
-                  setEditDisplayName(false);
-                }}
-                style={{ width: rem(18), height: rem(18) }}
-                stroke={1.5}
-                color="red"
-              />
-            </Flex>
-          ) : (
-            <Flex justify="center" align="center" direction="row">
-              <Text>{firebase.currentUser?.displayName}</Text>
+  const showDisplayNameInput = () => {
+    return (
+      <Input.Wrapper label="Display Name" fw={400}>
+        {editDisplayName ? (
+          <Flex justify="center" align="center" direction="row">
+            <Input
+              value={displayName}
+              onChange={(e) => setDisplayName(e.currentTarget.value)}
+            />
+            <IconCheck
+              className="mx-2"
+              onClick={() => {
+                setEditDisplayName(false);
+              }}
+              style={{ width: rem(18), height: rem(18) }}
+              stroke={1.5}
+              color="green"
+            />
+            <IconX
+              className="mx-2"
+              onClick={() => {
+                setDisplayName(firebase.currentUser?.displayName as string);
+                setEditDisplayName(false);
+              }}
+              style={{ width: rem(18), height: rem(18) }}
+              stroke={1.5}
+              color="red"
+            />
+          </Flex>
+        ) : (
+          <Flex justify="center" align="center" direction="row">
+            <Text>{firebase.currentUser?.displayName}</Text>
 
-              <IconPencil
-                className="mx-2"
-                onClick={() => setEditDisplayName(true)}
-                style={{ width: rem(18), height: rem(18) }}
-                stroke={1.5}
-              />
-            </Flex>
-          )}
-        </Input.Wrapper>
-
-        <Text size="sm" color="red">
-          {errorMessage}
-        </Text>
-
-        <Avatar
-          src={firebase.currentUser?.photoURL || ""}
-          alt="no image here"
-          size={150}
-          radius="xl"
-        />
-
-        <FileInput
-          accept="image/png,image/jpeg"
-          rightSection={
-            <IconUpload
+            <IconPencil
+              className="mx-2"
+              onClick={() => setEditDisplayName(true)}
               style={{ width: rem(18), height: rem(18) }}
               stroke={1.5}
             />
-          }
-          value={photoFile}
-          onChange={setPhotoFile}
-          label="Upload Profile Picture"
-          placeholder="Upload"
-          rightSectionPointerEvents="none"
-        />
-        <Button className={`${classes.jadeButtons} my-2`} onClick={onSave}>
-          Save
-        </Button>
-        <Text size="sm" color="green" hidden={hideSuccess}>
-          Profile updated successfully.
-        </Text>
-      </Flex>
-    </Card>
+          </Flex>
+        )}
+      </Input.Wrapper>
+    );
+  };
+
+  return (
+
+      <Card shadow="md" radius="md">
+        <Flex
+          justify="center"
+          align="center"
+          direction="column"
+          wrap="wrap"
+          gap="sm"
+        >
+          {showDisplayNameInput()}
+          <Avatar
+            src={firebase.currentUser?.photoURL || ""}
+            alt="profile picture"
+            size={150}
+            radius="xl"
+          />
+          <FileInput
+            accept="image/png,image/jpeg"
+            rightSection={
+              <IconUpload
+                style={{ width: rem(18), height: rem(18) }}
+                stroke={1.5}
+              />
+            }
+            value={photoFile}
+            onChange={setPhotoFile}
+            label="Upload Profile Picture"
+            placeholder="Upload"
+            rightSectionPointerEvents="none"
+          />
+          <Button className={`${classes.jadeButtons} my-2`} onClick={onSave}>
+            Save
+          </Button>
+          <Text size="sm" color="red">
+            {errorMessage}
+          </Text>
+          <Text size="sm" color="green" hidden={hideSuccess}>
+            Profile updated successfully.
+          </Text>
+        </Flex>
+      </Card>
+
   );
 };
 
