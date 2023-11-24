@@ -18,9 +18,9 @@ type Props = {
 const NavDrawer = ({ links, opened, onClose }: Props) => {
   return (
     <Drawer.Root
+      className={RemoveScroll.classNames.zeroRight}
       opened={opened}
       onClose={onClose}
-
       zIndex={2000}
       position="left"
       transitionProps={{
@@ -34,7 +34,6 @@ const NavDrawer = ({ links, opened, onClose }: Props) => {
       <Drawer.Content
         className={`${RemoveScroll.classNames.fullWidth} ${RemoveScroll.classNames.zeroRight}`}
       >
-
         <Drawer.Header>
           <Group className="grow" justify="space-between">
             <JadeLogo h="40" />

@@ -54,42 +54,39 @@ const Navbar = () => {
     links.map((link) => <MenuItem link={link} key={link.label} />);
 
   return (
-    <>
-      <header className={classes.header}>
-        <Container className="align-middle" size="lg">
-          <Group h="56" justify="space-between">
-            <Group justify="flex-start">
-              <Link href="\" aria-label="Jade Logo">
-                <JadeLogo h="48" />
-              </Link>
+    <header className={classes.header}>
+      <Container className="align-middle" size="lg">
+        <Group h="56" justify="space-between">
+          <Group justify="flex-start">
+            <Link href="\" aria-label="Jade Logo">
+              <JadeLogo h="48" />
+            </Link>
 
-              <Group visibleFrom="md">{renderMenuItems()}</Group>
-            </Group>
-
-            <Group
-              className="flex flex-1 justify-center items-center max-w-full"
-              justify="center"
-            >
-              <SearchBar />
-            </Group>
-
-            <Group justify="flex-end" visibleFrom="sm">
-              <ResultTypeSelector />
-              <AuthItems  />
-              <ThemeToggler />
-            </Group>
-            <Burger
-              size="sm"
-              opened={drawerOpened}
-              onClick={toggle}
-              hiddenFrom="md"
-            />
+            <Group visibleFrom="md">{renderMenuItems()}</Group>
           </Group>
-        </Container>
-      </header>
 
+          <Group
+            className="flex flex-1 justify-center items-center max-w-full"
+            justify="center"
+          >
+            <SearchBar />
+          </Group>
+
+          <Group justify="flex-end" visibleFrom="sm">
+            <ResultTypeSelector />
+            <AuthItems />
+            <ThemeToggler />
+          </Group>
+          <Burger
+            size="sm"
+            opened={drawerOpened}
+            onClick={toggle}
+            hiddenFrom="md"
+          />
+        </Group>
+      </Container>
       <NavDrawer links={links} opened={drawerOpened} onClose={close} />
-    </>
+    </header>
   );
 };
 
