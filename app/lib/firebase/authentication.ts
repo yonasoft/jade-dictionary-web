@@ -25,7 +25,6 @@ import { Firestore } from "firebase/firestore";
 import { addNewUserToDB } from "./storage";
 import { Dispatch, SetStateAction } from "react";
 
-
 export async function setupEmulators(auth:Auth) {
   const authUrl = 'http://127.0.0.1:9099'
   await fetch(authUrl)
@@ -65,7 +64,6 @@ export const signInWithGoogle = async (auth: Auth, db:Firestore, ): Promise<{ us
       return { user: null, error: null };
     }
   } catch (error: any) {
-    // Handle any errors that occurred during sign-in
     console.error(error);
     return { user: null, error };
   }
@@ -81,11 +79,9 @@ export const signInWithFacebook = async (auth: Auth, db:Firestore): Promise<{ us
       await addNewUserToDB(db, result.user);
       return { user: result.user, error: null };
     } else {
-      // No result, possibly because the sign-in was not initiated now
       return { user: null, error: null };
     }
   } catch (error: any) {
-    // Handle any errors that occurred during sign-in
     console.error(error);
     return { user: null, error };
   }
@@ -104,11 +100,9 @@ export const updateUserProfile = async (auth: Auth, data: { displayName: string,
   updateProfile(auth.currentUser as User, {
     displayName: displayName, photoURL: photoUrl
   }).then(() => {
-    // Profile updated!
-    // ...
+
   }).catch((error) => {
-    // An error occurred
-    // ...
+
   });
 }
 
@@ -117,31 +111,25 @@ export const reauthenticate= async (user: User) => {
 
       reauthenticateWithCredential(user as User, credential)
         .then(() => {
-          // User re-authenticated.
         })
         .catch((error) => {
-          // An error ocurred
-          // ...
         });
 }
 
 export const updateUserEmail = async (auth: Auth, email: string) => { 
 
   updateEmail(auth.currentUser as User, email).then(() => {
-    // Email updated!
-    // ...
+
   }).catch((error) => {
-    // An error occurred
-    // ...
+
   });
 }
 
 export const updateUserPassword = async (auth:Auth, password: string) => { 
   updatePassword(auth.currentUser as User, password).then(() => {
-  // Update successful.
+
 }).catch((error) => {
-  // An error ocurred
-  // ...
+
 });
 }
 

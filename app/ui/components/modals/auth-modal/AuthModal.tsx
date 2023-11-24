@@ -12,7 +12,6 @@ type Props = {
 };
 
 const AuthModal = ({ needSignUp }: Props) => {
-  const firebase = useFirebaseContext();
   const [isSignUp, setIsSignUp] = useState(needSignUp);
 
   return (

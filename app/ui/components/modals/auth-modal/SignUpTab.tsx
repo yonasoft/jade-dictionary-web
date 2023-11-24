@@ -11,7 +11,9 @@ import { createNewUserWithEmailAndPassword } from "@/app/lib/firebase/authentica
 type Props = {};
 
 const SignUpTab = (props: Props) => {
+
   const firebase = useFirebaseContext();
+  
   const form = useForm({
     initialValues: {
       email: "",

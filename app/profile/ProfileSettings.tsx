@@ -42,8 +42,6 @@ const ProfileSettings = (props: Props) => {
       setEmailError("Emails do not match.");
       return false;
     }
-
-    // Email regex check
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
       setEmailError("Invalid email format.");
@@ -55,7 +53,6 @@ const ProfileSettings = (props: Props) => {
       return false;
     }
 
-    // Email existence check
     const emailExists = await checkEmailExists(firebase.db, email);
     if (emailExists) {
       setEmailError("Email already in use. Please use a different email.");
@@ -70,7 +67,7 @@ const ProfileSettings = (props: Props) => {
 
   const validatePassword = () => {
     const { password, passwordConfirmation } = form.values;
-    setPasswordError(""); // Reset password error
+    setPasswordError(""); 
 
     if (password !== passwordConfirmation) {
       setPasswordError("Passwords do not match.");
@@ -88,7 +85,6 @@ const ProfileSettings = (props: Props) => {
   };
 
   const updateInformation = async () => {
-    // Reset all error messages
     setEmailError("");
     setPasswordError("");
     setSuccessMessage("");
@@ -97,7 +93,6 @@ const ProfileSettings = (props: Props) => {
     let isEmailValid = true;
     let isPasswordValid = true;
 
-    // Validate and update email only if the email field is filled
     if (form.values.email) {
       isEmailValid = await validateEmail();
       if (isEmailValid && form.values.email !== firebase.currentUser?.email) {
@@ -161,7 +156,6 @@ const ProfileSettings = (props: Props) => {
             </Input.Wrapper>
           </Grid.Col>
           <Grid.Col span={{ base: 12, sm: 6 }}>
-            {" "}
             <Input.Wrapper label="Password" fw={400}>
               <Input
                 value={form.values.password}

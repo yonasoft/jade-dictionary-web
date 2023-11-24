@@ -30,9 +30,7 @@ const UserMenu = (props: Props) => {
       <Menu
         transitionProps={{ transition: "pop" }}
         withArrow
-        position="bottom-end"
-        withinPortal
-        zIndex={2000}
+        zIndex={3000}
       >
         <Menu.Target>
           <Link href="/profile">

@@ -3,14 +3,9 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Card,
-  Container,
   Flex,
-  Grid,
-  Group,
   rem,
   Text,
-  Image,
-  Center,
   FileInput,
   Input,
   Button,
@@ -63,6 +58,8 @@ const DisplayInformation = (props: Props) => {
   };
 
   const onSave = async () => {
+    setErrorMessage("");
+    setHideSuccess(true);
     try {
       if (isNewDisplayName()) {
         const displayNameExists = await checkDisplayNameExists(displayName);
@@ -87,13 +84,11 @@ const DisplayInformation = (props: Props) => {
       }
 
       if (firebase.auth.currentUser) {
-        // Update Firebase Auth profile
         await updateUserProfile(firebase.auth, {
           displayName: displayName,
           photoUrl: photoURL as string,
         });
 
-        // Create updated user data for Firestore
         const updatedUserData: FirestoreUserData = {
           uid: firebase.auth.currentUser.uid,
           email: firebase.auth.currentUser.email,

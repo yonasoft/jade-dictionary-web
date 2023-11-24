@@ -34,11 +34,8 @@ export const deleteOldProfilePicture = async (storage: FirebaseStorage, db:Fires
   const fileName = userData?.photoFileName;
   const storageRef = ref(storage, 'profile_pictures/' + fileName);
   
-
   deleteObject(storageRef).then(() => {
-    // File deleted successfully
   }).catch((error) => {
-    // Uh-oh, an error occurred!
   });
  
  }

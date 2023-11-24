@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Box, Divider, Drawer, Group, RemoveScroll } from "@mantine/core";
 
@@ -23,7 +22,7 @@ const NavDrawer = ({ links, opened, onClose }: Props) => {
       onClose={onClose}
       size="100%"
       padding="xs"
-      zIndex={1000}
+      zIndex={2000}
       position="left"
       transitionProps={{
         transition: "rotate-left",
@@ -33,7 +32,6 @@ const NavDrawer = ({ links, opened, onClose }: Props) => {
       closeOnClickOutside
       closeOnEscape
     >
-      <Drawer.Overlay />
       <Drawer.Content
         className={`${RemoveScroll.classNames.fullWidth} ${RemoveScroll.classNames.zeroRight}`}
       >
