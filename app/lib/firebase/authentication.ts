@@ -20,6 +20,7 @@ import {
   verifyBeforeUpdateEmail,
   reauthenticateWithCredential,
   AuthCredential,
+  sendEmailVerification,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
 import { addNewUserToDB } from "./storage";
@@ -119,9 +120,9 @@ export const reauthenticate= async (user: User) => {
 export const updateUserEmail = async (auth: Auth, email: string) => { 
 
   updateEmail(auth.currentUser as User, email).then(() => {
-
+    console.log("Email updated successfully to: ", email)
   }).catch((error) => {
-
+    console.error(error)
   });
 }
 
@@ -131,6 +132,10 @@ export const updateUserPassword = async (auth:Auth, password: string) => {
 }).catch((error) => {
 
 });
+}
+
+export const sendVerificationEmail = async (auth: Auth) => { 
+  await sendEmailVerification(auth.currentUser as User);
 }
 
 export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<User|null>>) => {

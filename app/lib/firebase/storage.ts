@@ -32,16 +32,15 @@ export const deleteOldProfilePicture = async (storage: FirebaseStorage, db:Fires
   const userInDB = await getDoc(doc(db, "users", userUid));
   const userData = userInDB.data();
   const fileName = userData?.photoFileName;
-  const storageRef = ref(storage, 'profile_pictures/' + fileName);
+  const storageRef = ref(storage, `${userUid}/profile_pictures/${fileName}`);
   
   deleteObject(storageRef).then(() => {
   }).catch((error) => {
   });
- 
  }
 
-export const uploadNewProfilePicture = async (storage: FirebaseStorage, file: File): Promise<string> => { 
-  const storageRef = ref(storage, 'profile_pictures/' + file.name);
+export const uploadNewProfilePicture = async (storage: FirebaseStorage, file: File, userUid: string): Promise<string> => { 
+  const storageRef = ref(storage, `${userUid}/profile_pictures/${file.name}`);
   const snapshot = await uploadBytes(storageRef, file);
   console.log('Uploaded a blob or file!');
   const url = await getDownloadURL(snapshot.ref);

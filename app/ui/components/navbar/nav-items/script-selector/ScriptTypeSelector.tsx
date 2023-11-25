@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import {
   Text,
   HoverCard,
@@ -10,14 +11,16 @@ import {
 } from "@mantine/core";
 import { ScriptType } from "@/app/lib/definitions";
 import classes from "./ScriptTypeSelector.module.css";
+import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 
 type Props = {};
 
 const ScriptTypeSelector = (props: Props) => {
-  const data: Array<SegmentedControlItem> = [
-    { value: ScriptType.Simplified, label: "Simplified" },
-    { value: ScriptType.Traditional, label: "Traditional" },
-  ];
+  const dictionaryContext = useDictionaryContext();
+
+  useEffect(() => {
+    console.log("ScriptType changed:", dictionaryContext.scriptType);
+  }, [dictionaryContext.scriptType]);
 
   return (
     <Group justify="center">
@@ -26,9 +29,11 @@ const ScriptTypeSelector = (props: Props) => {
           <SegmentedControl
             radius="lg"
             size="xs"
-            onChange={() => {}}
-            data={data}
-            defaultValue={data[0].value}
+            value={dictionaryContext.scriptType}
+            onChange={(value) => {
+              dictionaryContext.setScriptType(value as ScriptType);
+            }}
+            data={[ScriptType.Simplified, ScriptType.Traditional]}
             classNames={classes}
           />
         </HoverCardTarget>

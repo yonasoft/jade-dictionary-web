@@ -30,8 +30,6 @@ export const DictionaryContextProvider: React.FC<{
     ScriptType.Simplified
   );
 
-  useEffect(() => {}, []);
-
   return (
     <DictionaryContext.Provider
       value={{
@@ -48,11 +46,11 @@ export const DictionaryContextProvider: React.FC<{
   );
 };
 
-export const useFirebaseContext = () => {
+export const useDictionaryContext = () => {
   const context = useContext(DictionaryContext);
   if (!context) {
     throw new Error(
-      "useFirebaseContext must be used within a FirebaseContextProvider"
+      "useDictionaryContext must be used within a DictionaryContextProvider"
     );
   }
   return context;

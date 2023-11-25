@@ -23,6 +23,7 @@ const ProfileSettings = (props: Props) => {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [warningMessage, setWarningMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const form = useForm({
@@ -87,32 +88,35 @@ const ProfileSettings = (props: Props) => {
   const updateInformation = async () => {
     setEmailError("");
     setPasswordError("");
+    setErrorMessage("");
     setSuccessMessage("");
     setWarningMessage("");
 
-    let isEmailValid = true;
-    let isPasswordValid = true;
+    try {
+      let isEmailValid = true;
+      let isPasswordValid = true;
 
-    if (form.values.email) {
-      isEmailValid = await validateEmail();
-      if (isEmailValid && form.values.email !== firebase.currentUser?.email) {
-        await updateUserEmail(firebase.auth, form.values.email);
-        setWarningMessage(
-          `Check your email (${form.values.email.toUpperCase()}) for a verification link.`
-        );
+      if (form.values.email) {
+        isEmailValid = await validateEmail();
+        if (isEmailValid && form.values.email !== firebase.currentUser?.email) {
+          await updateUserEmail(firebase.auth, form.values.email);
+        }
       }
-    }
 
-    // Validate and update password only if the password field is filled
-    if (form.values.password) {
-      isPasswordValid = validatePassword();
-      if (isPasswordValid) {
-        await updateUserPassword(firebase.auth, form.values.password);
+      if (form.values.password) {
+        isPasswordValid = validatePassword();
+        if (isPasswordValid) {
+          await updateUserPassword(firebase.auth, form.values.password);
+        }
       }
-    }
 
-    if (isEmailValid && isPasswordValid) {
-      setSuccessMessage("Successfully updated information.");
+      if (isEmailValid && isPasswordValid) {
+        setSuccessMessage("Successfully updated information.");
+      }
+    } catch (error) {
+      console.error("Error updating user information:", error);
+      // Set a generic error message or a specific one based on the error type
+      setErrorMessage("Failed to update information. Please try again later.");
     }
   };
 
@@ -126,6 +130,11 @@ const ProfileSettings = (props: Props) => {
       {passwordError && (
         <Text color="red" size="sm">
           {passwordError}
+        </Text>
+      )}
+      {errorMessage && (
+        <Text color="red" size="sm">
+          {errorMessage}
         </Text>
       )}
       {successMessage && (

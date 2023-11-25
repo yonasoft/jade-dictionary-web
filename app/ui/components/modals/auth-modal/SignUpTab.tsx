@@ -6,14 +6,17 @@ import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import React, { useState } from "react";
 import classes from "./AuthModal.module.css";
-import { createNewUserWithEmailAndPassword } from "@/app/lib/firebase/authentication";
+import {
+  createNewUserWithEmailAndPassword,
+  sendVerificationEmail,
+} from "@/app/lib/firebase/authentication";
+import VerifyEmailModal from "../verify-email-modal/VerifyEmailModal";
 
 type Props = {};
 
 const SignUpTab = (props: Props) => {
-
   const firebase = useFirebaseContext();
-  
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -61,7 +64,7 @@ const SignUpTab = (props: Props) => {
     try {
       const { user, error } = await createNewUserWithEmailAndPassword(
         firebase.auth,
-        firebase.db,
+        firebase.firestore,
         email,
         password
       );
@@ -70,9 +73,18 @@ const SignUpTab = (props: Props) => {
         return; // Stop further execution if there is an error
       }
       modals.closeAll();
+      sendVerificationEmail(firebase.auth);
+      informVerifyEmail();
     } catch (error: any) {
       setErrorMessage("An unexpected error occurred.");
     }
+  };
+
+  const informVerifyEmail = () => {
+    modals.open({
+      title: "Verify Email!",
+      children: <VerifyEmailModal email={form.values.email} />,
+    });
   };
 
   return (

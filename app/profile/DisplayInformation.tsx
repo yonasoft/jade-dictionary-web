@@ -80,7 +80,11 @@ const DisplayInformation = (props: Props) => {
           firebase.currentUser?.uid?.toString() as string
         );
 
-        photoURL = await uploadNewProfilePicture(firebase.storage, photoFile);
+        photoURL = await uploadNewProfilePicture(
+          firebase.storage,
+          photoFile,
+          firebase.currentUser?.uid?.toString() as string
+        );
       }
 
       if (firebase.auth.currentUser) {
@@ -157,48 +161,46 @@ const DisplayInformation = (props: Props) => {
   };
 
   return (
-
-      <Card shadow="md" radius="md">
-        <Flex
-          justify="center"
-          align="center"
-          direction="column"
-          wrap="wrap"
-          gap="sm"
-        >
-          {showDisplayNameInput()}
-          <Avatar
-            src={firebase.currentUser?.photoURL || ""}
-            alt="profile picture"
-            size={150}
-            radius="xl"
-          />
-          <FileInput
-            accept="image/png,image/jpeg"
-            rightSection={
-              <IconUpload
-                style={{ width: rem(18), height: rem(18) }}
-                stroke={1.5}
-              />
-            }
-            value={photoFile}
-            onChange={setPhotoFile}
-            label="Upload Profile Picture"
-            placeholder="Upload"
-            rightSectionPointerEvents="none"
-          />
-          <Button className={`${classes.jadeButtons} my-2`} onClick={onSave}>
-            Save
-          </Button>
-          <Text size="sm" color="red">
-            {errorMessage}
-          </Text>
-          <Text size="sm" color="green" hidden={hideSuccess}>
-            Profile updated successfully.
-          </Text>
-        </Flex>
-      </Card>
-
+    <Card shadow="md" radius="md">
+      <Flex
+        justify="center"
+        align="center"
+        direction="column"
+        wrap="wrap"
+        gap="sm"
+      >
+        {showDisplayNameInput()}
+        <Avatar
+          src={firebase.currentUser?.photoURL || ""}
+          alt="profile picture"
+          size={150}
+          radius="xl"
+        />
+        <FileInput
+          accept="image/png,image/jpeg"
+          rightSection={
+            <IconUpload
+              style={{ width: rem(18), height: rem(18) }}
+              stroke={1.5}
+            />
+          }
+          value={photoFile}
+          onChange={setPhotoFile}
+          label="Upload Profile Picture"
+          placeholder="Upload"
+          rightSectionPointerEvents="none"
+        />
+        <Button className={`${classes.jadeButtons} my-2`} onClick={onSave}>
+          Save
+        </Button>
+        <Text size="sm" color="red">
+          {errorMessage}
+        </Text>
+        <Text size="sm" color="green" hidden={hideSuccess}>
+          Profile updated successfully.
+        </Text>
+      </Flex>
+    </Card>
   );
 };
 
