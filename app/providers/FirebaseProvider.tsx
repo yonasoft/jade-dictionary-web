@@ -24,6 +24,7 @@ import {
   getStorage,
   ref,
 } from "firebase/storage";
+import { Database, getDatabase } from "firebase/database";
 
 type Props = {
   children: React.ReactNode;
@@ -33,7 +34,8 @@ type FirebaseContextType = {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   auth: Auth;
-  db: Firestore;
+  firestore: Firestore;
+  db: Database;
   storage: FirebaseStorage;
 };
 
@@ -46,7 +48,8 @@ export const FirebaseContextProvider: React.FC<{
 }> = ({ children }) => {
   const app = initializeFirebase();
   const auth = getAuth(app);
-  const db = getFirestore(app);
+  const firestore = getFirestore(app);
+  const db = getDatabase(app);
   const storage = getStorage(app);
 
   const [currentUser, setCurrentUser] = useState<null | User>(auth.currentUser);
@@ -61,6 +64,7 @@ export const FirebaseContextProvider: React.FC<{
         currentUser,
         setCurrentUser,
         auth,
+        firestore,
         db,
         storage,
       }}

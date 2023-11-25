@@ -53,7 +53,7 @@ const ProfileSettings = (props: Props) => {
       return false;
     }
 
-    const emailExists = await checkEmailExists(firebase.db, email);
+    const emailExists = await checkEmailExists(firebase.firestore, email);
     if (emailExists) {
       setEmailError("Email already in use. Please use a different email.");
       return false;

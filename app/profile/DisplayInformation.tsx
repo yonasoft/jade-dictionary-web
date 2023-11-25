@@ -51,7 +51,7 @@ const DisplayInformation = (props: Props) => {
   useEffect(() => {}, [firebase.currentUser]);
 
   const checkDisplayNameExists = async (displayName: string) => {
-    const usersRef = collection(firebase.db, "users");
+    const usersRef = collection(firebase.firestore, "users");
     const q = query(usersRef, where("displayName", "==", displayName));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
@@ -76,7 +76,7 @@ const DisplayInformation = (props: Props) => {
       if (photoFile) {
         await deleteOldProfilePicture(
           firebase.storage,
-          firebase.db,
+          firebase.firestore,
           firebase.currentUser?.uid?.toString() as string
         );
 
@@ -96,7 +96,7 @@ const DisplayInformation = (props: Props) => {
           photoURL: photoURL as string,
           photoFileName: photoFile?.name as string,
         };
-        await updateUserToDB(firebase.db, updatedUserData);
+        await updateUserToDB(firebase.firestore, updatedUserData);
       }
       setEditDisplayName(false);
       setHideSuccess(false);

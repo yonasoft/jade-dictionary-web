@@ -7,6 +7,7 @@ import { ModalsProvider } from "@mantine/modals";
 import Navbar from "./ui/components/navbar/Navbar";
 import { theme } from "./lib/theme";
 import { FirebaseContextProvider } from "./providers/FirebaseProvider";
+import { DictionaryContext, DictionaryContextProvider } from "./providers/DictionaryProvider";
 
 const murecho = Murecho({ subsets: ["latin"] });
 
@@ -36,10 +37,12 @@ export default function RootLayout({
       >
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <FirebaseContextProvider>
-            <ModalsProvider>
-              <Navbar />
-              {children}
-            </ModalsProvider>
+            <DictionaryContextProvider>
+              <ModalsProvider>
+                <Navbar />
+                {children}
+              </ModalsProvider>
+            </DictionaryContextProvider>
           </FirebaseContextProvider>
         </MantineProvider>
       </body>
