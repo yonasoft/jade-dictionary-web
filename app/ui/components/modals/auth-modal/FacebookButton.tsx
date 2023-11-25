@@ -23,7 +23,7 @@ export function FacebookButton(
       {...props}
       fullWidth
       onClick={() => {
-        signInWithFacebook(firebase.auth, firebase.db);
+        signInWithFacebook(firebase.auth, firebase.firestore);
          modals.closeAll();
       }}
     />
