@@ -25,6 +25,13 @@ const UserMenu = (props: Props) => {
     console.log(firebase.currentUser);
   }, [firebase.currentUser]);
 
+  const trimStringWithEllipsis = (str: string, maxLength: number) => {
+    if (str.length > maxLength) {
+      return str.substring(0, maxLength) + "...";
+    }
+    return str;
+  };
+
   return (
     <>
       <Menu
@@ -42,8 +49,12 @@ const UserMenu = (props: Props) => {
                 radius="xl"
               />
               <Text size="sm">
-                {firebase.currentUser?.displayName ||
-                  firebase.currentUser?.email}
+                {trimStringWithEllipsis(
+                  firebase.currentUser?.displayName ||
+                    firebase.currentUser?.email ||
+                    "",
+                  15
+                )}
               </Text>
               <IconChevronDown
                 style={{ width: rem(14), height: rem(14) }}
