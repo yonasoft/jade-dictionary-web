@@ -45,7 +45,7 @@ export function GoogleButton(
       {...props}
       fullWidth
       onClick={() => {
-        signInWithGoogle(firebase.auth, firebase.db);
+        signInWithGoogle(firebase.auth, firebase.firestore);
         modals.closeAll();
       }}
     />
