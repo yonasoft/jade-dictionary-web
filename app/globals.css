@@ -5,3 +5,11 @@
 :root {
   --jade-color: #459d57;
 }
+
+button.mantine-Button {
+  background-color: var(--jade-color) !important;
+}
+
+input[type='checkbox']:checked {
+  background-color: var(--jade-color) !important;
+}
