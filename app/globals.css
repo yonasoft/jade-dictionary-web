@@ -7,25 +7,25 @@
 }
 
 button.mantine-Button {
-  background-color: var(--jade-color) ;
+  background-color: var(--jade-color) !important;
 }
 
 input[type='checkbox']:checked {
-  background-color: var(--jade-color) ;
+  background-color: var(--jade-color) !important;
 }
 =======
 button.mantine-Button[data-variant='filled'] {
-  background-color: var(--jade-color);
+  background-color: var(--jade-color) !important;
   color: white;
 }
 
 button.mantine-Button[data-variant='outline'] {
-  background-color: white;
-  color: var(--jade-color); 
-  border-color: var(--jade-color); 
+  background-color: white !important;
+  color: var(--jade-color) !important; 
+  border-color: var(--jade-color) !important; 
 }
 
 input[type='checkbox']:checked {
-  background-color: var(--jade-color);
+  background-color: var(--jade-color) !important;
 }
 
