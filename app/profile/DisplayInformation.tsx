@@ -146,7 +146,7 @@ const DisplayInformation = (props: Props) => {
           </Flex>
         ) : (
           <Flex justify="center" align="center" direction="row">
-            <Text>{firebase.currentUser?.displayName}</Text>
+            <Text>{displayName || firebase.currentUser?.displayName}</Text>
 
             <IconPencil
               className="mx-2"
