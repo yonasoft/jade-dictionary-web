@@ -27,16 +27,16 @@ function AuthButtons({ additionalOnClick }: Props) {
 
   return (
     <>
-      <Button variant="outline" size="xs" radius="lg" onClick={Login}>
-        Login
-      </Button>
       <Button
-        className={classes.signUpButton}
-        variant="filled"
+        className={classes.logInButton}
+        variant="outline"
         size="xs"
         radius="lg"
-        onClick={Signup}
+        onClick={Login}
       >
+        Login
+      </Button>
+      <Button variant="filled" size="xs" radius="lg" onClick={Signup}>
         Sign Up
       </Button>
     </>
