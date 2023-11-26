@@ -15,6 +15,8 @@ import {
   reauthenticateWithCredential,
 } from "firebase/auth";
 import classes from "./page.module.css";
+import { modals } from "@mantine/modals";
+import VerifyEmailModal from "../ui/components/modals/verify-email-modal/VerifyEmailModal";
 
 type Props = {};
 
@@ -100,6 +102,12 @@ const ProfileSettings = (props: Props) => {
         isEmailValid = await validateEmail();
         if (isEmailValid && form.values.email !== firebase.currentUser?.email) {
           await updateUserEmail(firebase.auth, form.values.email);
+          const informVerifyEmail = () => {
+            modals.open({
+              title: "Verify Email!",
+              children: <VerifyEmailModal email={form.values.email} />,
+            });
+          };
         }
       }
 

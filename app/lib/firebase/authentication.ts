@@ -119,7 +119,7 @@ export const reauthenticate= async (user: User) => {
 
 export const updateUserEmail = async (auth: Auth, email: string) => { 
 
-  updateEmail(auth.currentUser as User, email).then(() => {
+  verifyBeforeUpdateEmail(auth.currentUser as User, email).then(() => {
     console.log("Email updated successfully to: ", email)
   }).catch((error) => {
     console.error(error)
