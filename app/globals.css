@@ -13,3 +13,19 @@ button.mantine-Button {
 input[type='checkbox']:checked {
   background-color: var(--jade-color) ;
 }
+=======
+button.mantine-Button[data-variant='filled'] {
+  background-color: var(--jade-color);
+  color: white;
+}
+
+button.mantine-Button[data-variant='outline'] {
+  background-color: white;
+  color: var(--jade-color); 
+  border-color: var(--jade-color); 
+}
+
+input[type='checkbox']:checked {
+  background-color: var(--jade-color);
+}
+
