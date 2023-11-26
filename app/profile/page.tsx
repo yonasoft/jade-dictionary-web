@@ -22,6 +22,7 @@ import { useForm } from "@mantine/form";
 import UserInformation from "./ProfileSettings";
 import ProfileSettings from "./ProfileSettings";
 import { sendVerificationEmail } from "../lib/firebase/authentication";
+import classes from "./page.module.css";
 
 type Props = {};
 
@@ -48,8 +49,7 @@ const Profile = (props: Props) => {
             Please verify your email before accessing your profile.
           </Text>
           <Button
-            className="mt-7"
-            color="#459d57"
+            className={`${classes.jadeButtons} my-2 mt-7`}
             onClick={() => {
               setVerificationMessage("");
               sendVerificationEmail(firebase.auth)
@@ -63,7 +63,7 @@ const Profile = (props: Props) => {
             }}
           >
             Resend Verification Link
-          </Button >
+          </Button>
           <Text color="green">{verificationMessage}</Text>
         </Flex>
       </Container>

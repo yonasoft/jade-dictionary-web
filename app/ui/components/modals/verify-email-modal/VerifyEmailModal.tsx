@@ -1,5 +1,6 @@
 import { Button } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import classes from "./VerifyEmailModal.module.css";
 import React from "react";
 
 type Props = {
@@ -14,7 +15,7 @@ const VerifyEmailModal = ({ email }: Props) => {
         the link in that email to verify your account.
       </p>
       <Button
-        color="#459d57"
+        className={`${classes.jadeButtons}`}
         onClick={() => {
           modals.closeAll();
         }}
