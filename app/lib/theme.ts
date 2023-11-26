@@ -22,30 +22,4 @@ export const theme = createTheme({
       h1: { fontSize: rem(36) },
     },
   },
-
-  // Customize components
-  components: {
-    Button: {
-      defaultProps: {
-        color: 'jadeGreen',
-        variant: 'filled',
-      },
-      styles: {
-        root: {
-          // If you specifically want to use the color at index 7 of the jadeGreen scale
-          backgroundColor: '#459d57 !important',
-        },
-      },
-    },
-    Checkbox: {
-      styles: {
-        input: {
-          '&:checked': {
-            backgroundColor: '#459d57 !important',
-            borderColor: '#459d57 !important', 
-          },
-        },
-      },
-    },
-  },
 });
