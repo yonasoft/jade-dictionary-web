@@ -22,4 +22,5 @@ export const theme = createTheme({
       h1: { fontSize: rem(36) },
     },
   },
-});
+}
+);
