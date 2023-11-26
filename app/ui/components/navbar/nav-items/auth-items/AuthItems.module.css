@@ -1,3 +1,4 @@
-.logInButton {
+
+.logInButton, .mantine-Button.logInButton {
   background-color: white !important;
 }

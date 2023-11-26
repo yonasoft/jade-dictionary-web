@@ -7,9 +7,9 @@
 }
 
 button.mantine-Button {
-  background-color: var(--jade-color) !important;
+  background-color: var(--jade-color) ;
 }
 
 input[type='checkbox']:checked {
-  background-color: var(--jade-color) !important;
+  background-color: var(--jade-color) ;
 }
