@@ -7,6 +7,7 @@ import {
   PasswordInput,
   TextInput,
   Text,
+  Input,
 } from "@mantine/core";
 import React, { ServerContextJSONValue, useContext, useState } from "react";
 import { useForm } from "@mantine/form";
@@ -14,7 +15,7 @@ import {
   FirebaseContext,
   useFirebaseContext,
 } from "@/app/providers/FirebaseProvider";
-import { modals } from "@mantine/modals";
+import { modals, openContextModal } from "@mantine/modals";
 import classes from "./AuthModal.module.css";
 import {
   browserLocalPersistence,
@@ -22,6 +23,8 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { send } from "process";
+import { sendResetPassword } from "@/app/lib/firebase/authentication";
 
 type Props = {};
 
@@ -59,6 +62,14 @@ const LoginTab = (props: Props) => {
     }
   };
 
+  const openForgotPasswordModal = () => {
+    openContextModal({
+      modal: "resetPassword",
+      title: "Reset Password",
+      innerProps: {},
+    });
+  };
+
   return (
     <>
       <form>
@@ -94,13 +105,12 @@ const LoginTab = (props: Props) => {
           checked={rememberMe}
           onChange={(event) => setRememberMe(event.currentTarget.checked)}
         />
-        <Button
-          className="my-2"
-          onClick={signIn}
-          fullWidth
-        >
+        <Button className="my-2" onClick={signIn} fullWidth>
           Login
         </Button>
+        <Text color="green" size="sm" onClick={openForgotPasswordModal}>
+          Forgot password?
+        </Text>
       </form>
     </>
   );
