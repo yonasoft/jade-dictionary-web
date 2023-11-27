@@ -105,7 +105,7 @@ const LoginTab = (props: Props) => {
           checked={rememberMe}
           onChange={(event) => setRememberMe(event.currentTarget.checked)}
         />
-        <Button className="my-2" onClick={signIn} fullWidth>
+        <Button className="my-2" variant="filled" onClick={signIn} fullWidth>
           Login
         </Button>
         <Text color="green" size="sm" onClick={openForgotPasswordModal}>
