@@ -89,13 +89,13 @@ const LoginTab = (props: Props) => {
           </Text>
         </Center>
         <Checkbox
-          className="jadeCheckbox my-1"
+          className="my-1"
           label="Remember me"
           checked={rememberMe}
           onChange={(event) => setRememberMe(event.currentTarget.checked)}
         />
         <Button
-          className={`${classes.jadeButtons} my-2`}
+          className="my-2"
           onClick={signIn}
           fullWidth
         >

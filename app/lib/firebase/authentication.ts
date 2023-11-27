@@ -21,6 +21,7 @@ import {
   reauthenticateWithCredential,
   AuthCredential,
   sendEmailVerification,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
 import { addNewUserToDB } from "./storage";
@@ -147,4 +148,17 @@ export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<
         action(null);
       }
     });
-  };
+};
+  
+export const sendResetPassword = async (auth: Auth, email: string) => {
+
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      console.log("Password reset email sent successfully")
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+    });
+ }
