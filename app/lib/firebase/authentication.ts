@@ -111,54 +111,16 @@ export const updateUserProfile = async (auth: Auth, data: { displayName: string,
 }
 
 export const reauthenticate = async (auth: Auth) => {
-
-  //TODO: Reaunthentication
-  const user = auth.currentUser;
-
-  if (!user) {
-    throw new Error("No user is currently signed in.");
-  }
-
-  // Here, you will need to obtain the necessary credentials based on the provider.
-  // For example, for email/password, you might prompt the user to re-enter their password.
-  // For Google or Facebook, you might use a refreshed token.
-  // This part of the implementation depends on your app's specific logic and UX.
-
-  const providerId = user.providerData[0]?.providerId;
-  let credential;
-
-  switch (providerId) {
-    case 'password':
-      // Prompt the user to re-enter their password
-      const email = user.email;
-      const password = "user's current password"; // This should be obtained from the user
-      credential = EmailAuthProvider.credential(email as string, password);
-      break;
-
-    case 'google.com':
-      // Use the Google OAuth access token
-      const googleToken = "user's Google OAuth access token"; // This should be obtained from the user or your app's auth flow
-      credential = GoogleAuthProvider.credential(googleToken);
-      break;
-
-    case 'facebook.com':
-      // Use the Facebook OAuth access token
-      const facebookToken = "user's Facebook OAuth access token"; // This should be obtained from the user or your app's auth flow
-      credential = FacebookAuthProvider.credential(facebookToken);
-      break;
-
-    // ... add cases for other providers as needed
-
-    default:
-      throw new Error(`Unsupported provider: ${providerId}`);
-  }
-
-  try {
-    await reauthenticateWithCredential(user, credential);
-  } catch (error) {
-    console.error(error);
-    throw error; // Or handle the error as per your application's error handling policy
-  }
+  const credential = EmailAuthProvider.credential(
+    auth.currentUser?.email as string,
+    'password'
+  );
+  reauthenticateWithCredential(auth.currentUser as User, credential).then(() => {
+    // User re-authenticated.
+  }).catch((error) => {
+    // An error ocurred
+    // ...
+  });
 }
 
 export const updateUserEmail = async (auth: Auth, email: string) => { 
