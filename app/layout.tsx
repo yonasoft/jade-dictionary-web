@@ -12,6 +12,7 @@ import {
   DictionaryContextProvider,
 } from "./providers/DictionaryProvider";
 import ResetPasswordModal from "./ui/components/modals/reset-password-modal/ResetPasswordModal";
+import DeleteUserConfirmation from "./ui/components/modals/confirm-delete-user-modal/DeleteUserConfirmation";
 
 const murecho = Murecho({ subsets: ["latin"] });
 
@@ -42,7 +43,12 @@ export default function RootLayout({
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <FirebaseContextProvider>
             <DictionaryContextProvider>
-              <ModalsProvider modals={{ resetPassword: ResetPasswordModal }}>
+              <ModalsProvider
+                modals={{
+                  resetPassword: ResetPasswordModal,
+                  deleteUser: DeleteUserConfirmation,
+                }}
+              >
                 <Navbar />
                 {children}
               </ModalsProvider>

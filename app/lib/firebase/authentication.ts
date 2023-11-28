@@ -22,6 +22,8 @@ import {
   AuthCredential,
   sendEmailVerification,
   sendPasswordResetEmail,
+  deleteUser,
+  EmailAuthProvider,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
 import { addNewUserToDB } from "./storage";
@@ -108,31 +110,78 @@ export const updateUserProfile = async (auth: Auth, data: { displayName: string,
   });
 }
 
-export const reauthenticate= async (user: User) => { 
-        const credential = new AuthCredential();
+export const reauthenticate = async (auth: Auth) => {
 
-      reauthenticateWithCredential(user as User, credential)
-        .then(() => {
-        })
-        .catch((error) => {
-        });
+  //TODO: Reaunthentication
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("No user is currently signed in.");
+  }
+
+  // Here, you will need to obtain the necessary credentials based on the provider.
+  // For example, for email/password, you might prompt the user to re-enter their password.
+  // For Google or Facebook, you might use a refreshed token.
+  // This part of the implementation depends on your app's specific logic and UX.
+
+  const providerId = user.providerData[0]?.providerId;
+  let credential;
+
+  switch (providerId) {
+    case 'password':
+      // Prompt the user to re-enter their password
+      const email = user.email;
+      const password = "user's current password"; // This should be obtained from the user
+      credential = EmailAuthProvider.credential(email as string, password);
+      break;
+
+    case 'google.com':
+      // Use the Google OAuth access token
+      const googleToken = "user's Google OAuth access token"; // This should be obtained from the user or your app's auth flow
+      credential = GoogleAuthProvider.credential(googleToken);
+      break;
+
+    case 'facebook.com':
+      // Use the Facebook OAuth access token
+      const facebookToken = "user's Facebook OAuth access token"; // This should be obtained from the user or your app's auth flow
+      credential = FacebookAuthProvider.credential(facebookToken);
+      break;
+
+    // ... add cases for other providers as needed
+
+    default:
+      throw new Error(`Unsupported provider: ${providerId}`);
+  }
+
+  try {
+    await reauthenticateWithCredential(user, credential);
+  } catch (error) {
+    console.error(error);
+    throw error; // Or handle the error as per your application's error handling policy
+  }
 }
 
 export const updateUserEmail = async (auth: Auth, email: string) => { 
 
-  verifyBeforeUpdateEmail(auth.currentUser as User, email).then(() => {
-    console.log("Email updated successfully to: ", email)
+  reauthenticate(auth).then(async () => {
+    await verifyBeforeUpdateEmail(auth.currentUser as User, email).then(() => {
+      console.log("Email updated successfully to: ", email)
+    }).catch((error) => {
+      console.error(error);
+    });
   }).catch((error) => {
-    console.error(error)
-  });
+    console.error(error);
+   })
 }
 
-export const updateUserPassword = async (auth:Auth, password: string) => { 
-  updatePassword(auth.currentUser as User, password).then(() => {
+export const updateUserPassword = async (auth: Auth, password: string) => { 
+  reauthenticate(auth).then(async () => {
+    await updatePassword(auth.currentUser as User, password).then(() => {
 
-}).catch((error) => {
+    }).catch((error) => {
 
-});
+    });
+  }).catch((error) => { });
 }
 
 export const sendVerificationEmail = async (auth: Auth) => { 
@@ -141,24 +190,38 @@ export const sendVerificationEmail = async (auth: Auth) => {
 
 export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<User|null>>) => {
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(user);
-        action(user);
-      } else {
-        action(null);
-      }
-    });
+    if (user) {
+      console.log(user);
+      action(user);
+    } else {
+      action(null);
+    }
+  });
 };
   
 export const sendResetPassword = async (auth: Auth, email: string) => {
 
-  sendPasswordResetEmail(auth, email)
-    .then(() => {
-      console.log("Password reset email sent successfully")
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
+  reauthenticate(auth).then(async () => {
+    await sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log("Password reset email sent successfully")
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  }).catch((error) => {});
+}
+ 
+export const deleteAUser = async (auth: Auth) => { 
+  reauthenticate(auth).then(async () => {
+    await deleteUser(auth.currentUser as User).then(() => {
+      console.log(`User ${auth.currentUser?.uid} deleted successfully`)
+    }).catch((error) => {
+      console.error(error);
     });
- }
+    }).catch((error) => {
+    console.error(error);
+   });
+}

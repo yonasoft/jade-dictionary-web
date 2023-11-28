@@ -13,20 +13,19 @@ import {
   FileInput,
   Input,
   Button,
+  Space,
 } from "@mantine/core";
-import { IconPencil, IconUpload, IconUserCircle } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
-import DisplayInformation from "./DisplayInformation";
-import { useForm } from "@mantine/form";
-import UserInformation from "./ProfileSettings";
-import ProfileSettings from "./ProfileSettings";
 import { sendVerificationEmail } from "../lib/firebase/authentication";
 import classes from "./page.module.css";
+import Account from "./account-section/AccountSection";
+import ProfileSection from "./profile-section/ProfileSection";
+import AccountSection from "./account-section/AccountSection";
 
 type Props = {};
 
-const Profile = (props: Props) => {
+const ProfilePage = (props: Props) => {
   const firebase = useFirebaseContext();
   const [verificationMessage, setVerificationMessage] = useState("");
 
@@ -72,27 +71,11 @@ const Profile = (props: Props) => {
 
   return (
     <Container size="lg">
-      <Card shadow="sm" padding="sm" radius="md" withBorder>
-        <Group justify="flex-start">
-          <IconUserCircle
-            style={{ width: rem(30), height: rem(30) }}
-            stroke={1.5}
-            color="gray"
-          />
-          <Text size="md">Profile</Text>
-        </Group>
-        <Grid grow>
-          <Grid.Col span={{ base: 12, sm: 4, md: 3 }}>
-            <DisplayInformation />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 12, sm: 8, md: 9 }}>
-            <ProfileSettings />
-          </Grid.Col>
-        </Grid>
-      </Card>
+      <ProfileSection />
+      <Space h="lg" />
+      <AccountSection />
     </Container>
   );
 };
 
-export default Profile;
+export default ProfilePage;

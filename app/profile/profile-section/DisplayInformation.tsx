@@ -11,7 +11,7 @@ import {
   Button,
   Avatar,
 } from "@mantine/core";
-import { useFirebaseContext } from "../providers/FirebaseProvider";
+import { useFirebaseContext } from "../../providers/FirebaseProvider";
 import {
   IconCheck,
   IconClearAll,
@@ -22,17 +22,16 @@ import {
   IconUserCircle,
   IconX,
 } from "@tabler/icons-react";
-import { updateUserProfile } from "../lib/firebase/authentication";
+import { updateUserProfile } from "../../lib/firebase/authentication";
 import { doc, getDoc } from "firebase/firestore/lite";
 import {
   deleteOldProfilePicture,
   updateUserToDB,
   uploadNewProfilePicture,
-} from "../lib/firebase/storage";
+} from "../../lib/firebase/storage";
 import { User, updateProfile } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { FirestoreUserData } from "../lib/definitions";
-import classes from "./page.module.css";
+import { FirestoreUserData } from "../../lib/definitions";
 
 type Props = {};
 
@@ -190,7 +189,7 @@ const DisplayInformation = (props: Props) => {
           placeholder="Upload"
           rightSectionPointerEvents="none"
         />
-        <Button className={`${classes.jadeButtons} my-2`} onClick={onSave}>
+        <Button className="my-2" onClick={onSave}>
           Save
         </Button>
         <Text size="sm" color="red">

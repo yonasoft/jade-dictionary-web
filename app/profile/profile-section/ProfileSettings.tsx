@@ -6,17 +6,16 @@ import {
   reauthenticate,
   updateUserEmail,
   updateUserPassword,
-} from "../lib/firebase/authentication";
-import { useFirebaseContext } from "../providers/FirebaseProvider";
-import { checkEmailExists } from "../lib/firebase/storage";
+} from "../../lib/firebase/authentication";
+import { useFirebaseContext } from "../../providers/FirebaseProvider";
+import { checkEmailExists } from "../../lib/firebase/storage";
 import {
   AuthCredential,
   User,
   reauthenticateWithCredential,
 } from "firebase/auth";
-import classes from "./page.module.css";
 import { modals } from "@mantine/modals";
-import VerifyEmailModal from "../ui/components/modals/verify-email-modal/VerifyEmailModal";
+import VerifyEmailModal from "../../ui/components/modals/verify-email-modal/VerifyEmailModal";
 
 type Props = {};
 
@@ -197,10 +196,7 @@ const ProfileSettings = (props: Props) => {
         </Grid.Col>
       </Grid>
       <Center className="mt-auto">
-        <Button
-          className={`${classes.jadeButtons} mt-3 w-fit`}
-          onClick={updateInformation}
-        >
+        <Button className="mt-3 w-fit" onClick={updateInformation}>
           Save
         </Button>
       </Center>
