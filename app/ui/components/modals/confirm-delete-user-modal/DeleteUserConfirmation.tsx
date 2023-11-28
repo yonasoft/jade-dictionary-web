@@ -1,11 +1,13 @@
 "use client";
-import { ContextModalProps, closeModal, modals } from "@mantine/modals";
-import { Text, Button, Input, Group } from "@mantine/core";
-import React, { useState } from "react";
 import {
-  deleteAUser,
-  sendResetPassword,
-} from "@/app/lib/firebase/authentication";
+  ContextModalProps,
+  closeModal,
+  modals,
+  openContextModal,
+} from "@mantine/modals";
+import { Text, Button, Group } from "@mantine/core";
+import React, { useState } from "react";
+import { deleteAUser } from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import classes from "./DeleteUserConfirmation.module.css";
 
@@ -17,9 +19,32 @@ const DeleteUserConfirmation = ({
   innerProps,
 }: ContextModalProps<{}>) => {
   const firebase = useFirebaseContext();
-  const [confirmationEmail, setConfirmationEmail] = useState("");
   const [accountDeleted, setAccountDeleted] = useState(false);
-  const [hideEmailConfirmationError, setHideEmailError] = useState(true);
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAUser(firebase.auth);
+      setAccountDeleted(true); // Update state to show account deletion success
+      context.closeModal(id); // Close the modal after successful deletion
+    } catch (error: any) {
+      console.error("Account deletion failed:", error);
+      if (error.code === "auth/requires-recent-login") {
+        // Open reauthentication modal if reauthentication is required
+        openContextModal({
+          modal: "reAuth",
+          title: "Please re-authenticate to continue.",
+          innerProps: {},
+          onClose: () => {
+            // Attempt to delete the user again after reauthentication
+            handleDeleteAccount();
+          },
+        });
+      } else {
+        // Handle other errors
+        console.error("Failed to delete account. Please try again later.");
+      }
+    }
+  };
 
   return accountDeleted ? (
     <Text>Account Deleted!</Text>
@@ -27,35 +52,11 @@ const DeleteUserConfirmation = ({
     <>
       <Text>
         Are you sure you want to delete your account? This action cannot be
-        reverted. Enter your email to confirm.
+        reverted.
       </Text>
-      <Input.Wrapper label="E-mail">
-        <Input
-          value={confirmationEmail}
-          onChange={(event) => setConfirmationEmail(event.currentTarget.value)}
-        />
-      </Input.Wrapper>
-      <Text color="red" hidden={hideEmailConfirmationError}>
-        Email does not match.
-      </Text>
+
       <Group className="mt-5" justify="flex-end">
-        <Button
-          className={classes.deleteButton}
-          onClick={() => {
-            if (confirmationEmail === firebase.auth.currentUser?.email) {
-              setHideEmailError(true);
-              deleteAUser(firebase.auth)
-                .then(() => {
-                  setAccountDeleted(true);
-                })
-                .catch((error) => {
-                  console.error(error);
-                });
-            } else {
-              setHideEmailError(false);
-            }
-          }}
-        >
+        <Button className={classes.deleteButton} onClick={handleDeleteAccount}>
           Delete
         </Button>
         <Button

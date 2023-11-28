@@ -4,8 +4,8 @@ import { Button, Divider, Tabs, Text } from "@mantine/core";
 import SignUpTab from "./SignUpTab";
 import LoginTab from "./LoginTab";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import { GoogleButton } from "./GoogleButton";
-import { FacebookButton } from "./FacebookButton";
+import { GoogleButton } from "../../buttons/GoogleButton";
+import { FacebookButton } from "../../buttons/FacebookButton";
 
 type Props = {
   needSignUp: boolean;

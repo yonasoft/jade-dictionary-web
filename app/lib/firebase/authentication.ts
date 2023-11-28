@@ -7,7 +7,6 @@ import {
 	signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  UserCredential,
   FacebookAuthProvider,
   connectAuthEmulator,
   sendSignInLinkToEmail,
@@ -24,6 +23,7 @@ import {
   sendPasswordResetEmail,
   deleteUser,
   EmailAuthProvider,
+  UserCredential,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
 import { addNewUserToDB } from "./storage";
@@ -35,67 +35,61 @@ export async function setupEmulators(auth:Auth) {
   connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true })
 }
 
-export const createNewUserWithEmailAndPassword = async (auth: Auth, db:Firestore, email: string, password: string):Promise<{user:User|null, error: any}> => {
+export const createNewUserWithEmailAndPassword = async (auth: Auth, db:Firestore, email: string, password: string):Promise<UserCredential | any> => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     console.log(userCredential);
     await addNewUserToDB(db, userCredential.user);
-    return { user: userCredential.user, error: null };
+    return userCredential;
   } catch (error: any) {
     console.log(error);
-    // Check for email-already-in-use error code
     if (error.code === 'auth/email-already-in-use') {
-      return { user: null, error: 'Email already in use. Please use a different email.' };
+      return "Email already in use"
     }
-    return { user: null, error: error.message };
+    return error;
   }
 };
 
-export const loginEmailAndPassword = async (auth: Auth, email: string, password: string): Promise<User> => {
+export const loginEmailAndPassword = async (auth: Auth, email: string, password: string): Promise<UserCredential> => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
+    return userCredential;
 };
 
-export const signInWithGoogle = async (auth: Auth, db:Firestore, ): Promise<{ user: User | null; error: any }> => { 
+export const signInWithGoogle = async (auth: Auth, db:Firestore, ): Promise< UserCredential |  any > => { 
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider)
     if (result) {
       console.log(result);
       await addNewUserToDB(db, result.user);
-      return { user: result.user, error: null };
+      return result;
     } else {
-      return { user: null, error: null };
+      return result;
     }
   } catch (error: any) {
     console.error(error);
-    return { user: null, error };
+    return error;
   }
 };
 
-export const signInWithFacebook = async (auth: Auth, db:Firestore): Promise<{ user: User | null; error: any }> => { 
+export const signInWithFacebook = async (auth: Auth, db:Firestore): Promise< UserCredential | any > => { 
 
   const provider = new FacebookAuthProvider();
   try {
-    const result = await signInWithPopup(auth, provider)
-    if (result) {
-      // Successfully signed in
+      const result = await signInWithPopup(auth, provider)
       await addNewUserToDB(db, result.user);
-      return { user: result.user, error: null };
-    } else {
-      return { user: null, error: null };
+      return result;
+    } catch (error: any) {
+      console.error(error);
+      return error;
     }
-  } catch (error: any) {
-    console.error(error);
-    return { user: null, error };
-  }
 };
 
 export const signOutUser = async (auth: Auth): Promise<void> => {
   signOut(auth).then(() => {
     console.log("Signed out successfully")
   }).catch((error) => {
-          console.error(error)
+    console.error(error)
   });
 };
 
@@ -110,45 +104,28 @@ export const updateUserProfile = async (auth: Auth, data: { displayName: string,
   });
 }
 
-export const reauthenticate = async (auth: Auth) => {
-  const credential = EmailAuthProvider.credential(
-    auth.currentUser?.email as string,
-    'password'
-  );
-  reauthenticateWithCredential(auth.currentUser as User, credential).then(() => {
-    // User re-authenticated.
-  }).catch((error) => {
-    // An error ocurred
-    // ...
-  });
+export const sendVerificationEmail = async (auth: Auth) => { 
+  await sendEmailVerification(auth.currentUser as User);
 }
 
 export const updateUserEmail = async (auth: Auth, email: string) => { 
 
-  reauthenticate(auth).then(async () => {
     await verifyBeforeUpdateEmail(auth.currentUser as User, email).then(() => {
       console.log("Email updated successfully to: ", email)
     }).catch((error) => {
       console.error(error);
     });
-  }).catch((error) => {
-    console.error(error);
-   })
 }
 
 export const updateUserPassword = async (auth: Auth, password: string) => { 
-  reauthenticate(auth).then(async () => {
     await updatePassword(auth.currentUser as User, password).then(() => {
-
+      console.log("Password updated successfully")
     }).catch((error) => {
 
     });
-  }).catch((error) => { });
 }
 
-export const sendVerificationEmail = async (auth: Auth) => { 
-  await sendEmailVerification(auth.currentUser as User);
-}
+
 
 export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<User|null>>) => {
     onAuthStateChanged(auth, (user) => {
@@ -163,7 +140,6 @@ export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<
   
 export const sendResetPassword = async (auth: Auth, email: string) => {
 
-  reauthenticate(auth).then(async () => {
     await sendPasswordResetEmail(auth, email)
       .then(() => {
         console.log("Password reset email sent successfully")
@@ -173,17 +149,13 @@ export const sendResetPassword = async (auth: Auth, email: string) => {
         const errorMessage = error.message;
         // ..
       });
-  }).catch((error) => {});
 }
  
 export const deleteAUser = async (auth: Auth) => { 
-  reauthenticate(auth).then(async () => {
     await deleteUser(auth.currentUser as User).then(() => {
       console.log(`User ${auth.currentUser?.uid} deleted successfully`)
     }).catch((error) => {
       console.error(error);
     });
-    }).catch((error) => {
-    console.error(error);
-   });
+
 }

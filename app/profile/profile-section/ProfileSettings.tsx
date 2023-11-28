@@ -1,9 +1,16 @@
 "use client";
-import { Button, Card, Center, Grid, Input, Text } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import React, { useState } from "react";
 import {
-  reauthenticate,
+  Button,
+  Card,
+  Center,
+  Grid,
+  Input,
+  PasswordInput,
+  Text,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import React, { useEffect, useState } from "react";
+import {
   updateUserEmail,
   updateUserPassword,
 } from "../../lib/firebase/authentication";
@@ -14,7 +21,7 @@ import {
   User,
   reauthenticateWithCredential,
 } from "firebase/auth";
-import { modals } from "@mantine/modals";
+import { modals, openContextModal } from "@mantine/modals";
 import VerifyEmailModal from "../../ui/components/modals/verify-email-modal/VerifyEmailModal";
 
 type Props = {};
@@ -35,6 +42,26 @@ const ProfileSettings = (props: Props) => {
       passwordConfirmation: "",
     },
   });
+
+  const [isModalClosed, setIsModalClosed] = useState(false);
+
+  useEffect(() => {
+    if (isModalClosed) {
+      updateInformation();
+      setIsModalClosed(false); // Reset the state
+    }
+  }, [isModalClosed]);
+
+  const requireReauth = () => {
+    openContextModal({
+      modal: "reAuth",
+      title: "Please re-authenticate to continue.",
+      innerProps: {},
+      onClose: () => {
+        setIsModalClosed(true);
+      },
+    });
+  };
 
   const validateEmail = async () => {
     const { email, emailConfirmation } = form.values;
@@ -87,6 +114,8 @@ const ProfileSettings = (props: Props) => {
   };
 
   const updateInformation = async () => {
+    console.log("updateInformation");
+
     setEmailError("");
     setPasswordError("");
     setErrorMessage("");
@@ -100,20 +129,40 @@ const ProfileSettings = (props: Props) => {
       if (form.values.email) {
         isEmailValid = await validateEmail();
         if (isEmailValid && form.values.email !== firebase.currentUser?.email) {
-          await updateUserEmail(firebase.auth, form.values.email);
-          const informVerifyEmail = () => {
-            modals.open({
-              title: "Verify Email!",
-              children: <VerifyEmailModal email={form.values.email} />,
-            });
-          };
+          try {
+            await updateUserEmail(firebase.auth, form.values.email);
+            setSuccessMessage("Email updated successfully");
+          } catch (error: any) {
+            console.error("Error updating email:", error);
+            if (error.code === "auth/requires-recent-login") {
+              // Open the reauthentication modal
+              requireReauth();
+            } else {
+              // Handle other types of errors
+              setEmailError("Failed to update email. Please try again later.");
+            }
+          }
         }
       }
 
       if (form.values.password) {
         isPasswordValid = validatePassword();
         if (isPasswordValid) {
-          await updateUserPassword(firebase.auth, form.values.password);
+          try {
+            await updateUserPassword(firebase.auth, form.values.password);
+            setSuccessMessage("Password updated successfully");
+          } catch (error: any) {
+            console.error("Error updating password:", error);
+            if (error.code === "auth/requires-recent-login") {
+              // Open the reauthentication modal
+              requireReauth();
+            } else {
+              // Handle other types of errors
+              setPasswordError(
+                "Failed to update password. Please try again later."
+              );
+            }
+          }
         }
       }
 
@@ -122,7 +171,6 @@ const ProfileSettings = (props: Props) => {
       }
     } catch (error) {
       console.error("Error updating user information:", error);
-      // Set a generic error message or a specific one based on the error type
       setErrorMessage("Failed to update information. Please try again later.");
     }
   };
@@ -172,7 +220,7 @@ const ProfileSettings = (props: Props) => {
         </Grid.Col>
         <Grid.Col span={{ base: 12, sm: 6 }}>
           <Input.Wrapper label="Password" fw={400}>
-            <Input
+            <PasswordInput
               value={form.values.password}
               onChange={(e) =>
                 form.setFieldValue("password", e.currentTarget.value)
@@ -183,7 +231,7 @@ const ProfileSettings = (props: Props) => {
         <Grid.Col span={{ base: 12, sm: 6 }}>
           {" "}
           <Input.Wrapper label="Password Confirmation" fw={400}>
-            <Input
+            <PasswordInput
               value={form.values.passwordConfirmation}
               onChange={(e) =>
                 form.setFieldValue(

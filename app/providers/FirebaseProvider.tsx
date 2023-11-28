@@ -5,17 +5,12 @@ import { getFirestore, doc, updateDoc, Firestore } from "firebase/firestore";
 import { User } from "@firebase/auth";
 import {
   Auth,
-  connectAuthEmulator,
+
   getAuth,
-  onAuthStateChanged,
 } from "firebase/auth";
 import {
   loginEmailAndPassword,
-  setupEmulators,
-  signInWithGoogle,
-  signInWithFacebook,
-  signOutUser,
-  createNewUserWithEmailAndPassword,
+
   monitorAuthState,
 } from "../lib/firebase/authentication";
 import {

@@ -13,6 +13,7 @@ import {
 } from "./providers/DictionaryProvider";
 import ResetPasswordModal from "./ui/components/modals/reset-password-modal/ResetPasswordModal";
 import DeleteUserConfirmation from "./ui/components/modals/confirm-delete-user-modal/DeleteUserConfirmation";
+import ReauthenticateModal from "./ui/components/modals/reauth-modal/ReauthenticateModal";
 
 const murecho = Murecho({ subsets: ["latin"] });
 
@@ -47,6 +48,7 @@ export default function RootLayout({
                 modals={{
                   resetPassword: ResetPasswordModal,
                   deleteUser: DeleteUserConfirmation,
+                  reAuth: ReauthenticateModal,
                 }}
               >
                 <Navbar />
