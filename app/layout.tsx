@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Murecho } from "next/font/google";
+import { Murecho, Roboto } from "next/font/google";
 import "@mantine/core/styles.css";
 import "./globals.css";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
@@ -15,7 +15,10 @@ import ResetPasswordModal from "./ui/components/modals/reset-password-modal/Rese
 import DeleteUserConfirmation from "./ui/components/modals/confirm-delete-user-modal/DeleteUserConfirmation";
 import ReauthenticateModal from "./ui/components/modals/reauth-modal/ReauthenticateModal";
 
-const murecho = Murecho({ subsets: ["latin"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export const metadata: Metadata = {
   title: "Jade Dictionary",
@@ -38,7 +41,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body
-        className={`${murecho.className} antialiased`}
+        className={`${roboto.className} antialiased`}
         suppressHydrationWarning={true}
       >
         <MantineProvider theme={theme} defaultColorScheme="dark">
