@@ -20,3 +20,6 @@ export const searchSimplified = async (db:Database, simplifiedChar: string): Pro
   }
 }
 
+export const searchWord = async (db: Database, word: string) => { 
+  const entriesRef = ref(db, 'words');
+}

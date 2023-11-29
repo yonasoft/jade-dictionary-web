@@ -73,7 +73,7 @@ const Navbar = () => {
           </Group>
 
           <Group justify="flex-end" visibleFrom="sm">
-            <ResultTypeSelector />
+            {/* <ResultTypeSelector /> */}
             <AuthItems />
             <ThemeToggler />
           </Group>
