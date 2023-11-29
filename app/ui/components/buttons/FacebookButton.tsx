@@ -1,15 +1,13 @@
 import { signInWithFacebook } from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Button, ButtonProps } from "@mantine/core";
-import {} from "@mantine/ds";
-import { modals } from "@mantine/modals";
 import { IconBrandFacebook } from "@tabler/icons-react";
 
-export function FacebookButton(
-  props: ButtonProps & React.ComponentPropsWithoutRef<"button">
-) {
-  const firebase = useFirebaseContext();
+type Props = ButtonProps & {
+  onClick?: () => void;
+};
 
+export function FacebookButton({ onClick, ...buttonProps }: Props) {
   return (
     <Button
       className="my-2"
@@ -20,11 +18,15 @@ export function FacebookButton(
         />
       }
       variant="default"
-      {...props}
+      {...buttonProps}
       fullWidth
       onClick={() => {
-        signInWithFacebook(firebase.auth, firebase.firestore);
-         modals.closeAll();
+        if (onClick) {
+          onClick();
+        } else {
+          // Default onClick behavior (if not provided via props)
+          // Example: signInWithFacebook(firebase.auth, firebase.firestore);
+        }
       }}
     />
   );

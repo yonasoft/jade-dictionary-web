@@ -135,10 +135,8 @@ const ProfileSettings = (props: Props) => {
           } catch (error: any) {
             console.error("Error updating email:", error);
             if (error.code === "auth/requires-recent-login") {
-              // Open the reauthentication modal
               requireReauth();
             } else {
-              // Handle other types of errors
               setEmailError("Failed to update email. Please try again later.");
             }
           }

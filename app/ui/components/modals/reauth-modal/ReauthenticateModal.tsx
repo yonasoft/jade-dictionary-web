@@ -3,26 +3,16 @@ import {
   signInWithFacebook,
   signInWithGoogle,
 } from "@/app/lib/firebase/authentication";
-import {
-  FirebaseContext,
-  useFirebaseContext,
-} from "@/app/providers/FirebaseProvider";
-import {
-  Button,
-  Center,
-  Modal,
-  PasswordInput,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
+import { Button, Center, PasswordInput, Text, TextInput } from "@mantine/core";
 import { ContextModalProps } from "@mantine/modals";
 import {
-  Auth,
   AuthCredential,
   EmailAuthProvider,
   FacebookAuthProvider,
   GoogleAuthProvider,
   reauthenticateWithCredential,
+  reauthenticateWithPopup,
 } from "firebase/auth";
 import React, { useState } from "react";
 import { GoogleButton } from "../../buttons/GoogleButton";
@@ -48,44 +38,42 @@ const ReauthenticateModal = ({
     }
 
     try {
-      let credential;
+      let credential: AuthCredential;
 
       switch (providerId) {
         case "password":
           credential = EmailAuthProvider.credential(email, password);
+          reauthenticateWithCredential(
+            firebase.auth.currentUser,
+            credential
+          ).then(() => {
+            if (innerProps.onSuccess) innerProps.onSuccess(); // Call the success callback
+            context.closeModal(id);
+          });
           break;
         case "google.com":
-          // Ensure this function returns a credential
-          const googleResult = await signInWithGoogle(
-            firebase.auth,
-            firebase.firestore
-          );
-          credential = GoogleAuthProvider.credential(
-            googleResult.credential.idToken
-          );
+          reauthenticateWithPopup(
+            firebase.auth.currentUser,
+            new GoogleAuthProvider()
+          ).then(() => {
+            if (innerProps.onSuccess) innerProps.onSuccess(); // Call the success callback
+            context.closeModal(id);
+          });
+
           break;
         case "facebook.com":
-          // Ensure this function returns a credential
-          const fbResult = await signInWithFacebook(
-            firebase.auth,
-            firebase.firestore
-          );
-          credential = FacebookAuthProvider.credential(
-            fbResult.credential.accessToken
-          );
+          reauthenticateWithPopup(
+            firebase.auth.currentUser,
+            new FacebookAuthProvider()
+          ).then(() => {
+            if (innerProps.onSuccess) innerProps.onSuccess(); // Call the success callback
+            context.closeModal(id);
+          });
           break;
         default:
           throw new Error("Unsupported provider for reauthentication");
       }
-
-      await reauthenticateWithCredential(
-        firebase.auth.currentUser,
-        credential
-      ).then(() => {
-        innerProps.onSuccess();
-      });
       console.log("Reauthentication successful, about to call onAuthenticated");
-      context.closeModal(id);
     } catch (error: any) {
       console.error("Reauthentication failed:", error);
       setErrorMessage(error.message);
@@ -131,7 +119,7 @@ const ReauthenticateModal = ({
   const showGoogleLogin = () => {
     return (
       <>
-        <GoogleButton radius="xl" />
+        <GoogleButton radius="xl" onClick={handleReauthenticate} />
         <Text color="red" size="sm">
           {errorMessage}
         </Text>
@@ -141,7 +129,7 @@ const ReauthenticateModal = ({
   const showFacebookLogin = () => {
     return (
       <>
-        <FacebookButton radius="xl" />
+        <FacebookButton radius="xl" onClick={handleReauthenticate} />
         <Text color="red" size="sm">
           {errorMessage}
         </Text>

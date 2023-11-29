@@ -5,7 +5,7 @@ import {
   modals,
   openContextModal,
 } from "@mantine/modals";
-import { Text, Button, Group } from "@mantine/core";
+import { Text, Button, Group, Input } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { deleteAUser } from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
@@ -19,38 +19,45 @@ const DeleteUserConfirmation = ({
   innerProps,
 }: ContextModalProps<{ setRequireReauth: () => void }>) => {
   const firebase = useFirebaseContext();
+  const [confirmInput, setConfirmInput] = useState("");
+  const [hideError, setHideError] = useState(true);
   const [accountDeleted, setAccountDeleted] = useState(false);
-  const [authSuccess, setAuthSuccess] = useState(false);
 
-  useEffect(() => {
-    if (authSuccess) {
-      deleteAUser(firebase.auth).then(() => {
-        setAccountDeleted(true); //
-      });
-    }
-  }, [authSuccess]);
+  const handleReauthAndDelete = async () => {
+    openContextModal({
+      modal: "reAuth",
+      title: "Please re-authenticate to continue.",
+      innerProps: {
+        onSuccess: async () => {
+          try {
+            await deleteAUser(firebase.auth);
+            setAccountDeleted(true); 
+          } catch (error) {
+            console.error(
+              "Failed to delete account after reauthentication:",
+              error
+            );
+          }
+        },
+      },
+    });
+  };
 
   const handleDeleteAccount = async () => {
+    setHideError(true);
+    if (confirmInput !== "Delete Account") {
+      setHideError(false);
+      return;
+    }
+
     try {
-      await deleteAUser(firebase.auth).then(() => {
-        setAccountDeleted(true); //
-      });
-    } catch (error: any) {
+      await deleteAUser(firebase.auth);
+      setAccountDeleted(true); // Account deleted
+    } catch (error:any) {
       console.error("Account deletion failed:", error);
       if (error.code === "auth/requires-recent-login") {
-        // Open reauthentication modal if reauthentication is required
-        openContextModal({
-          modal: "reAuth",
-          title: "Please re-authenticate to continue.",
-          innerProps: {
-            onSuccess: () => {
-              setAuthSuccess(true);
-            },
-          },
-          onClose: async () => {},
-        });
+        handleReauthAndDelete(); // Handle reauthentication and retry deletion
       } else {
-        // Handle other errors
         console.error("Failed to delete account. Please try again later.");
       }
     }
@@ -62,9 +69,19 @@ const DeleteUserConfirmation = ({
     <>
       <Text>
         Are you sure you want to delete your account? This action cannot be
-        reverted.
+        reverted. To confirm, please type:
       </Text>
+      <Text fw={700}>"Delete Account"</Text>
 
+      <Input
+        value={confirmInput}
+        onChange={(event) => {
+          setConfirmInput(event.currentTarget.value);
+        }}
+      />
+      <Text color="red" hidden={hideError}>
+        Input does not match.
+      </Text>
       <Group className="mt-5" justify="flex-end">
         <Button className={classes.deleteButton} onClick={handleDeleteAccount}>
           Delete

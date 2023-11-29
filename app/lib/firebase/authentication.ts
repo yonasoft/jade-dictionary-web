@@ -125,8 +125,6 @@ export const updateUserPassword = async (auth: Auth, password: string) => {
     });
 }
 
-
-
 export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<User|null>>) => {
     onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -152,10 +150,5 @@ export const sendResetPassword = async (auth: Auth, email: string) => {
 }
  
 export const deleteAUser = async (auth: Auth) => { 
-    await deleteUser(auth.currentUser as User).then(() => {
-      console.log(`User ${auth.currentUser?.uid} deleted successfully`)
-    }).catch((error) => {
-      console.error(error);
-    });
-
+    await deleteUser(auth.currentUser as User)
 }

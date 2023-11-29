@@ -10,15 +10,13 @@ type Props = {};
 
 const AccountSection = (props: Props) => {
   const firebase = useFirebaseContext();
-  const [requireReauth, setRequireReauth] = useState(false);
+  const [reauthCompleted, setReauthCompleted] = useState(false);
 
-  const handleDeleteClick = () => {
+  const openDeleteConfirmationModal = () => {
     openContextModal({
       modal: "deleteUser",
       title: "Confirm Delete Account",
-      innerProps: {
-
-      },
+      innerProps: {},
     });
   };
 
@@ -35,7 +33,7 @@ const AccountSection = (props: Props) => {
 
       <Group className="mt-5 mx-5" justify="space-between">
         <Text size="lg">Delete Account</Text>
-        <Button className={classes.deleteButton} onClick={handleDeleteClick}>
+        <Button className={classes.deleteButton} onClick={openDeleteConfirmationModal}>
           Delete
         </Button>
       </Group>

@@ -6,12 +6,19 @@ import LoginTab from "./LoginTab";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { GoogleButton } from "../../buttons/GoogleButton";
 import { FacebookButton } from "../../buttons/FacebookButton";
+import {
+  signInWithFacebook,
+  signInWithGoogle,
+} from "@/app/lib/firebase/authentication";
+import { modals } from "@mantine/modals";
 
 type Props = {
   needSignUp: boolean;
 };
 
 const AuthModal = ({ needSignUp }: Props) => {
+  const firebase = useFirebaseContext();
+
   const [activeTab, setActiveTab] = useState<string | null>(
     needSignUp ? "signup" : "login"
   );
@@ -41,8 +48,24 @@ const AuthModal = ({ needSignUp }: Props) => {
         </Tabs.Panel>
       </Tabs>
       <Divider my="xs" label="Sign in with..." labelPosition="center" />
-      <GoogleButton radius="xl">Google</GoogleButton>
-      {/* <FacebookButton radius="xl">Facebook</FacebookButton> */}
+      <GoogleButton
+        radius="xl"
+        onClick={() => {
+          signInWithGoogle(firebase.auth, firebase.firestore);
+          modals.closeAll();
+        }}
+      >
+        Google
+      </GoogleButton>
+      {/* <FacebookButton
+        radius="xl"
+        onClick={() => {
+          signInWithFacebook(firebase.auth, firebase.firestore);
+          modals.closeAll();
+        }}
+      >
+        Facebook
+      </FacebookButton> */}
     </>
   );
 };

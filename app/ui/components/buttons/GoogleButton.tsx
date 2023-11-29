@@ -1,7 +1,6 @@
 import { signInWithGoogle } from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Button, ButtonProps } from "@mantine/core";
-import { modals } from "@mantine/modals";
 
 function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
@@ -32,22 +31,28 @@ function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   );
 }
 
-export function GoogleButton(
-  props: ButtonProps & React.ComponentPropsWithoutRef<"button">
-) {
+type Props = ButtonProps & {
+  onClick?: () => void;
+};
+export const GoogleButton = ({ onClick, ...buttonProps }: Props) => {
   const firebase = useFirebaseContext();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      signInWithGoogle(firebase.auth, firebase.firestore);
+    }
+  };
 
   return (
     <Button
+      variant="outline"
       className="my-2"
       leftSection={<GoogleIcon />}
-      variant="default"
-      {...props}
       fullWidth
-      onClick={() => {
-        signInWithGoogle(firebase.auth, firebase.firestore);
-        modals.closeAll();
-      }}
+      onClick={handleClick}
+      {...buttonProps} // Spread additional ButtonProps here
     />
   );
-}
+};
