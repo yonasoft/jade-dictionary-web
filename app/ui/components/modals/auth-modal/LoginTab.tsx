@@ -74,6 +74,7 @@ const LoginTab = (props: Props) => {
     <>
       <form>
         <TextInput
+          type="email"
           className="mb-2"
           required
           label="Email"
@@ -84,6 +85,7 @@ const LoginTab = (props: Props) => {
           }
         />
         <PasswordInput
+          type="password"
           className="my-2"
           required
           label="Password"

@@ -2,7 +2,7 @@
 import { Button, Card, Group, Text, rem } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
 import classes from "./AccountSection.module.css";
-import React from "react";
+import React, { useState } from "react";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { openContextModal } from "@mantine/modals";
 
@@ -10,19 +10,14 @@ type Props = {};
 
 const AccountSection = (props: Props) => {
   const firebase = useFirebaseContext();
+  const [requireReauth, setRequireReauth] = useState(false);
 
   const handleDeleteClick = () => {
     openContextModal({
-      modal: "reAuth",
-      title: "Please re-authenticate to continue.",
-      innerProps: {},
-      onClose: () => {
-        // After reauthentication or if it's not needed, open the deleteUser confirmation modal
-        openContextModal({
-          modal: "deleteUser",
-          title: "Confirm Delete Account",
-          innerProps: {},
-        });
+      modal: "deleteUser",
+      title: "Confirm Delete Account",
+      innerProps: {
+
       },
     });
   };

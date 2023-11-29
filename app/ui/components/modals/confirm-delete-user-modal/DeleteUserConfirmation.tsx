@@ -6,7 +6,7 @@ import {
   openContextModal,
 } from "@mantine/modals";
 import { Text, Button, Group } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { deleteAUser } from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import classes from "./DeleteUserConfirmation.module.css";
@@ -17,15 +17,24 @@ const DeleteUserConfirmation = ({
   context,
   id,
   innerProps,
-}: ContextModalProps<{}>) => {
+}: ContextModalProps<{ setRequireReauth: () => void }>) => {
   const firebase = useFirebaseContext();
   const [accountDeleted, setAccountDeleted] = useState(false);
+  const [authSuccess, setAuthSuccess] = useState(false);
+
+  useEffect(() => {
+    if (authSuccess) {
+      deleteAUser(firebase.auth).then(() => {
+        setAccountDeleted(true); //
+      });
+    }
+  }, [authSuccess]);
 
   const handleDeleteAccount = async () => {
     try {
-      await deleteAUser(firebase.auth);
-      setAccountDeleted(true); // Update state to show account deletion success
-      context.closeModal(id); // Close the modal after successful deletion
+      await deleteAUser(firebase.auth).then(() => {
+        setAccountDeleted(true); //
+      });
     } catch (error: any) {
       console.error("Account deletion failed:", error);
       if (error.code === "auth/requires-recent-login") {
@@ -33,11 +42,12 @@ const DeleteUserConfirmation = ({
         openContextModal({
           modal: "reAuth",
           title: "Please re-authenticate to continue.",
-          innerProps: {},
-          onClose: () => {
-            // Attempt to delete the user again after reauthentication
-            handleDeleteAccount();
+          innerProps: {
+            onSuccess: () => {
+              setAuthSuccess(true);
+            },
           },
+          onClose: async () => {},
         });
       } else {
         // Handle other errors

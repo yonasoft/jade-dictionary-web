@@ -32,7 +32,7 @@ const ReauthenticateModal = ({
   context,
   id,
   innerProps,
-}: ContextModalProps<{ onAuthenticated: () => void }>) => {
+}: ContextModalProps<{ onSuccess: () => void }>) => {
   const firebase = useFirebaseContext();
   const providerId: string =
     firebase.auth.currentUser!.providerData[0].providerId;
@@ -78,7 +78,12 @@ const ReauthenticateModal = ({
           throw new Error("Unsupported provider for reauthentication");
       }
 
-      await reauthenticateWithCredential(firebase.auth.currentUser, credential);
+      await reauthenticateWithCredential(
+        firebase.auth.currentUser,
+        credential
+      ).then(() => {
+        innerProps.onSuccess();
+      });
       console.log("Reauthentication successful, about to call onAuthenticated");
       context.closeModal(id);
     } catch (error: any) {
