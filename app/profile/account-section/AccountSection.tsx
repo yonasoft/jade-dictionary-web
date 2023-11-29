@@ -28,7 +28,7 @@ const AccountSection = (props: Props) => {
   };
 
   return (
-    <Card shadow="sm" padding="md" radius="md" withBorder>
+    <Card className="mb-5" shadow="sm" padding="md" radius="md" withBorder>
       <Group justify="flex-start">
         <IconSettings
           style={{ width: rem(30), height: rem(30) }}
