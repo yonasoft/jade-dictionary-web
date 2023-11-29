@@ -6,13 +6,16 @@
   --jade-color: #459d57;
 }
 
-button.mantine-Button {
-  background-color: var(--jade-color) !important;
-}
+
 
 input[type="checkbox"]:checked {
   background-color: var(--jade-color) !important;
 }
+
+Button {
+  background-color: var(--jade-color) !important;
+}
+
 Button[data-variant="filled"] {
   background-color: var(--jade-color) !important;
   color: white !important;
