@@ -244,7 +244,11 @@ const ProfileSettings = (props: Props) => {
         </Grid.Col>
       </Grid>
       <Center className="mt-auto">
-        <Button className="mt-3 w-fit" onClick={updateInformation}>
+        <Button
+          className="mt-3 w-fit"
+          variant="filled"
+          onClick={updateInformation}
+        >
           Save
         </Button>
       </Center>

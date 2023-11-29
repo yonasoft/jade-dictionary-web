@@ -189,7 +189,7 @@ const DisplayInformation = (props: Props) => {
           placeholder="Upload"
           rightSectionPointerEvents="none"
         />
-        <Button className="my-2" onClick={onSave}>
+        <Button className="my-2" variant="filled" onClick={onSave}>
           Save
         </Button>
         <Text size="sm" color="red">

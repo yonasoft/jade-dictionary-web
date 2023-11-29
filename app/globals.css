@@ -6,13 +6,7 @@
   --jade-color: #459d57;
 }
 
-
-
 input[type="checkbox"]:checked {
-  background-color: var(--jade-color) !important;
-}
-
-Button {
   background-color: var(--jade-color) !important;
 }
 
