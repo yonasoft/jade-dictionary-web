@@ -26,7 +26,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
-import { addNewUserToDB } from "./storage";
+import { addNewUserToDB } from "./user-storage";
 import { Dispatch, SetStateAction } from "react";
 
 export async function setupEmulators(auth:Auth) {

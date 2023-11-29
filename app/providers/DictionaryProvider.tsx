@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { ScriptType, Word } from "../lib/definitions";
-import { FirebaseContext } from "./FirebaseProvider";
+import { FirebaseContext, useFirebaseContext } from "./FirebaseProvider";
+import { searchSimplified } from "../lib/firebase/words-storage";
 
 type Props = {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ type DictionaryContextType = {
   setResults: (results: Word[]) => void;
   scriptType: ScriptType;
   setScriptType: (scriptType: ScriptType) => void;
+  performSearch: () => void;
 };
 
 export const DictionaryContext = createContext<
@@ -30,6 +32,14 @@ export const DictionaryContextProvider: React.FC<{
     ScriptType.Simplified
   );
 
+  const firebase = useFirebaseContext();
+
+  const performSearch = async () => {
+    await searchSimplified(firebase.db, query).then((results) => {
+      setResults(results);
+    });
+  };
+
   return (
     <DictionaryContext.Provider
       value={{
@@ -39,6 +49,7 @@ export const DictionaryContextProvider: React.FC<{
         setResults,
         scriptType,
         setScriptType,
+        performSearch,
       }}
     >
       {children}

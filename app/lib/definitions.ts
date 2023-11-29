@@ -21,4 +21,4 @@ export type Word = {
 	pinyin: string;
 	simplified: string;
 	traditional: string;
-}
+};

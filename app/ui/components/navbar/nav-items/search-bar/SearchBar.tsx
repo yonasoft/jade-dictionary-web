@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 import {
@@ -18,13 +19,14 @@ import { IconArrowRight, IconHome, IconSearch } from "@tabler/icons-react";
 
 import classes from "./SearchBar.module.css";
 import SearchSpotlight from "./SearchSpotlight";
+import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 
 type Props = {
   width?: number;
 };
 
 const SearchBar = (props: Props) => {
-  const actions: SpotlightActionData[] = [];
+  const dictionary = useDictionaryContext();
 
   return (
     <>
@@ -32,6 +34,10 @@ const SearchBar = (props: Props) => {
         <HoverCard width={280} shadow="md">
           <HoverCard.Target>
             <TextInput
+              value={dictionary.query}
+              onChange={(event) => {
+                dictionary.setQuery(event.currentTarget.value);
+              }}
               radius="xl"
               placeholder="Search..."
               rightSectionWidth={42}
@@ -44,7 +50,10 @@ const SearchBar = (props: Props) => {
               rightSection={
                 <ActionIcon
                   className={classes.icon}
-                  onClick={spotlight.open}
+                  onClick={() => {
+                    dictionary.performSearch();
+                    spotlight.open();
+                  }}
                   size="md"
                   radius="xl"
                   variant="filled"
@@ -65,7 +74,7 @@ const SearchBar = (props: Props) => {
             </Text>
             <List type="unordered" listStyleType="disc" size="sm">
               <List.Item>
-                <Text size="sm" >
+                <Text size="sm">
                   Press&nbsp;
                   <strong>Ctrl+K</strong>&nbsp; for quick access
                 </Text>

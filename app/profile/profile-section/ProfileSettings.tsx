@@ -15,7 +15,7 @@ import {
   updateUserPassword,
 } from "../../lib/firebase/authentication";
 import { useFirebaseContext } from "../../providers/FirebaseProvider";
-import { checkEmailExists } from "../../lib/firebase/storage";
+import { checkEmailExists } from "../../lib/firebase/user-storage";
 import {
   AuthCredential,
   User,
