@@ -26,13 +26,9 @@ const SearchSpotlight = (props: Props) => {
   };
 
   const showResults = () => {
-    return (
-      <Accordion>
-        {dictionary.results.map((word) => {
-          return <WordResult word={word} query={dictionary.query} />;
-        })}
-      </Accordion>
-    );
+    return dictionary.results.map((word, index) => {
+      return <WordResult key={index} word={word} query={dictionary.query} />;
+    });
   };
 
   const showNothingFound = () => {
@@ -66,13 +62,11 @@ const SearchSpotlight = (props: Props) => {
         }
       />
 
-      <Spotlight.ActionsList>
-        {dictionary.loading == true
-          ? showloading()
-          : dictionary.results.length > 0
-          ? showResults()
-          : showNothingFound()}
-      </Spotlight.ActionsList>
+      {dictionary.loading == true
+        ? showloading()
+        : dictionary.results.length > 0
+        ? showResults()
+        : showNothingFound()}
     </Spotlight.Root>
   );
 };

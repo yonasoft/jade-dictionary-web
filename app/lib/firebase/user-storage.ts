@@ -1,6 +1,6 @@
 import { User } from "@firebase/auth";
 import { initializeApp } from "firebase/app";
-import { Firestore, getFirestore, doc, setDoc, addDoc, collection, getDoc, query, getDocs, where } from "firebase/firestore";
+import { Firestore, getFirestore, doc, setDoc, addDoc, collection, getDoc, query, getDocs, where, deleteDoc } from "firebase/firestore";
 import { FirebaseStorage, StorageReference, deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateUserProfile } from "./authentication";
 import { FirestoreUserData } from "../definitions";
@@ -54,3 +54,12 @@ export const checkEmailExists = async (db: Firestore, email: string): Promise<bo
   const querySnapshot = await getDocs(q);
   return !querySnapshot.empty; 
 };
+
+
+export const deleteuserFromDB = async (db: Firestore, userUid: string) => { 
+  await deleteDoc(doc(db, "users", userUid)).then(() => {
+    console.log("User document successfully deleted!");
+  }).catch((error) => { 
+     console.error("Error removing user document: ", error);
+   });
+}

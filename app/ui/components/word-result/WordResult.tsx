@@ -1,5 +1,5 @@
 import { ScriptType, Word } from "@/app/lib/definitions";
-import { Accordion, Group } from "@mantine/core";
+import { Accordion, Card, Flex, Group, Text } from "@mantine/core";
 import React from "react";
 
 type Props = {
@@ -8,15 +8,20 @@ type Props = {
 };
 
 const WordResult = ({ query, word }: Props) => {
+  const traditional = `(${word.traditional})`;
+
   return (
-    <Accordion.Item key={word.id} value={word.simplified || word.traditional}>
-      <Accordion.Control>
-        {word.simplified}
-        {word.traditional == word.simplified && word.traditional}
-        {word.definition}
-      </Accordion.Control>
-      <Accordion.Panel>{}</Accordion.Panel>
-    </Accordion.Item>
+    <Card shadow="md" withBorder>
+      <Group align="start" grow>
+        <Flex justify="center" align="center" direction="column">
+          <Text size="xl" fw="500">{`${word.simplified} ${
+            word.simplified != word.traditional ? traditional : ""
+          }`}</Text>
+          <Text size="md">{word.pinyin}</Text>
+        </Flex>
+        <Text className="h-auto align-middle">{word.definition}</Text>
+      </Group>
+    </Card>
   );
 };
 

@@ -26,7 +26,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
-import { addNewUserToDB } from "./user-storage";
+import { addNewUserToDB, deleteuserFromDB } from "./user-storage";
 import { Dispatch, SetStateAction } from "react";
 
 export async function setupEmulators(auth:Auth) {
@@ -149,6 +149,12 @@ export const sendResetPassword = async (auth: Auth, email: string) => {
       });
 }
  
-export const deleteAUser = async (auth: Auth) => { 
-    await deleteUser(auth.currentUser as User)
+export const deleteAUser = async (firestore:Firestore, auth: Auth ) => { 
+  await deleteUser(auth.currentUser as User)
+    .then(() => {
+      console.log("User deleted successfully")
+      deleteuserFromDB(firestore, auth.currentUser?.uid as string, )
+    }).catch((error) => {
+      console.error(error);
+    });
 }

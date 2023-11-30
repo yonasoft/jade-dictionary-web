@@ -30,8 +30,8 @@ const DeleteUserConfirmation = ({
       innerProps: {
         onSuccess: async () => {
           try {
-            await deleteAUser(firebase.auth);
-            setAccountDeleted(true); 
+            await deleteAUser(firebase.firestore, firebase.auth);
+            setAccountDeleted(true);
           } catch (error) {
             console.error(
               "Failed to delete account after reauthentication:",
@@ -51,9 +51,9 @@ const DeleteUserConfirmation = ({
     }
 
     try {
-      await deleteAUser(firebase.auth);
+      await deleteAUser(firebase.firestore, firebase.auth);
       setAccountDeleted(true); // Account deleted
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Account deletion failed:", error);
       if (error.code === "auth/requires-recent-login") {
         handleReauthAndDelete(); // Handle reauthentication and retry deletion

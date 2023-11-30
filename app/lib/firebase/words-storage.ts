@@ -1,6 +1,5 @@
-
+import { Firestore, collection, query, where, getDocs } from "firebase/firestore";
 import { QueryType, Word } from "../definitions";
-import { Firestore, collection, getDocs, query, where  } from "firebase/firestore";
 
 export const searchWords = async (db: Firestore, searchQuery: string): Promise<Word[]> => {
   const inputType = determineInputType(searchQuery);
@@ -17,11 +16,10 @@ export const searchWords = async (db: Firestore, searchQuery: string): Promise<W
       searchResults = await searchPinyin(db, searchQuery);
       break;
     default:
-      // Handle any other cases or default behavior
-      break;
+      return [];
   }
 
-  return sortWordsByClosestMatch(searchResults, searchQuery);
+  return filterAndSortWords(searchResults, searchQuery, inputType);
 };
 
 const determineInputType = (input: string): QueryType => {
@@ -37,38 +35,92 @@ const determineInputType = (input: string): QueryType => {
   }
 };
 
-const searchHanzi = async (db: Firestore, word: string): Promise<Word[]> => {
-  const wordsRef = collection(db, "words");
-  const q = query(wordsRef, where("simplified", "==", word), where("traditional", "==", word));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => doc.data() as Word);
-};
-
 const normalizePinyin = (pinyin: string): string => {
-const toneMap: { [key: string]: string } = {
-  'ā': 'a1', 'á': 'a2', 'ǎ': 'a3', 'à': 'a4',
-  'ē': 'e1', 'é': 'e2', 'ě': 'e3', 'è': 'e4',
-  'ī': 'i1', 'í': 'i2', 'ǐ': 'i3', 'ì': 'i4',
-  'ō': 'o1', 'ó': 'o2', 'ǒ': 'o3', 'ò': 'o4',
-  'ū': 'u1', 'ú': 'u2', 'ǔ': 'u3', 'ù': 'u4',
-  'ǖ': 'v1', 'ǘ': 'v2', 'ǚ': 'v3', 'ǜ': 'v4', 'ü': 'v5'
-  // Add more mappings for ü and other vowels as needed
-};
+  const toneMap:{ [key: string]: string } = {
+    'ā': 'a1', 'á': 'a2', 'ǎ': 'a3', 'à': 'a4',
+    'ē': 'e1', 'é': 'e2', 'ě': 'e3', 'è': 'e4',
+    'ī': 'i1', 'í': 'i2', 'ǐ': 'i3', 'ì': 'i4',
+    'ō': 'o1', 'ó': 'o2', 'ǒ': 'o3', 'ò': 'o4',
+    'ū': 'u1', 'ú': 'u2', 'ǔ': 'u3', 'ù': 'u4',
+    'ǖ': 'v1', 'ǘ': 'v2', 'ǚ': 'v3', 'ǜ': 'v4', 'ü': 'v5'
+  };
 
   let normalized = pinyin.split('').map(char => toneMap[char] || char).join('');
-  
-  // Add tone numbers for Pinyin without tones (default to 5 for no tone)
   normalized = normalized.replace(/([a-zA-ZüÜ]+)(?![1-5])/g, '$15');
-
   return normalized;
 };
 
-const searchPinyin = async (db: Firestore, pinyin: string): Promise<Word[]> => {
-  const normalizedPinyin = normalizePinyin(pinyin);
+const calculateMatchScore = (word: Word, query: string, queryType: QueryType): number => {
+  let wordField = word.definition;
+  if (queryType === QueryType.Hanzi) {
+    wordField = word.simplified + word.traditional; // Combine both fields for comparison
+  } else if (queryType === QueryType.Pinyin) {
+    wordField = word.pinyin;
+  }
+
+  if (wordField.toLowerCase() === query.toLowerCase()) {
+    // Exact match
+    return Infinity;
+  } else {
+    let matchCount = 0;
+    for (let i = 0; i < query.length; i++) {
+      if (wordField.toLowerCase().includes(query[i].toLowerCase())) {
+        matchCount++;
+      }
+    }
+    return matchCount;
+  }
+};
+
+const sortWordsByClosestMatch = (words: Word[], query: string, queryType: QueryType): Word[] => {
+  return words.sort((a, b) => {
+    const scoreA = calculateMatchScore(a, query, queryType);
+    const scoreB = calculateMatchScore(b, query, queryType);
+
+    if (scoreA === scoreB) {
+      return a.definition.localeCompare(b.definition);
+    }
+    return scoreB - scoreA;
+  });
+};
+
+const filterAndSortWords = (words: Word[], query: string, queryType: QueryType): Word[] => {
+  let filteredWords = words.filter(word => {
+    switch(queryType) {
+      case QueryType.English:
+        return word.definition.toLowerCase().includes(query.toLowerCase());
+      case QueryType.Hanzi:
+        return word.simplified.includes(query) || word.traditional.includes(query);
+      case QueryType.Pinyin:
+        return word.pinyin.includes(normalizePinyin(query));
+      default:
+        return false;
+    }
+  });
+
+  return sortWordsByClosestMatch(filteredWords, query, queryType);
+};
+
+// ... other functions ...
+
+       
+const searchHanzi = async (db: Firestore, word: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
-  const q = query(wordsRef, where("pinyin", "==", normalizedPinyin));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => doc.data() as Word);
+  const qSimplified = query(wordsRef, where("simplified", ">=", word), where("simplified", "<=", word + '\uf8ff'));
+  const qTraditional = query(wordsRef, where("traditional", ">=", word), where("traditional", "<=", word + '\uf8ff'));
+
+  const simplifiedResults = await getDocs(qSimplified);
+  const traditionalResults = await getDocs(qTraditional);
+
+  // Combine and filter unique results
+  const results = new Map();
+  [simplifiedResults, traditionalResults].forEach(snapshot => {
+    snapshot.forEach(doc => {
+      results.set(doc.id, doc.data() as Word);
+    });
+  });
+
+  return Array.from(results.values());
 };
 
 const searchEnglish = async (db: Firestore, definition: string): Promise<Word[]> => {
@@ -78,39 +130,16 @@ const searchEnglish = async (db: Firestore, definition: string): Promise<Word[]>
   return querySnapshot.docs.map(doc => doc.data() as Word);
 };
 
-const calculateMatchScore = (word: string, query: string): number => {
-  if (word === query) {
-    // Exact match
-    return Infinity;
+const searchPinyin = async (db: Firestore, pinyin: string): Promise<Word[]> => {
+  const normalizedPinyin = normalizePinyin(pinyin);
+  const wordsRef = collection(db, "words");
+  const q = query(wordsRef, where("pinyin", "==", normalizedPinyin));
+  const querySnapshot = await getDocs(q);
+  
+  if (!querySnapshot.empty) {
+    return querySnapshot.docs.map(doc => doc.data() as Word);
   } else {
-    // Calculate the number of characters in the word that match the query
-    let matchCount = 0;
-    for (let i = 0; i < query.length; i++) {
-      if (word.includes(query[i])) {
-        matchCount++;
-      }
-    }
-
-    // Return the match count, higher is better
-    // You might want to experiment with different scoring strategies
-    return matchCount;
+    // Handle the case where no documents are found
+    return [];
   }
 };
-
-const sortWordsByClosestMatch = (words: Word[], query: string): Word[] => {
-  return words.sort((a, b) => {
-    const scoreA = calculateMatchScore(a.definition, query);
-    const scoreB = calculateMatchScore(b.definition, query);
-
-    if (scoreA === scoreB) {
-      // If scores are equal, sort alphabetically as a fallback
-      return a.definition.localeCompare(b.definition);
-    }
-    // Higher score comes first
-    return scoreB - scoreA;
-  });
-};
-
-
-        
-  
