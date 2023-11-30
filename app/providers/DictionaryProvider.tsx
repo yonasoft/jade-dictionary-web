@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { ScriptType, Word } from "../lib/definitions";
 import { FirebaseContext, useFirebaseContext } from "./FirebaseProvider";
-import { searchSimplified } from "../lib/firebase/words-storage";
+import { searchWords } from "../lib/firebase/words-storage";
 
 type Props = {
   children: React.ReactNode;
@@ -14,6 +14,7 @@ type DictionaryContextType = {
   setQuery: (query: string) => void;
   results: Word[];
   setResults: (results: Word[]) => void;
+  loading: boolean;
   scriptType: ScriptType;
   setScriptType: (scriptType: ScriptType) => void;
   performSearch: () => void;
@@ -28,6 +29,7 @@ export const DictionaryContextProvider: React.FC<{
 }> = ({ children }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Word[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [scriptType, setScriptType] = useState<ScriptType>(
     ScriptType.Simplified
   );
@@ -35,9 +37,17 @@ export const DictionaryContextProvider: React.FC<{
   const firebase = useFirebaseContext();
 
   const performSearch = async () => {
-    await searchSimplified(firebase.db, query).then((results) => {
-      setResults(results);
-    });
+    setSearchLoading(true);
+    return await searchWords(firebase.firestore, query)
+      .then((words) => {
+        console.log(words);
+        setResults(words);
+        setSearchLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setSearchLoading(false);
+      });
   };
 
   return (
@@ -47,6 +57,7 @@ export const DictionaryContextProvider: React.FC<{
         setQuery,
         results,
         setResults,
+        loading: searchLoading,
         scriptType,
         setScriptType,
         performSearch,

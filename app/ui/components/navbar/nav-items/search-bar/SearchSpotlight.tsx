@@ -1,5 +1,5 @@
 "use client";
-import { searchSimplified } from "@/app/lib/firebase/words-storage";
+import {} from "@/app/lib/firebase/words-storage";
 import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Accordion, Center, Text } from "@mantine/core";
@@ -15,15 +15,35 @@ const SearchSpotlight = (props: Props) => {
   const dictionary = useDictionaryContext();
   const firebase = useFirebaseContext();
 
-  const results = dictionary.results.map((word) => {
+  const showloading = () => {
     return (
-      <WordResult
-        word={word}
-        query={dictionary.query}
-        scriptType={dictionary.scriptType}
-      ></WordResult>
+      <Spotlight.Empty>
+        <Center>
+          <Text size="xl">Loading...</Text>
+        </Center>
+      </Spotlight.Empty>
     );
-  });
+  };
+
+  const showResults = () => {
+    return (
+      <Accordion>
+        {dictionary.results.map((word) => {
+          return <WordResult word={word} query={dictionary.query} />;
+        })}
+      </Accordion>
+    );
+  };
+
+  const showNothingFound = () => {
+    return (
+      <Spotlight.Empty>
+        <Center>
+          <Text size="xl">Nothing found...</Text>
+        </Center>
+      </Spotlight.Empty>
+    );
+  };
 
   return (
     <Spotlight.Root
@@ -34,6 +54,7 @@ const SearchSpotlight = (props: Props) => {
       scrollable
     >
       <Spotlight.Search
+        className="sticky"
         placeholder="Search via English, Pinyin, or Chinese..."
         rightSection={
           <IconSearch
@@ -46,15 +67,11 @@ const SearchSpotlight = (props: Props) => {
       />
 
       <Spotlight.ActionsList>
-        {dictionary.results.length > 0 ? (
-          <Accordion>{results}</Accordion>
-        ) : (
-          <Spotlight.Empty>
-            <Center>
-              <Text size="xl">Nothing found...</Text>
-            </Center>
-          </Spotlight.Empty>
-        )}
+        {dictionary.loading == true
+          ? showloading()
+          : dictionary.results.length > 0
+          ? showResults()
+          : showNothingFound()}
       </Spotlight.ActionsList>
     </Spotlight.Root>
   );

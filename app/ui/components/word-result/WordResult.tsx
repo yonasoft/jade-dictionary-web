@@ -5,23 +5,14 @@ import React from "react";
 type Props = {
   query: string;
   word: Word;
-  scriptType: ScriptType;
 };
 
-const WordResult = ({ query, word, scriptType }: Props) => {
+const WordResult = ({ query, word }: Props) => {
   return (
-    <Accordion.Item
-      key={word.id}
-      value={
-        scriptType === ScriptType.Simplified
-          ? word.simplified
-          : word.traditional
-      }
-    >
+    <Accordion.Item key={word.id} value={word.simplified || word.traditional}>
       <Accordion.Control>
-        {scriptType === ScriptType.Simplified
-          ? word.simplified
-          : word.traditional}
+        {word.simplified}
+        {word.traditional == word.simplified && word.traditional}
         {word.definition}
       </Accordion.Control>
       <Accordion.Panel>{}</Accordion.Panel>
