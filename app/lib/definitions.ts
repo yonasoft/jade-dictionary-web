@@ -16,7 +16,7 @@ export interface FirestoreUserData {
 	photoFileName: string| null;
 }
 export type Word = {
-	id: number;
+	_id: number;
 	definition: string;
 	pinyin: string;
 	simplified: string;

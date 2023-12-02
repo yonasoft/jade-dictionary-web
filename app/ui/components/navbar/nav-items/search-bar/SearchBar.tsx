@@ -51,7 +51,7 @@ const SearchBar = (props: Props) => {
                 <ActionIcon
                   className={classes.icon}
                   onClick={() => {
-                    dictionary.performSearch();
+                    dictionary.performSearch(dictionary.query);
                     spotlight.open();
                   }}
                   size="md"

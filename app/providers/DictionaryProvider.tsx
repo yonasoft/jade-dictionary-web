@@ -17,7 +17,7 @@ type DictionaryContextType = {
   loading: boolean;
   scriptType: ScriptType;
   setScriptType: (scriptType: ScriptType) => void;
-  performSearch: () => void;
+  performSearch: (input: string) => void;
 };
 
 export const DictionaryContext = createContext<
@@ -36,9 +36,9 @@ export const DictionaryContextProvider: React.FC<{
 
   const firebase = useFirebaseContext();
 
-  const performSearch = async () => {
+  const performSearch = async (input: string = query) => {
     setSearchLoading(true);
-    return await searchWords(firebase.firestore, query)
+    return await searchWords(firebase.firestore, input)
       .then((words) => {
         console.log(words);
         setResults(words);

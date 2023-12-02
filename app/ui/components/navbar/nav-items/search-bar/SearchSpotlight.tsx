@@ -13,7 +13,6 @@ type Props = {};
 
 const SearchSpotlight = (props: Props) => {
   const dictionary = useDictionaryContext();
-  const firebase = useFirebaseContext();
 
   const showloading = () => {
     return (
@@ -44,7 +43,10 @@ const SearchSpotlight = (props: Props) => {
   return (
     <Spotlight.Root
       query={dictionary.query}
-      onQueryChange={dictionary.setQuery}
+      onQueryChange={(query) => {
+        dictionary.setQuery(query);
+        dictionary.performSearch(query);
+      }}
       closeOnClickOutside
       closeOnEscape
       scrollable
@@ -52,14 +54,7 @@ const SearchSpotlight = (props: Props) => {
       <Spotlight.Search
         className="sticky"
         placeholder="Search via English, Pinyin, or Chinese..."
-        rightSection={
-          <IconSearch
-            stroke={1.5}
-            onClick={() => {
-              dictionary.performSearch();
-            }}
-          />
-        }
+        leftSection={<IconSearch stroke={1.5} />}
       />
 
       {dictionary.loading == true
