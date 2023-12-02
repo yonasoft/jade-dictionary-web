@@ -45,7 +45,9 @@ const SearchSpotlight = (props: Props) => {
       query={dictionary.query}
       onQueryChange={(query) => {
         dictionary.setQuery(query);
-        dictionary.performSearch(query);
+        if (query.length > 0) {
+          dictionary.performSearch(query);
+        }
       }}
       closeOnClickOutside
       closeOnEscape

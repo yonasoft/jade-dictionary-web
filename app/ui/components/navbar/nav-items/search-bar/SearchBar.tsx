@@ -50,7 +50,7 @@ const SearchBar = (props: Props) => {
               rightSection={
                 <ActionIcon
                   className={classes.icon}
-                  onClick={() => {
+                  onClick={async () => {
                     dictionary.performSearch(dictionary.query);
                     spotlight.open();
                   }}

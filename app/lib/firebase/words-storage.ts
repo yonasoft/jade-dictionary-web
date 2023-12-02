@@ -12,25 +12,25 @@ const toneMap:{[key:string]:string} = {
   'ǖ': 'v1', 'ǘ': 'v2', 'ǚ': 'v3', 'ǜ': 'v4', 'ü': 'v5'
 };
 
-export const searchWords = async (db: Firestore, searchQuery: string, page: number = 1): Promise<Word[]> => {
+export const searchWords = async (db: Firestore, searchQuery: string): Promise<Word[]> => {
   const inputType = determineInputType(searchQuery);
   let searchResults: Word[] = [];
 
   if (inputType === QueryType.Hanzi) {
     searchResults = await searchHanzi(db, searchQuery);
+    return filterAndSortWords(searchResults, searchQuery, inputType);
   } else {
     const englishResults = await searchEnglish(db, searchQuery);
-    const pinyinResults = await searchPinyin(db, searchQuery, page);
-    searchResults = [...englishResults, ...pinyinResults];
-  }
 
-  return filterAndSortWords(searchResults, searchQuery, inputType);
+    searchResults = englishResults;
+    return searchResults;
+  }
 };
        
-const searchHanzi = async (db: Firestore, word: string): Promise<Word[]> => {
+const searchHanzi = async (db: Firestore, input: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
-  const qSimplified = query(wordsRef, where("simplified", ">=", word), where("simplified", "<=", word + '\uf8ff'), limit(PAGE_SIZE));
-  const qTraditional = query(wordsRef, where("traditional", ">=", word), where("traditional", "<=", word + '\uf8ff'), limit(PAGE_SIZE));
+  const qSimplified = query(wordsRef, where("simplified", ">=", input), where("simplified", "<=", input + '\uf8ff'), limit(PAGE_SIZE));
+  const qTraditional = query(wordsRef, where("traditional", ">=", input), where("traditional", "<=", input + '\uf8ff'), limit(PAGE_SIZE));
 
   const simplifiedResults = await getDocs(qSimplified);
   const traditionalResults = await getDocs(qTraditional);
@@ -44,24 +44,18 @@ const searchHanzi = async (db: Firestore, word: string): Promise<Word[]> => {
 
   return Array.from(results.values());
 };
-const searchEnglish = async (db: Firestore, definition: string): Promise<Word[]> => {
+const searchEnglish = async (db: Firestore, input: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
-  const lowercaseDefinition = definition.toLowerCase();
+  const lowercaseDefinition = input.toLowerCase();
   const q = query(
     wordsRef, 
     where("definition", ">=", lowercaseDefinition), 
-    where("definition", "<=", lowercaseDefinition + '\uf8ff'), 
     limit(PAGE_SIZE)
   );
   const querySnapshot = await getDocs(q);
   const allResults = querySnapshot.docs.map(doc => doc.data() as Word);
 
-  // Filter results to include only those that contain the query string
-  const filteredResults = allResults.filter(word => 
-    word.definition.toLowerCase().includes(lowercaseDefinition)
-  );
-  
-  return filteredResults;
+  return allResults;
 };
 
 
