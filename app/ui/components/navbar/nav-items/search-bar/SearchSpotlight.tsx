@@ -2,7 +2,7 @@
 import {} from "@/app/lib/firebase/words-storage";
 import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import { Accordion, Center, Text } from "@mantine/core";
+import { Accordion, Center, ScrollArea, Text } from "@mantine/core";
 import { Spotlight, SpotlightAction } from "@mantine/spotlight";
 import { setQuery } from "@mantine/spotlight/lib/spotlight.store";
 import { IconSearch } from "@tabler/icons-react";
@@ -58,12 +58,13 @@ const SearchSpotlight = (props: Props) => {
         placeholder="Search via English, Pinyin, or Chinese..."
         leftSection={<IconSearch stroke={1.5} />}
       />
-
-      {dictionary.loading == true
-        ? showloading()
-        : dictionary.results.length > 0
-        ? showResults()
-        : showNothingFound()}
+      <ScrollArea>
+        {dictionary.loading == true
+          ? showloading()
+          : dictionary.results.length > 0
+          ? showResults()
+          : showNothingFound()}
+      </ScrollArea>
     </Spotlight.Root>
   );
 };

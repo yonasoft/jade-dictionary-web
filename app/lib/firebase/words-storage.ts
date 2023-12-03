@@ -44,6 +44,7 @@ const searchHanzi = async (db: Firestore, input: string): Promise<Word[]> => {
 
   return Array.from(results.values());
 };
+
 const searchEnglish = async (db: Firestore, input: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
   const lowercaseDefinition = input.toLowerCase();
