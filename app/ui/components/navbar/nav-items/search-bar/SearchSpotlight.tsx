@@ -51,7 +51,6 @@ const SearchSpotlight = (props: Props) => {
       }}
       closeOnClickOutside
       closeOnEscape
-      scrollable
     >
       <Spotlight.Search
         className="sticky"
