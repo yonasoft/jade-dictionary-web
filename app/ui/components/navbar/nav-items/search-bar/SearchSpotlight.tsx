@@ -7,6 +7,7 @@ import {
   Button,
   Center,
   Group,
+  Input,
   ScrollArea,
   Text,
 } from "@mantine/core";
@@ -23,6 +24,12 @@ const SearchSpotlight = (props: Props) => {
 
   const onSearch = async () => {
     dictionary.performSearch(dictionary.query);
+  };
+
+  const handleEnterKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      onSearch();
+    }
   };
 
   const showloading = () => {
@@ -52,36 +59,23 @@ const SearchSpotlight = (props: Props) => {
   };
 
   return (
-    <Spotlight.Root
-      query={dictionary.query}
-      onQueryChange={(query: string) => {
-        dictionary.setQuery(query);
-      }}
-      closeOnClickOutside
-      closeOnEscape
-      scrollable
-    >
-      <Group style={{ display: "flex", width: "100%", alignItems: "stretch" }}>
-        <Spotlight.Search
-          style={{ flexGrow: 1 }}
+    <Spotlight.Root closeOnClickOutside closeOnEscape scrollable>
+      <Group className="sticky my-3 flex w-full items-center">
+        <Input
+          className="flex-grow"
+          value={dictionary.query}
+          onChange={(event) => dictionary.setQuery(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
-          onKeyDown={(event: React.KeyboardEvent) => {
-            if (event.key === "Enter") {
-              onSearch();
-            }
-          }}
-          rightSection={
-            <div
-              onClick={() => {
-                console.log("Search icon clicked");
-                onSearch();
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <IconSearch size={16} />
-            </div>
-          }
+          onKeyDown={handleEnterKeyPress}
         />
+        <Button
+          onClick={onSearch}
+          variant="outline"
+          color="gray"
+          className="shrink-0"
+        >
+          <IconSearch className="w-6 h-6" />
+        </Button>
       </Group>
 
       <Spotlight.Action>
