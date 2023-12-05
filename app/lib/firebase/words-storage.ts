@@ -71,7 +71,8 @@ const searchEnglish = async (db: Firestore, input: string): Promise<Word[]> => {
 const searchPinyin = async (db: Firestore, input: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
   const normalizedInput = normalizePinyinInput(input);
-
+console.log('normalizedInput', normalizedInput);
+  
   // Construct query for the normalized input
   const q = query(wordsRef, where("pinyin", ">=", normalizedInput), limit(PAGE_SIZE));
 
@@ -87,20 +88,34 @@ const convertToneMarksToNumbers = (input:string) => {
   return input.replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/g, match => toneMarksToNumbers[match] || match);
 };
 
-const normalizePinyinInput = (input: string): string => {
-  // First, convert tone marks to numbers
-  let normalized = convertToneMarksToNumbers(input);
+const rearrangeToneNumbersAndAddSpaces = (input: string): string => {
+  // Split input into words (syllables with or without tone numbers)
+  const syllables = input
+    .split(/\s+/) // Split by spaces to handle multiple syllables
+    .map(syllable => {
+      // Rearrange the syllable to place the tone number at the end
+      let rearranged = syllable.replace(/^([bpmfdtnlgkhjqxzcsryw]*)([aeiouü]+)([ngh]?)([1-5]?)$/, '$1$2$3$4');
+      // Correct any misplaced tone numbers
+      rearranged = rearranged.replace(/([aeiouü])([1-5])([ngh]?)/, '$1$3$2');
+      return rearranged;
+    })
+    .join(' ');
 
-  // Then insert a space after each tone number
-  normalized = normalized.replace(/([1-5])([a-z])/gi, '$1 $2');
-
-  // Finally, ensure that there are no double spaces and trim the result
-  normalized = normalized.replace(/\s+/g, ' ').trim();
-
-  console.log('normalized', normalized);
-  return normalized;
+  // Add spaces after each tone number
+  return syllables.replace(/([1-5])([bpmfdtnlgkhjqxzcsryw])/g, '$1 $2');
 };
 
+const normalizePinyinInput = (input: string): string => {
+  // Convert tone marks to numbers if present
+  if (input.match(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/)) {
+    input = convertToneMarksToNumbers(input);
+  }
+
+  // Rearrange tone numbers to the end of syllables and handle spacing
+  input = rearrangeToneNumbersAndAddSpaces(input);
+
+  return input.trim();
+};
 
 const determineInputType = (input: string): QueryType => {
   const hanziPattern = /[\u3400-\u9FBF]/;
