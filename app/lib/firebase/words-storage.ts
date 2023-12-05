@@ -3,28 +3,28 @@ import { QueryType, Word } from "../definitions";
 
 const PAGE_SIZE = 30;
 
-export const searchWords = async (db: Firestore, input: string, page: number = 1): Promise<Word[]> => {
-  const inputTypes = determineInputType(input);
-console.log('inputTypes', inputTypes);
+export const searchWords = async (db: Firestore, input: string): Promise<Word[]> => {
+  const inputType = determineInputType(input);
+  console.log('inputType', inputType);
   let searchResults: Word[] = [];
 
-  if (inputTypes.includes(QueryType.Hanzi)) {
-    searchResults = await searchHanzi(db, input);
-  } else {
-    let combinedResults = [];
-    if (inputTypes.includes(QueryType.English)) {
-      combinedResults.push(...await searchEnglish(db, input));
-    }
-    if (inputTypes.includes(QueryType.Pinyin)) {
-      combinedResults.push(...await searchPinyin(db, input));
-    }
-    searchResults = combinedResults;
-    console.log('searchResults', searchResults);
+  switch (inputType) {
+    case QueryType.Hanzi:
+      searchResults = await searchHanzi(db, input);
+      break;
+    case QueryType.Pinyin:
+      searchResults = await searchPinyin(db, input);
+      break;
+    case QueryType.English:
+      searchResults = await searchEnglish(db, input);
+      break;
   }
+
   console.log('searchResults', searchResults);
-  return filterAndSortWords(searchResults, input, inputTypes);
+  return filterAndSortWords(searchResults, input, inputType);
 };
-       
+
+   
 const searchHanzi = async (db: Firestore, input: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
   const qSimplified = query(wordsRef, where("simplified", ">=", input), where("simplified", "<=", input + '\uf8ff'), limit(PAGE_SIZE));
@@ -59,23 +59,21 @@ const searchEnglish = async (db: Firestore, input: string): Promise<Word[]> => {
 
 const searchPinyin = async (db: Firestore, input: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
-  const normalizedInputs = normalizePinyinInput(input);
+  const normalizedInput = normalizePinyinInput(input);
 
-  console.log('Normalized Pinyin Inputs:', normalizedInputs);
+  console.log('Normalized Pinyin Input:', normalizedInput);
 
   let queries: Query<DocumentData>[] = [];
-  normalizedInputs.forEach((normalizedInput: string) => {
-    console.log('Querying for Pinyin:', normalizedInput);
-    // Handle case for pinyin with no tones
-    if (!/\d/.test(normalizedInput)) {
-      for (let tone = 1; tone <= 5; tone++) {
-        queries.push(query(wordsRef, where("pinyin", ">=", `${normalizedInput}${tone}`), limit(PAGE_SIZE)));
-      }
-    } else {
-      // For pinyin with tones, query as is
-      queries.push(query(wordsRef, where("pinyin", ">=", normalizedInput), limit(PAGE_SIZE)));
+  if (!/\d/.test(normalizedInput)) {
+    // Construct query for each tone if no tone is specified in the input
+    for (let tone = 1; tone <= 5; tone++) {
+      let searchString = `${normalizedInput}${tone === 5 ? '' : tone}`;
+      queries.push(query(wordsRef, where("pinyin", ">=", searchString), limit(PAGE_SIZE)));
     }
-  });
+  } else {
+    // Query directly if tones are specified
+    queries.push(query(wordsRef, where("pinyin", ">=", normalizedInput), limit(PAGE_SIZE)));
+  }
 
   let results = new Map<string, Word>();
   for (let q of queries) {
@@ -87,8 +85,8 @@ const searchPinyin = async (db: Firestore, input: string): Promise<Word[]> => {
   return Array.from(results.values());
 };
 
-const normalizePinyinInput = (input:string):string[] => {
-  const toneMarksToNumbers:{[key:string]:string} = {
+const normalizePinyinInput = (input: string): string => {
+  const toneMarksToNumbers: { [key: string]: string } = {
     'ā': 'a1', 'á': 'a2', 'ǎ': 'a3', 'à': 'a4',
     'ē': 'e1', 'é': 'e2', 'ě': 'e3', 'è': 'e4',
     'ī': 'i1', 'í': 'i2', 'ǐ': 'i3', 'ì': 'i4',
@@ -97,43 +95,35 @@ const normalizePinyinInput = (input:string):string[] => {
     'ǖ': 'v1', 'ǘ': 'v2', 'ǚ': 'v3', 'ǜ': 'v4', 'ü': 'v5'
   };
 
-  let normalized = input.split('').map(char => toneMarksToNumbers[char] || char).join('');
-  normalized = normalized.replace(/(\d)([a-zA-ZüÜ])/g, '$1 $2'); // Add space after numeric tone
+  // Replace tone marks with corresponding numbers and add space between syllables
+  let normalized = input.replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/g, match => {
+    return toneMarksToNumbers[match] || match;
+  }).replace(/(\d)([a-zA-Z])/g, '$1 $2');
 
-  // Handle compounds: split the string into syllables and then handle each syllable
-  const syllables = normalized.split(/\s+/).filter(s => s); // Split and filter out empty strings
-  return syllables.map(syllable => {
-    if (!/\d/.test(syllable)) {
-      // If the syllable doesn't have a tone, consider all tones
-      return Array.from({ length: 5 }, (_, i) => syllable + (i + 1));
-    }
-    return [syllable]; // Syllable with tone number remains as is
-  }).flat(); // Flatten the array of arrays
+  // Normalize the input for non-tonal Pinyin
+  if (!/\d/.test(normalized)) {
+    return normalized.split(/\s+/).map(syllable => syllable + '5').join(' ');
+  }
+
+  return normalized;
 };
 
-const determineInputType = (input: string): QueryType[] => {
+const determineInputType = (input: string): QueryType => {
   const hanziPattern = /[\u3400-\u9FBF]/;
   const pinyinPatternWithTones = /(\b[a-zA-ZüÜ]*(?:ā|á|ǎ|à|ē|é|ě|è|ī|í|ǐ|ì|ō|ó|ǒ|ò|ū|ú|ǔ|ù|ǖ|ǘ|ǚ|ǜ|ü)\b)/;
   const pinyinPatternWithNumbers = /\b[a-zA-ZüÜ]+[1-5]\b/;
-  const englishPattern = /[a-zA-Z]+/;
-
-  let types: QueryType[] = [];
+  const pinyinPatternNoTones = /\b[a-zA-ZüÜ]+\b/; // Pinyin without tones or numbers
+  const pinyinSyllablePattern = /\b(?:[bpmfdtnlgkhjqxzcsrwy]h?|zh|ch|sh|[aeiouü][a-z]*)\b/i;
 
   if (hanziPattern.test(input)) {
-    types.push(QueryType.Hanzi);
+    return QueryType.Hanzi;
   }
-  if (pinyinPatternWithTones.test(input) || pinyinPatternWithNumbers.test(input)) {
-    types.push(QueryType.Pinyin);
-  } 
-  if (englishPattern.test(input) && !pinyinPatternWithTones.test(input) && !pinyinPatternWithNumbers.test(input)) {
-    types.push(QueryType.English);
+  if (pinyinPatternWithTones.test(input) || pinyinPatternWithNumbers.test(input) || (pinyinPatternNoTones.test(input) && pinyinSyllablePattern.test(input))) {
+    return QueryType.Pinyin;
   }
-
-  if (types.length === 0) {
-    types.push(QueryType.English);
-  }
-
-  return types;
+  
+  // Default to English if no other type matches
+  return QueryType.English;
 };
 
 const calculateMatchScore = (word: Word, input: string, queryType: QueryType): number => {
@@ -142,8 +132,6 @@ const calculateMatchScore = (word: Word, input: string, queryType: QueryType): n
       return calculateHanziMatchScore(word, input);
     case QueryType.English:
       return calculateEnglishMatchScore(word, input);
-    case QueryType.Pinyin:
-      return calculatePinyinMatchScore(word, input);
     default:
       return 0;
   }
@@ -192,26 +180,6 @@ const calculateEnglishMatchScore = (word: Word, query: string): number => {
   return score;
 };
 
-const calculatePinyinMatchScore = (word: Word, input: string): number => {
-  const normalizedInputArray = normalizePinyinInput(input);
-  const wordPinyinArray = Array.isArray(word.pinyin) ? word.pinyin : word.pinyin.split(' ');
-
-  let score = 0;
-  const maxScore = normalizedInputArray.length * 2; // Max score when all syllables match
-
-  normalizedInputArray.forEach((inputSyllable) => {
-    if (wordPinyinArray.some(wordSyllable => wordSyllable.startsWith(inputSyllable.slice(0, -1)))) {
-      score += 2; // Score for each syllable match
-    }
-  });
-
-  // Adjust the score to be a fraction of the maximum possible score
-  score = (score / maxScore) * 100;
-
-  return score;
-};
-
-
 const sortWordsByClosestMatch = (words: Word[], input: string, inputType: QueryType): Word[] => {
   return words.sort((a, b) => {
     const scoreA = calculateMatchScore(a, input, inputType);
@@ -224,31 +192,32 @@ const sortWordsByClosestMatch = (words: Word[], input: string, inputType: QueryT
   });
 };
 
-const filterAndSortWords = (words: Word[], input: string, inputTypes: QueryType[]): Word[] => {
+const filterAndSortWords = (words: Word[], input: string, inputType: QueryType): Word[] => {
   let filteredWords = words.filter(word => {
-    return inputTypes.some(inputType => {
-      switch(inputType) {
-        case QueryType.English:
-          return word.definition.toLowerCase().includes(input.toLowerCase());
-        case QueryType.Hanzi:
-          return word.simplified.includes(input) || word.traditional.includes(input);
-        case QueryType.Pinyin:
-          const normalizedInput = normalizePinyinInput(input);
-          const wordPinyinArray = Array.isArray(word.pinyin) ? word.pinyin : word.pinyin.split(' '); // Ensure it's an array
-          return normalizedInput.every(inputSyl => 
-            wordPinyinArray.some(wordSyl => wordSyl.startsWith(inputSyl.slice(0, -1)))
-          );
-        default:
-          return false;
-      }
-    });
+    switch(inputType) {
+      case QueryType.English:
+        return word.definition.toLowerCase().includes(input.toLowerCase());
+      case QueryType.Hanzi:
+        return word.simplified.includes(input) || word.traditional.includes(input);
+      case QueryType.Pinyin:
+        const normalizedInput = normalizePinyinInput(input);
+        const inputSyllables = normalizedInput.split(/\s+/);
+        const wordPinyinArray = Array.isArray(word.pinyin) ? word.pinyin : word.pinyin.split(' ');
+        return inputSyllables.every(inputSyl =>
+          wordPinyinArray.some(wordSyl => wordSyl.startsWith(inputSyl))
+        );
+      default:
+        return false;
+    }
   });
 
-  const primaryType = inputTypes[0];
-  const sortedWords = sortWordsByClosestMatch(filteredWords, input, primaryType);
-  console.log('sortedPinYinWords', sortedWords);
-  return sortedWords;
+  if (inputType === QueryType.Hanzi || inputType === QueryType.English) {
+    return sortWordsByClosestMatch(filteredWords, input, inputType);
+  }
+
+  return filteredWords;
 };
+
 
 const paginateResults = (results: Word[], page: number, pageSize: number): Word[] => {
   const startIndex = (page - 1) * pageSize;
