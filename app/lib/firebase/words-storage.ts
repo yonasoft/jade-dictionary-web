@@ -1,10 +1,21 @@
 import { Firestore, collection, query, where, getDocs, Query, DocumentData, DocumentSnapshot, startAfter, limit } from "firebase/firestore";
 import { QueryType, Word } from "../definitions";
+import { Console } from "console";
 
 const PAGE_SIZE = 30;
 
+const toneMarksToNumbers:{ [key: string]: string } = {
+    'ā': 'a1', 'á': 'a2', 'ǎ': 'a3', 'à': 'a4',
+    'ē': 'e1', 'é': 'e2', 'ě': 'e3', 'è': 'e4',
+    'ī': 'i1', 'í': 'i2', 'ǐ': 'i3', 'ì': 'i4',
+    'ō': 'o1', 'ó': 'o2', 'ǒ': 'o3', 'ò': 'o4',
+    'ū': 'u1', 'ú': 'u2', 'ǔ': 'u3', 'ù': 'u4',
+    'ǖ': 'v1', 'ǘ': 'v2', 'ǚ': 'v3', 'ǜ': 'v4', 'ü': 'v5'
+};
+
 export const searchWords = async (db: Firestore, input: string): Promise<Word[]> => {
   const inputType = determineInputType(input);
+  console.log('input', input);
   console.log('inputType', inputType);
   let searchResults: Word[] = [];
 
@@ -61,69 +72,48 @@ const searchPinyin = async (db: Firestore, input: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
   const normalizedInput = normalizePinyinInput(input);
 
-  console.log('Normalized Pinyin Input:', normalizedInput);
+  // Construct query for the normalized input
+  const q = query(wordsRef, where("pinyin", ">=", normalizedInput), limit(PAGE_SIZE));
 
-  let queries: Query<DocumentData>[] = [];
-  if (!/\d/.test(normalizedInput)) {
-    // Construct query for each tone if no tone is specified in the input
-    for (let tone = 1; tone <= 5; tone++) {
-      let searchString = `${normalizedInput}${tone === 5 ? '' : tone}`;
-      queries.push(query(wordsRef, where("pinyin", ">=", searchString), limit(PAGE_SIZE)));
-    }
-  } else {
-    // Query directly if tones are specified
-    queries.push(query(wordsRef, where("pinyin", ">=", normalizedInput), limit(PAGE_SIZE)));
-  }
+  const querySnapshot = await getDocs(q);
+  const allResults = querySnapshot.docs.map(doc => doc.data() as Word);
 
-  let results = new Map<string, Word>();
-  for (let q of queries) {
-    const snapshot = await getDocs(q);
-    snapshot.forEach(doc => results.set(doc.id, doc.data() as Word));
-  }
+  console.log('allResults', allResults);
+  return allResults;
+};
 
-  console.log('Pinyin search results:', Array.from(results.values()));
-  return Array.from(results.values());
+const convertToneMarksToNumbers = (input:string) => {
+
+  return input.replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/g, match => toneMarksToNumbers[match] || match);
 };
 
 const normalizePinyinInput = (input: string): string => {
-  const toneMarksToNumbers: { [key: string]: string } = {
-    'ā': 'a1', 'á': 'a2', 'ǎ': 'a3', 'à': 'a4',
-    'ē': 'e1', 'é': 'e2', 'ě': 'e3', 'è': 'e4',
-    'ī': 'i1', 'í': 'i2', 'ǐ': 'i3', 'ì': 'i4',
-    'ō': 'o1', 'ó': 'o2', 'ǒ': 'o3', 'ò': 'o4',
-    'ū': 'u1', 'ú': 'u2', 'ǔ': 'u3', 'ù': 'u4',
-    'ǖ': 'v1', 'ǘ': 'v2', 'ǚ': 'v3', 'ǜ': 'v4', 'ü': 'v5'
-  };
+  // First, convert tone marks to numbers
+  let normalized = convertToneMarksToNumbers(input);
 
-  // Replace tone marks with corresponding numbers and add space between syllables
-  let normalized = input.replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/g, match => {
-    return toneMarksToNumbers[match] || match;
-  }).replace(/(\d)([a-zA-Z])/g, '$1 $2');
+  // Then insert a space after each tone number
+  normalized = normalized.replace(/([1-5])([a-z])/gi, '$1 $2');
 
-  // Normalize the input for non-tonal Pinyin
-  if (!/\d/.test(normalized)) {
-    return normalized.split(/\s+/).map(syllable => syllable + '5').join(' ');
-  }
+  // Finally, ensure that there are no double spaces and trim the result
+  normalized = normalized.replace(/\s+/g, ' ').trim();
 
+  console.log('normalized', normalized);
   return normalized;
 };
 
+
 const determineInputType = (input: string): QueryType => {
   const hanziPattern = /[\u3400-\u9FBF]/;
+  const pinyinPatternWithNumbers = /[a-zA-ZüÜ]+[1-5]/; 
   const pinyinPatternWithTones = /(\b[a-zA-ZüÜ]*(?:ā|á|ǎ|à|ē|é|ě|è|ī|í|ǐ|ì|ō|ó|ǒ|ò|ū|ú|ǔ|ù|ǖ|ǘ|ǚ|ǜ|ü)\b)/;
-  const pinyinPatternWithNumbers = /\b[a-zA-ZüÜ]+[1-5]\b/;
-  const pinyinPatternNoTones = /\b[a-zA-ZüÜ]+\b/; // Pinyin without tones or numbers
-  const pinyinSyllablePattern = /\b(?:[bpmfdtnlgkhjqxzcsrwy]h?|zh|ch|sh|[aeiouü][a-z]*)\b/i;
 
   if (hanziPattern.test(input)) {
     return QueryType.Hanzi;
   }
-  if (pinyinPatternWithTones.test(input) || pinyinPatternWithNumbers.test(input) || (pinyinPatternNoTones.test(input) && pinyinSyllablePattern.test(input))) {
+  if (pinyinPatternWithNumbers.test(input) || pinyinPatternWithTones.test(input)) {
     return QueryType.Pinyin;
   }
-  
-  // Default to English if no other type matches
-  return QueryType.English;
+  return QueryType.English; // Default to English
 };
 
 const calculateMatchScore = (word: Word, input: string, queryType: QueryType): number => {
@@ -200,12 +190,8 @@ const filterAndSortWords = (words: Word[], input: string, inputType: QueryType):
       case QueryType.Hanzi:
         return word.simplified.includes(input) || word.traditional.includes(input);
       case QueryType.Pinyin:
-        const normalizedInput = normalizePinyinInput(input);
-        const inputSyllables = normalizedInput.split(/\s+/);
-        const wordPinyinArray = Array.isArray(word.pinyin) ? word.pinyin : word.pinyin.split(' ');
-        return inputSyllables.every(inputSyl =>
-          wordPinyinArray.some(wordSyl => wordSyl.startsWith(inputSyl))
-        );
+        // Assuming Pinyin search is already handled; no extra filtering needed
+        return true;
       default:
         return false;
     }
@@ -215,9 +201,9 @@ const filterAndSortWords = (words: Word[], input: string, inputType: QueryType):
     return sortWordsByClosestMatch(filteredWords, input, inputType);
   }
 
+  // For Pinyin, either return as is or apply a different sorting logic if needed
   return filteredWords;
 };
-
 
 const paginateResults = (results: Word[], page: number, pageSize: number): Word[] => {
   const startIndex = (page - 1) * pageSize;

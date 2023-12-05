@@ -59,10 +59,10 @@ const SearchSpotlight = (props: Props) => {
   };
 
   return (
-    <Spotlight.Root closeOnClickOutside closeOnEscape scrollable>
+    <Spotlight.Root zIndex={2000} closeOnClickOutside closeOnEscape scrollable>
       <Group className="sticky my-3 flex w-full items-center">
         <Input
-          className="flex-grow"
+          className="flex-grow ms-3"
           value={dictionary.query}
           onChange={(event) => dictionary.setQuery(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
@@ -72,7 +72,7 @@ const SearchSpotlight = (props: Props) => {
           onClick={onSearch}
           variant="outline"
           color="gray"
-          className="shrink-0"
+          className="me-3 shrink-0"
         >
           <IconSearch className="w-6 h-6" />
         </Button>

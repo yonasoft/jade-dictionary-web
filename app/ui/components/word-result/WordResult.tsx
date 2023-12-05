@@ -11,8 +11,8 @@ const WordResult = ({ query, word }: Props) => {
   const traditional = `(${word.traditional})`;
 
   return (
-    <Card shadow="md" withBorder>
-      <Group align="start" grow>
+    <Card className="mx-2 my-1" shadow="sm" withBorder>
+      <Group align="start" wrap="wrap" grow>
         <Flex justify="center" align="center" direction="column">
           <Text size="xl" fw="500">{`${word.simplified} ${
             word.simplified != word.traditional ? traditional : ""
