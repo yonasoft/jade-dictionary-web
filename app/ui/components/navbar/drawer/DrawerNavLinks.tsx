@@ -8,9 +8,10 @@ import classes from "./NavDrawer.module.css";
 
 type Props = {
   links: Array<LinkData>;
+  onClick: () => void;
 };
 
-const DrawerNavLinks = ({ links }: Props) => {
+const DrawerNavLinks = ({ links, onClick }: Props) => {
   const generateSubLinks = (sublinks: Array<LinkData>) =>
     sublinks?.map((subLink, subIndex) => (
       <NavLink
@@ -18,6 +19,7 @@ const DrawerNavLinks = ({ links }: Props) => {
         label={subLink.label}
         component={Link}
         href={subLink.link}
+        onClick={onClick}
       />
     ));
 
@@ -33,6 +35,9 @@ const DrawerNavLinks = ({ links }: Props) => {
             }
             component={Link}
             href={link.link}
+            onClick={() => {
+              link.sublinks && link.sublinks.length > 0 ? null : onClick();
+            }}
           >
             {link.sublinks && link.sublinks.length > 0
               ? generateSubLinks(link.sublinks)

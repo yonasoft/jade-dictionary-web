@@ -28,7 +28,7 @@ const links: Array<LinkData> = [
   },
 
   {
-    link: "/",
+    link: "/lists",
     label: "Lists",
     icon: <IconList />,
   },

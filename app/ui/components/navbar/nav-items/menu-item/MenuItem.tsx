@@ -18,7 +18,7 @@ const MenuItem = ({ link }: Props) => {
     return (
       <Menu trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
         <Menu.Target>
-          <a
+          <Link
             href={link.link}
             className={classes.link}
             onClick={(e) => e.preventDefault()}
@@ -27,7 +27,7 @@ const MenuItem = ({ link }: Props) => {
               <span className={classes.linkLabel}>{link.label}</span>
               <AccordionChevron size="14px" />
             </Center>
-          </a>
+          </Link>
         </Menu.Target>
         <Menu.Dropdown>{generateMenuLinks(link.sublinks)}</Menu.Dropdown>
       </Menu>

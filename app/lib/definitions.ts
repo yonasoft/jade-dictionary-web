@@ -22,3 +22,9 @@ export type Word = {
 	simplified: string;
 	traditional: string;
 };
+export type WordList = {
+	title: string;
+	description: string;
+	wordIds: number[];
+	userUid: string;
+}

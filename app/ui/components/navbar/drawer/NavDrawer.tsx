@@ -48,7 +48,7 @@ const NavDrawer = ({ links, opened, onClose }: Props) => {
         </Drawer.Header>
 
         <Drawer.Body>
-          <DrawerNavLinks links={links} />
+          <DrawerNavLinks links={links} onClick={ onClose} />
           <Divider className="my-3" size="sm" hiddenFrom="sm" />
           <Group className="grow my-2" justify="center" hiddenFrom="sm">
             <AuthItems additionalOnClick={onClose} />

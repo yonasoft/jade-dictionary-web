@@ -1,6 +1,7 @@
-import { Firestore, collection, query, where, getDocs, Query, DocumentData, DocumentSnapshot, startAfter, limit } from "firebase/firestore";
-import { QueryType, Word } from "../definitions";
+import { Firestore, collection, query, where, getDocs, Query, DocumentData, DocumentSnapshot, startAfter, limit, addDoc } from "firebase/firestore";
+import { QueryType, Word, WordList } from "../definitions";
 import { Console } from "console";
+import { Auth } from "@firebase/auth";
 
 const PAGE_SIZE = 30;
 
@@ -224,3 +225,4 @@ const paginateResults = (results: Word[], page: number, pageSize: number): Word[
   const startIndex = (page - 1) * pageSize;
   return results.slice(startIndex, startIndex + pageSize);
 };
+
