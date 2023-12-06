@@ -1,5 +1,11 @@
+"use client";
 import { ScriptType, Word } from "@/app/lib/definitions";
-import { Accordion, Card, Flex, Group, Text } from "@mantine/core";
+import {
+  DictionaryContext,
+  useDictionaryContext,
+} from "@/app/providers/DictionaryProvider";
+import { Accordion, Button, Card, Flex, Group, Text } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import React from "react";
 
 type Props = {
@@ -9,9 +15,10 @@ type Props = {
 
 const WordResult = ({ query, word }: Props) => {
   const traditional = `(${word.traditional})`;
+  const dictionary = useDictionaryContext();
 
   return (
-    <Card className="mx-2 my-1" shadow="sm" withBorder>
+    <Card className="mx-2 my-1" shadow="sm"  withBorder>
       <Group align="start" wrap="wrap" grow>
         <Flex justify="center" align="center" direction="column">
           <Text size="xl" fw="500">{`${word.simplified} ${
@@ -20,6 +27,7 @@ const WordResult = ({ query, word }: Props) => {
           <Text size="md">{word.pinyin}</Text>
         </Flex>
         <Text className="h-auto align-middle">{word.definition}</Text>
+
       </Group>
     </Card>
   );

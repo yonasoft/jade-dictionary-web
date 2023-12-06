@@ -71,8 +71,12 @@ const searchEnglish = async (db: Firestore, input: string): Promise<Word[]> => {
 
 const searchPinyin = async (db: Firestore, input: string): Promise<Word[]> => {
   const wordsRef = collection(db, "words");
-  const normalizedInput = normalizePinyinInput(input);
-console.log('normalizedInput', normalizedInput);
+
+  // Convert input to lowercase before normalizing
+  const lowercaseInput = input.toLowerCase();
+  const normalizedInput = normalizePinyinInput(lowercaseInput);
+
+  console.log('normalizedInput', normalizedInput);
   
   // Construct query for the normalized input
   const q = query(wordsRef, where("pinyin", ">=", normalizedInput), limit(PAGE_SIZE));
@@ -83,6 +87,7 @@ console.log('normalizedInput', normalizedInput);
   console.log('allResults', allResults);
   return allResults;
 };
+
 
 const convertToneMarksToNumbers = (input:string) => {
 
