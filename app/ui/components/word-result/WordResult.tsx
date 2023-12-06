@@ -18,17 +18,21 @@ const WordResult = ({ query, word }: Props) => {
   const dictionary = useDictionaryContext();
 
   return (
-    <Card className="mx-2 my-1" shadow="sm"  withBorder>
-      <Group align="start" wrap="wrap" grow>
-        <Flex justify="center" align="center" direction="column">
-          <Text size="xl" fw="500">{`${word.simplified} ${
-            word.simplified != word.traditional ? traditional : ""
-          }`}</Text>
-          <Text size="md">{word.pinyin}</Text>
-        </Flex>
-        <Text className="h-auto align-middle">{word.definition}</Text>
-
-      </Group>
+    <Card className="mx-2 my-1" shadow="sm" withBorder>
+      <div className="flex">
+        <Group className="grow" align="start" wrap="wrap" grow>
+          <Flex justify="center" align="center" direction="column">
+            <Text size="xl" fw="500">{`${word.simplified} ${
+              word.simplified != word.traditional ? traditional : ""
+            }`}</Text>
+            <Text size="md">{word.pinyin}</Text>
+          </Flex>
+          <Text className="h-auto align-middle">{word.definition}</Text>
+        </Group>
+        <Button className="grow-0 ">
+          <IconPlus />
+        </Button>
+      </div>
     </Card>
   );
 };
