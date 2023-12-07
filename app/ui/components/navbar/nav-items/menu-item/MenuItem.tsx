@@ -11,35 +11,28 @@ type Props = {
 const MenuItem = ({ link }: Props) => {
   const generateMenuLinks = (sublinks: Array<LinkData>) =>
     sublinks.map((item, index) => (
-      <Menu.Item key={index}>{item.label}</Menu.Item>
+      <Menu.Item key={index}>
+        <Link href={item.link} passHref>
+          <a className={classes.link}>{item.label}</a>
+        </Link>
+      </Menu.Item>
     ));
 
   if (link.sublinks && link.sublinks.length > 0) {
     return (
       <Menu trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
         <Menu.Target>
-          <Link
-            href={link.link}
-            className={classes.link}
-            onClick={(e) => e.preventDefault()}
-          >
-            <Center>
-              <span className={classes.linkLabel}>{link.label}</span>
-              <AccordionChevron size="14px" />
-            </Center>
-          </Link>
+          <Center>
+            {link.label}
+            <AccordionChevron size="14px" />
+          </Center>
         </Menu.Target>
         <Menu.Dropdown>{generateMenuLinks(link.sublinks)}</Menu.Dropdown>
       </Menu>
     );
   } else {
     return (
-      <Link
-        key={link.label}
-        href={link.link}
-        className={classes.link}
-        onClick={(event) => event.preventDefault()}
-      >
+      <Link href={link.link} className={classes.link}>
         {link.label}
       </Link>
     );
