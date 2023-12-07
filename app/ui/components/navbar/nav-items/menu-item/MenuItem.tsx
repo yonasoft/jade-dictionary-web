@@ -13,7 +13,7 @@ const MenuItem = ({ link }: Props) => {
     sublinks.map((item, index) => (
       <Menu.Item key={index}>
         <Link href={item.link} passHref>
-          <a className={classes.link}>{item.label}</a>
+          {item.label}
         </Link>
       </Menu.Item>
     ));
@@ -32,9 +32,11 @@ const MenuItem = ({ link }: Props) => {
     );
   } else {
     return (
-      <Link href={link.link} className={classes.link}>
-        {link.label}
-      </Link>
+      <Menu trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
+        <Link href={link.link} className={classes.link}>
+          {link.label}
+        </Link>
+      </Menu>
     );
   }
 };

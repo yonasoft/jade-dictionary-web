@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getUserWordLists } from "../lib/firebase/wordLists-storage";
-import {  WordList } from "@/app/lib/definitions";
+import { WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import WordListCard from "./word-list-card/WordListCard";
 import { Grid } from "@mantine/core";
@@ -32,16 +32,16 @@ const AllLists = () => {
   }, [firestore, currentUser]);
 
   return (
-    <div>
-      <h1 className="text-3xl font-semibold">My Word Lists</h1>
+    <div className="p-4">
+      <h1 className="text-4xl font-bold text-gray-800 mb-6">My Word Lists</h1>
       {isLoading ? (
-        <p>Loading...</p>
+        <p className="text-lg text-gray-600">Loading...</p>
       ) : wordLists.length === 0 ? (
-        <p>No word lists found.</p>
+        <p className="text-lg text-gray-600">No word lists found.</p>
       ) : (
-        <Grid gutter={16}>
-          {wordLists.map((wordList: WordList, index: number) => (
-            <Grid.Col key={index}>
+        <Grid gutter="lg">
+          {wordLists.map((wordList, index) => (
+            <Grid.Col key={index} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
               <WordListCard wordList={wordList} />
             </Grid.Col>
           ))}

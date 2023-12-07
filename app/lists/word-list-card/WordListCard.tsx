@@ -38,8 +38,9 @@ const WordListCard = ({ wordList }: Props) => {
 
   return (
     <Card
-      className="m-3 p-3 w-60 h-70 relative cursor-pointer bg-white rounded-lg hover:border hover:border-gray-300"
+      className="mt-3 me-3 px-3 w-60 h-70 relative cursor-pointer bg-white rounded-lg hover:border hover:border-gray-300"
       shadow="lg"
+      radius="md"
       withBorder
     >
       <div className="p-3">
