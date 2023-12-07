@@ -1,6 +1,14 @@
-"use client";
 import React, { useEffect, useState } from "react";
-import { Card, Text, Menu, Button, Group, Divider } from "@mantine/core";
+import {
+  Card,
+  Text,
+  Menu,
+  Button,
+  Group,
+  Divider,
+  useMantineTheme,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { Word, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { getWordsByIds } from "@/app/lib/firebase/words-storage";
@@ -17,6 +25,9 @@ type Props = {
 
 const WordListCard = ({ wordList }: Props) => {
   const { firestore } = useFirebaseContext();
+  const { colorScheme } = useMantineColorScheme();
+  const hoverClass =
+    colorScheme === "dark" ? "card-hover-dark" : "card-hover-light";
 
   const handleRemoveWordList = async () => {
     // Logic to remove the word list from Firestore
@@ -26,7 +37,7 @@ const WordListCard = ({ wordList }: Props) => {
 
   return (
     <Card
-      className="mt-3 me-3 w-60 h-70 relative cursor-pointer bg-white rounded-lg hover:bg-gray-100 focus-within:border focus-within:border-jade-color"
+      className={`mt-3 me-3 w-60 h-70 relative cursor-pointer rounded-lg ${hoverClass} focus-within:border focus-within:border-jade-color`}
       shadow="lg"
       radius="md"
       withBorder

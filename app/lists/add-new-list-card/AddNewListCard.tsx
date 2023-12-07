@@ -1,12 +1,21 @@
-"use client";
 import React from "react";
-import { Card, Button, Center, Text } from "@mantine/core";
+import {
+  Card,
+  Button,
+  Center,
+  Text,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 
 const AddNewListCard = ({ onAddNew }: { onAddNew: () => void }) => {
+  const { colorScheme } = useMantineColorScheme();
+  const hoverClass =
+    colorScheme === "dark" ? "card-hover-dark" : "card-hover-light";
+
   return (
     <Card
-      className="mt-3 me-3 w-60 h-70 relative cursor-pointer bg-white rounded-lg hover:bg-gray-100 focus-within:border focus-within:border-jade-color"
+      className={`mt-3 me-3 w-60 h-70 relative cursor-pointer rounded-lg ${hoverClass} focus-within:border focus-within:border-jade-color`}
       shadow="lg"
       radius="md"
       withBorder
