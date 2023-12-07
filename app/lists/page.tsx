@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getUserWordLists } from "../lib/firebase/wordLists-storage";
 import { WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
@@ -12,30 +12,28 @@ const AllLists = () => {
   const [wordLists, setWordLists] = useState<WordList[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchWordLists = useCallback(async () => {
     if (currentUser) {
-      const fetchWordLists = async () => {
-        try {
-          const userWordLists = await getUserWordLists(
-            firestore,
-            currentUser.uid
-          );
-          setWordLists(userWordLists);
-          setIsLoading(false);
-        } catch (error) {
-          console.error("Error fetching word lists: ", error);
-          setIsLoading(false);
-        }
-      };
-
-      fetchWordLists();
-    } else {
-      setIsLoading(false);
+      try {
+        const userWordLists = await getUserWordLists(
+          firestore,
+          currentUser.uid
+        );
+        setWordLists(userWordLists);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching word lists: ", error);
+        setIsLoading(false);
+      }
     }
   }, [firestore, currentUser]);
 
-  const handleAddNew = () => {
-    console.log("Add new list clicked");
+  useEffect(() => {
+    fetchWordLists();
+  }, [fetchWordLists]);
+
+  const handleListAdded = () => {
+    fetchWordLists();
   };
 
   if (!currentUser) {
@@ -60,7 +58,7 @@ const AllLists = () => {
       ) : (
         <div className="flex flex-wrap gap-2 justify-center md:justify-start">
           <div>
-            <AddNewListCard onAddNew={handleAddNew} />
+            <AddNewListCard onListAdded={handleListAdded} />
           </div>
           {wordLists.map((wordList, index) => (
             <div key={index}>

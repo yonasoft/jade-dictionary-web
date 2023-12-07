@@ -3,7 +3,7 @@ import { Murecho, Roboto } from "next/font/google";
 import "@mantine/core/styles.css";
 import "./globals.css";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
+import { ContextModalProps, ModalsProvider } from "@mantine/modals";
 import Navbar from "./ui/components/navbar/Navbar";
 import { theme } from "./lib/theme";
 import { FirebaseContextProvider } from "./providers/FirebaseProvider";
@@ -14,6 +14,8 @@ import {
 import ResetPasswordModal from "./ui/components/modals/reset-password-modal/ResetPasswordModal";
 import DeleteUserConfirmation from "./ui/components/modals/confirm-delete-user-modal/DeleteUserConfirmation";
 import ReauthenticateModal from "./ui/components/modals/reauth-modal/ReauthenticateModal";
+import AddWordListModal from "./ui/components/modals/add-word-list-modal/AddWordListModal";
+import { FC } from "react";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -23,6 +25,13 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Jade Dictionary",
   description: "Chinese dictionary and language tools",
+};
+
+const modals: Record<string, FC<ContextModalProps<any>>> = {
+  resetPassword: ResetPasswordModal,
+  deleteUser: DeleteUserConfirmation,
+  reAuth: ReauthenticateModal,
+  addWordList: AddWordListModal,
 };
 
 export default function RootLayout({
@@ -47,13 +56,7 @@ export default function RootLayout({
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <FirebaseContextProvider>
             <DictionaryContextProvider>
-              <ModalsProvider
-                modals={{
-                  resetPassword: ResetPasswordModal,
-                  deleteUser: DeleteUserConfirmation,
-                  reAuth: ReauthenticateModal,
-                }}
-              >
+              <ModalsProvider modals={modals}>
                 <Navbar />
                 {children}
               </ModalsProvider>

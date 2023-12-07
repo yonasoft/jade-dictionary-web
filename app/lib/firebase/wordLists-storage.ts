@@ -1,6 +1,6 @@
 
 import { WordList } from "../definitions";
-import { DocumentReference, DocumentSnapshot, Firestore, addDoc, arrayRemove, arrayUnion, collection, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { DocumentReference, DocumentSnapshot, Firestore, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 
 export const createWordList = async (userUid:string, db: Firestore, title: string, description: string): Promise<void> => {
   try {
@@ -92,9 +92,14 @@ export const getUserWordLists = async (db: Firestore, userUid: string): Promise<
   }
 };
 
-export const getWordList = async (wordListRef: DocumentReference): Promise<WordList | null> => {
+export const getWordListByDocId = async (db: Firestore, docId: string): Promise<WordList | null> => {
+
+  const collectionName: string = "wordLists"
+
   try {
+    const wordListRef = doc(db, collectionName, docId);
     const docSnap = await getDoc(wordListRef);
+
     if (docSnap.exists()) {
       return docSnap.data() as WordList;
     } else {
@@ -106,6 +111,7 @@ export const getWordList = async (wordListRef: DocumentReference): Promise<WordL
     throw error;
   }
 };
+
 
 
 

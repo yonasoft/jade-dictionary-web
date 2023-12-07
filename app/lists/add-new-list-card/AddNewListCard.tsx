@@ -7,11 +7,26 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
+import { openContextModal } from "@mantine/modals";
 
-const AddNewListCard = ({ onAddNew }: { onAddNew: () => void }) => {
+type Props = {
+  onListAdded: () => void;
+};
+
+const AddNewListCard = ({ onListAdded }: Props) => {
   const { colorScheme } = useMantineColorScheme();
   const hoverClass =
     colorScheme === "dark" ? "card-hover-dark" : "card-hover-light";
+
+  const onAddNew = () => {
+    openContextModal({
+      centered: true,
+      modal: "addWordList",
+      title: "Add new word list",
+      innerProps: { onListAdded: onListAdded },
+      // Pass the callback to the modal
+    });
+  };
 
   return (
     <Card

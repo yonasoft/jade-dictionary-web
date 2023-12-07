@@ -226,25 +226,23 @@ const filterAndSortWords = (words: Word[], input: string, inputType: QueryType):
   return filteredWords;
 };
 
-// Add this function to your Firestore-related code
-export const getWordsByIds = async (db: Firestore, wordIds: number[]): Promise<Word[]> => {
-  const wordsRef = collection(db, "words");
-  const words:Word[] = [];
+export const getWordById = async (db: Firestore, _id: number): Promise<Word | null> => {
+  const wordRef = doc(db, 'words', _id.toString());
+  const wordSnap = await getDoc(wordRef);
 
-  for (const id of wordIds) {
-    const wordQuery = query(wordsRef, where("_id", "==", id));
-    const querySnapshot = await getDocs(wordQuery);
-
-    querySnapshot.forEach((doc) => {
-      words.push(doc.data() as Word);
-    });
+  if (wordSnap.exists()) {
+    return wordSnap.data() as Word;
+  } else {
+    console.log('No such document!');
+    return null;
   }
+};
 
+export const getWordsByIds = async (db: Firestore, ids: number[]): Promise<Word[]> => {
+  const wordsRef = collection(db, 'words');
+  const q = query(wordsRef, where('_id', 'in', ids));
+  const querySnapshot = await getDocs(q);
+  const words = querySnapshot.docs.map(doc => doc.data() as Word);
+  
   return words;
 };
-
-export const paginateResults = (results: Word[], page: number, pageSize: number): Word[] => {
-  const startIndex = (page - 1) * pageSize;
-  return results.slice(startIndex, startIndex + pageSize);
-};
-
