@@ -4,7 +4,13 @@ import Link from "next/link";
 
 import { Group, Burger, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconGoGame, IconHelp, IconHome, IconList } from "@tabler/icons-react";
+import {
+  IconDeviceGamepad,
+  IconGoGame,
+  IconHelp,
+  IconHome,
+  IconList,
+} from "@tabler/icons-react";
 import { LinkData } from "@/app/lib/definitions";
 
 import classes from "./Navbar.module.css";
@@ -32,7 +38,7 @@ const links: Array<LinkData> = [
     label: "Lists",
     icon: <IconList />,
   },
-  { link: "/", label: "Practice", icon: <IconGoGame /> },
+  { link: "/", label: "Practice", icon: <IconDeviceGamepad /> },
   {
     link: "#1",
     label: "Support",
