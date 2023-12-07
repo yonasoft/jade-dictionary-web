@@ -4,7 +4,8 @@ import { getUserWordLists } from "../lib/firebase/wordLists-storage";
 import { WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import WordListCard from "./word-list-card/WordListCard";
-import { Grid } from "@mantine/core";
+import AddNewListCard from "./add-new-list-card/AddNewListCard";
+import { Text, Title, Center } from "@mantine/core";
 
 const AllLists = () => {
   const { firestore, currentUser } = useFirebaseContext();
@@ -12,8 +13,8 @@ const AllLists = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchWordLists = async () => {
-      if (currentUser) {
+    if (currentUser) {
+      const fetchWordLists = async () => {
         try {
           const userWordLists = await getUserWordLists(
             firestore,
@@ -25,27 +26,48 @@ const AllLists = () => {
           console.error("Error fetching word lists: ", error);
           setIsLoading(false);
         }
-      }
-    };
+      };
 
-    fetchWordLists();
+      fetchWordLists();
+    } else {
+      setIsLoading(false);
+    }
   }, [firestore, currentUser]);
+
+  const handleAddNew = () => {
+    console.log("Add new list clicked");
+  };
+
+  if (!currentUser) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Text size="lg">Please log in to view and manage your word lists.</Text>
+      </Center>
+    );
+  }
 
   return (
     <div className="p-4">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">My Word Lists</h1>
+      <Title order={1} className="font-bold text-gray-800 mb-6 text-center">
+        My Word Lists
+      </Title>
       {isLoading ? (
-        <p className="text-lg text-gray-600">Loading...</p>
-      ) : wordLists.length === 0 ? (
-        <p className="text-lg text-gray-600">No word lists found.</p>
+        <Center>
+          <Text size="lg" className="text-gray-600">
+            Loading...
+          </Text>
+        </Center>
       ) : (
-        <Grid gutter="lg">
+        <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+          <div>
+            <AddNewListCard onAddNew={handleAddNew} />
+          </div>
           {wordLists.map((wordList, index) => (
-            <Grid.Col key={index} span={{ base: 12, sm: 6, md: 4, lg: 3 }}>
+            <div key={index}>
               <WordListCard wordList={wordList} />
-            </Grid.Col>
+            </div>
           ))}
-        </Grid>
+        </div>
       )}
     </div>
   );
