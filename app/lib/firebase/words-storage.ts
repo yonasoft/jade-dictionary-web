@@ -1,4 +1,4 @@
-import { Firestore, collection, query, where, getDocs, Query, DocumentData, DocumentSnapshot, startAfter, limit, addDoc } from "firebase/firestore";
+import { Firestore, collection, query, where, getDocs, Query, DocumentData, DocumentSnapshot, startAfter, limit, addDoc, getDoc, doc } from "firebase/firestore";
 import { QueryType, Word, WordList } from "../definitions";
 import { Console } from "console";
 import { Auth } from "@firebase/auth";
@@ -226,7 +226,24 @@ const filterAndSortWords = (words: Word[], input: string, inputType: QueryType):
   return filteredWords;
 };
 
-const paginateResults = (results: Word[], page: number, pageSize: number): Word[] => {
+// Add this function to your Firestore-related code
+export const getWordsByIds = async (db: Firestore, wordIds: number[]): Promise<Word[]> => {
+  const wordsRef = collection(db, "words");
+  const words:Word[] = [];
+
+  for (const id of wordIds) {
+    const wordQuery = query(wordsRef, where("_id", "==", id));
+    const querySnapshot = await getDocs(wordQuery);
+
+    querySnapshot.forEach((doc) => {
+      words.push(doc.data() as Word);
+    });
+  }
+
+  return words;
+};
+
+export const paginateResults = (results: Word[], page: number, pageSize: number): Word[] => {
   const startIndex = (page - 1) * pageSize;
   return results.slice(startIndex, startIndex + pageSize);
 };

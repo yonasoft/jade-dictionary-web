@@ -2,7 +2,7 @@
 import { WordList } from "../definitions";
 import { DocumentReference, DocumentSnapshot, Firestore, addDoc, arrayRemove, arrayUnion, collection, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 
-const createWordList = async (userUid:string, db: Firestore, title: string, description: string): Promise<void> => {
+export const createWordList = async (userUid:string, db: Firestore, title: string, description: string): Promise<void> => {
   try {
 
     const newWordList: WordList = {
@@ -22,7 +22,7 @@ const createWordList = async (userUid:string, db: Firestore, title: string, desc
 };
 
 
-const addWordToWordList = async (db: Firestore, wordListRef: DocumentReference, wordId: number): Promise<void> => {
+export const addWordToWordList = async (db: Firestore, wordListRef: DocumentReference, wordId: number): Promise<void> => {
   try {
     // Get the word list document
     const wordListSnapshot = await getDoc(wordListRef);
@@ -50,7 +50,7 @@ const addWordToWordList = async (db: Firestore, wordListRef: DocumentReference, 
 };
 
 
-const removeWordFromWordList = async (db: Firestore, wordListRef: DocumentReference, wordId: number): Promise<void> => {
+export const removeWordFromWordList = async (db: Firestore, wordListRef: DocumentReference, wordId: number): Promise<void> => {
   try {
     // Update the wordIds array in Firestore to remove the wordId
     await updateDoc(wordListRef, {
@@ -64,7 +64,7 @@ const removeWordFromWordList = async (db: Firestore, wordListRef: DocumentRefere
   }
 };
 
-const editWordList = async (wordListRef: DocumentReference, newTitle?: string, newDescription?: string): Promise<void> => {
+export const editWordList = async (wordListRef: DocumentReference, newTitle?: string, newDescription?: string): Promise<void> => {
   try {
     const updateData: Partial<WordList> = {};
     if (newTitle !== undefined) updateData.title = newTitle;
@@ -80,7 +80,7 @@ const editWordList = async (wordListRef: DocumentReference, newTitle?: string, n
   }
 };
 
-const getUserWordLists = async (db: Firestore, userUid: string): Promise<WordList[]> => {
+export const getUserWordLists = async (db: Firestore, userUid: string): Promise<WordList[]> => {
   try {
     const q = query(collection(db, "wordLists"), where("userUid", "==", userUid));
     const querySnapshot = await getDocs(q);
@@ -92,7 +92,7 @@ const getUserWordLists = async (db: Firestore, userUid: string): Promise<WordLis
   }
 };
 
-const getWordList = async (wordListRef: DocumentReference): Promise<WordList | null> => {
+export const getWordList = async (wordListRef: DocumentReference): Promise<WordList | null> => {
   try {
     const docSnap = await getDoc(wordListRef);
     if (docSnap.exists()) {
