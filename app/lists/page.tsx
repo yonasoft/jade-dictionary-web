@@ -38,6 +38,16 @@ const AllLists = () => {
     fetchWordLists(); // Re-fetch the lists or modify the state directly
   };
 
+  if (isLoading) {
+    return (
+      <Center>
+        <Text size="lg" className="text-gray-600">
+          Loading...
+        </Text>
+      </Center>
+    );
+  }
+
   if (!currentUser) {
     return (
       <Center style={{ height: "100vh" }}>
@@ -69,27 +79,17 @@ const AllLists = () => {
           },
         ]}
       />
-      {isLoading ? (
-        <Center>
-          <Text size="lg" className="text-gray-600">
-            Loading...
-          </Text>
-        </Center>
-      ) : (
-        <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-          <div>
-            <AddNewListCard onListAdded={handleListChange} />
-          </div>
-          {wordLists.map((wordList, index) => (
-            <div key={index}>
-              <WordListCard
-                wordList={wordList}
-                onListChange={handleListChange}
-              />
-            </div>
-          ))}
+
+      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+        <div>
+          <AddNewListCard onListAdded={handleListChange} />
         </div>
-      )}
+        {wordLists.map((wordList, index) => (
+          <div key={index}>
+            <WordListCard wordList={wordList} onListChange={handleListChange} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
