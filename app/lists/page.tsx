@@ -1,23 +1,25 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { getUserWordLists } from "../lib/firebase/wordLists-storage";
-import { WordList } from "@/app/lib/definitions";
+import { SortOption, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import WordListCard from "./word-list-card/WordListCard";
 import AddNewListCard from "./add-new-list-card/AddNewListCard";
-import { Text, Title, Center } from "@mantine/core";
+import { Text, Title, Center, Select } from "@mantine/core";
 
 const AllLists = () => {
   const { firestore, currentUser } = useFirebaseContext();
   const [wordLists, setWordLists] = useState<WordList[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortOption, setSortOption] = useState(SortOption.Recent);
 
   const fetchWordLists = useCallback(async () => {
     if (currentUser) {
       try {
         const userWordLists = await getUserWordLists(
           firestore,
-          currentUser.uid
+          currentUser.uid,
+          sortOption
         );
         setWordLists(userWordLists);
         setIsLoading(false);
@@ -26,14 +28,14 @@ const AllLists = () => {
         setIsLoading(false);
       }
     }
-  }, [firestore, currentUser]);
+  }, [firestore, currentUser, sortOption]);
 
   useEffect(() => {
     fetchWordLists();
   }, [fetchWordLists]);
 
-  const handleListAdded = () => {
-    fetchWordLists();
+  const handleListChange = () => {
+    fetchWordLists(); // Re-fetch the lists or modify the state directly
   };
 
   if (!currentUser) {
@@ -49,6 +51,24 @@ const AllLists = () => {
       <Title order={1} className="font-bold text-gray-800 mb-6 text-center">
         My Word Lists
       </Title>
+      <Select
+        label="Sort by"
+        placeholder="Select sort option"
+        value={sortOption}
+        onChange={(value) => {
+          setSortOption(value as SortOption);
+          fetchWordLists();
+        }}
+        data={[
+          { value: SortOption.Recent, label: "Most Recent" },
+          { value: SortOption.Oldest, label: "Oldest" },
+          { value: SortOption.Alphabetical, label: "Alphabetical" },
+          {
+            value: SortOption.ReverseAlphabetical,
+            label: "Reverse Alphabetical",
+          },
+        ]}
+      />
       {isLoading ? (
         <Center>
           <Text size="lg" className="text-gray-600">
@@ -58,11 +78,14 @@ const AllLists = () => {
       ) : (
         <div className="flex flex-wrap gap-2 justify-center md:justify-start">
           <div>
-            <AddNewListCard onListAdded={handleListAdded} />
+            <AddNewListCard onListAdded={handleListChange} />
           </div>
           {wordLists.map((wordList, index) => (
             <div key={index}>
-              <WordListCard wordList={wordList} />
+              <WordListCard
+                wordList={wordList}
+                onListChange={handleListChange}
+              />
             </div>
           ))}
         </div>

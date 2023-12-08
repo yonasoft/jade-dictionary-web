@@ -3,24 +3,24 @@ import { SortOption, WordList } from "../definitions";
 import { DocumentReference, DocumentSnapshot, Firestore, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
 import { timestampToDate } from "./utils";
 
-
-
-
-
 export const createWordList = async (userUid: string, db: Firestore, title: string, description: string): Promise<void> => {
   try {
-    const newWordList: WordList = {
-      title: title,
-      description: description,
+    const newWordList = {
+      title,
+      description,
       wordIds: [],
-      userUid: userUid,
+      userUid,
       createdAt: serverTimestamp(),
-      lastUpdatedAt: serverTimestamp()
+      lastUpdatedAt: serverTimestamp(),
     };
 
-    // Add the new word list to Firestore
-    await addDoc(collection(db, "wordLists"), newWordList);
-    console.log("Word list created successfully");
+    // Add the new word list to Firestore and get the reference
+    const docRef = await addDoc(collection(db, "wordLists"), newWordList);
+
+    // Update the document with its ID
+    await updateDoc(docRef, { id: docRef.id });
+
+    console.log("Word list created successfully with ID:", docRef.id);
   } catch (error) {
     console.error("Error creating word list: ", error);
   }
@@ -146,6 +146,23 @@ export const deleteWordList = async (db: Firestore, wordListId: string): Promise
     console.log("Word list deleted successfully");
   } catch (error) {
     console.error("Error deleting word list: ", error);
+    throw error;
+  }
+};
+
+
+export const removeWordFromList = async (db: Firestore, wordListId:string, wordId:number) => {
+  const wordListRef = doc(db, "wordLists", wordListId);
+
+  try {
+    // Update the wordIds array in Firestore to remove the wordId
+    await updateDoc(wordListRef, {
+      wordIds: arrayRemove(wordId)
+    });
+
+    console.log("Word removed from the word list successfully");
+  } catch (error) {
+    console.error("Error removing word from word list: ", error);
     throw error;
   }
 };

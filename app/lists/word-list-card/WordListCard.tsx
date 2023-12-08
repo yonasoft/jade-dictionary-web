@@ -20,12 +20,15 @@ import {
 } from "@tabler/icons-react";
 import { deleteWordList } from "@/app/lib/firebase/wordLists-storage";
 import { doc } from "firebase/firestore";
+import classes from "./WordListCard.module.css";
+import Link from "next/link";
 
 type Props = {
   wordList: WordList;
+  onListChange: () => void;
 };
 
-const WordListCard = ({ wordList }: Props) => {
+const WordListCard = ({ wordList, onListChange }: Props) => {
   const { firestore } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
   const hoverClass =
@@ -35,7 +38,7 @@ const WordListCard = ({ wordList }: Props) => {
     try {
       await deleteWordList(firestore, wordList.id as string);
       console.log("Word list removed successfully");
-      // Optionally, trigger a state update or a re-fetch of word lists
+      onListChange(); // Call the callback function passed from parent
     } catch (error) {
       console.error("Failed to remove word list: ", error);
     }
@@ -45,18 +48,20 @@ const WordListCard = ({ wordList }: Props) => {
 
   return (
     <Card
-      className={`mt-3 me-3 w-60 h-70 relative cursor-pointer rounded-lg ${hoverClass} focus-within:border focus-within:border-jade-color`}
+      className={`mt-3 me-3 w-60 h-70 relative cursor-pointer rounded-lg ${hoverClass} ${classes.wordCard} focus-within:border focus-within:border-jade-color`}
       shadow="lg"
       radius="md"
       withBorder
     >
-      <div className="p-3">
-        <h3 className="text-xl font-bold line-clamp-1">{wordList.title}</h3>
-        <Divider className="my-2" />
-        <p className="text-sm text-gray-600 line-clamp-2">
-          {wordList.description}
-        </p>
-      </div>
+      <Link href={`/lists/${wordList.id}`}>
+        <div className="p-3">
+          <h3 className="text-xl font-bold line-clamp-1">{wordList.title}</h3>
+          <Divider className="my-2" />
+          <p className="text-sm text-gray-600 line-clamp-2">
+            {wordList.description}
+          </p>
+        </div>
+      </Link>
       <div className="absolute top-0 right-0 m-0">
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
@@ -71,13 +76,12 @@ const WordListCard = ({ wordList }: Props) => {
             >
               Remove
             </Menu.Item>
-            <Menu.Item
+            {/* <Menu.Item
               leftSection={<IconDeviceGamepad />}
               onClick={handlePractice}
             >
               Practice
-            </Menu.Item>
-            {/* Additional menu items can be added here */}
+            </Menu.Item> */}
           </Menu.Dropdown>
         </Menu>
       </div>

@@ -17,14 +17,14 @@ import classes from "./Navbar.module.css";
 
 import MenuItem from "./nav-items/menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
-import UserMenu from "./nav-items/auth-items/UserMenu";
-import ThemeToggler from "./nav-items/theme-toggler/ThemeToggler";
+import UserMenu from "../auth-items/UserMenu";
+import ThemeToggler from "../theme-toggler/ThemeToggler";
 import SearchBar from "./nav-items/search-bar/SearchBar";
-import ResultTypeSelector from "./nav-items/script-selector/ScriptTypeSelector";
+import ResultTypeSelector from "../script-selector/ScriptTypeSelector";
 import NavDrawer from "./drawer/NavDrawer";
-import AuthButtons from "./nav-items/auth-items/AuthButtons";
+import AuthButtons from "../auth-items/AuthButtons";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import AuthItems from "./nav-items/auth-items/AuthItems";
+import AuthItems from "../auth-items/AuthItems";
 
 const links: Array<LinkData> = [
   {
