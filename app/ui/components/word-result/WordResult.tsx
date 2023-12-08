@@ -29,7 +29,7 @@ const WordResult = ({ query, word }: Props) => {
           </Flex>
           <Text className="h-auto align-middle">{word.definition}</Text>
         </Group>
-        <Button variant="filled" className="grow-0 ">
+        <Button variant="filled" className="grow-0">
           <IconPlus />
         </Button>
       </div>
