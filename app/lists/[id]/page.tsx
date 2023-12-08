@@ -7,7 +7,7 @@ import {
 import { getWordsByIds } from "@/app/lib/firebase/words-storage";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordCard from "@/app/ui/components/word-card/WordCard";
-import { Button, Group, Input, TextInput, Textarea } from "@mantine/core";
+import { Button, Group, Input, Textarea, Text, Center } from "@mantine/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { doc } from "firebase/firestore";
@@ -18,6 +18,7 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
   const [words, setWords] = useState<Word[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -27,17 +28,18 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
             setTitle(fetchedWordList.title);
             setDescription(fetchedWordList.description);
             setWordList(fetchedWordList);
+            setIsEmpty(fetchedWordList.wordIds.length === 0);
           }
         }
       );
     }
   }, [params.id, firebase.firestore]);
 
-useEffect(() => {
-  if (wordList?.wordIds && wordList.wordIds.length > 0) {
-    getWordsByIds(firebase.firestore, wordList.wordIds).then(setWords);
-  }
-}, [wordList, firebase.firestore]);
+  useEffect(() => {
+    if (wordList?.wordIds && wordList.wordIds.length > 0) {
+      getWordsByIds(firebase.firestore, wordList.wordIds).then(setWords);
+    }
+  }, [wordList, firebase.firestore]);
 
   const handleSave = async () => {
     if (wordList && params.id) {
@@ -51,7 +53,6 @@ useEffect(() => {
         if (typeof window !== "undefined") {
           window.location.href = "/lists";
         }
-        // Optionally, navigate back or show a success message
       } catch (error) {
         console.error("Error updating word list: ", error);
       }
@@ -67,6 +68,7 @@ useEffect(() => {
       <Group justify="flex-end">
         <Button onClick={handleSave}>Save</Button>
       </Group>
+
       <div className="mb-4">
         <Input.Label htmlFor="title">Title</Input.Label>
         <Input
@@ -77,6 +79,7 @@ useEffect(() => {
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
+
       <div className="mb-4">
         <Input.Label htmlFor="description">Description</Input.Label>
         <Textarea
@@ -84,9 +87,18 @@ useEffect(() => {
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          rows={3} // Set minimum height through rows
+          rows={3}
         />
       </div>
+
+      {isEmpty && (
+        <Center className="h-full">
+        <Text color="dimmed" size="md" >
+          Your word list is empty. Search for words using the search bar
+          (Ctrl+K) and add them from there.
+          </Text>
+          </Center>
+      )}
 
       <div className="flex flex-wrap justify-start">
         {words.map((word) => (

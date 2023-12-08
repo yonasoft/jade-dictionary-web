@@ -15,6 +15,7 @@ const AllLists = () => {
 
   const fetchWordLists = useCallback(async () => {
     if (currentUser) {
+      setIsLoading(true); // Set loading before fetching
       try {
         const userWordLists = await getUserWordLists(
           firestore,
@@ -22,11 +23,10 @@ const AllLists = () => {
           sortOption
         );
         setWordLists(userWordLists);
-        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching word lists: ", error);
-        setIsLoading(false);
       }
+      setIsLoading(false); // Reset loading after fetching or if an error occurs
     }
   }, [firestore, currentUser, sortOption]);
 
@@ -34,13 +34,21 @@ const AllLists = () => {
     fetchWordLists();
   }, [fetchWordLists]);
 
+  useEffect(() => {
+    if (currentUser === undefined) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [currentUser]);
+
   const handleListChange = () => {
     fetchWordLists(); // Re-fetch the lists or modify the state directly
   };
 
   if (isLoading) {
     return (
-      <Center>
+      <Center className="h-full">
         <Text size="lg" className="text-gray-600">
           Loading...
         </Text>
@@ -50,7 +58,7 @@ const AllLists = () => {
 
   if (!currentUser) {
     return (
-      <Center style={{ height: "100vh" }}>
+      <Center className="h-full">
         <Text size="lg">Please log in to view and manage your word lists.</Text>
       </Center>
     );
