@@ -1,26 +1,30 @@
 
-import { WordList } from "../definitions";
-import { DocumentReference, DocumentSnapshot, Firestore, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { SortOption, WordList } from "../definitions";
+import { DocumentReference, DocumentSnapshot, Firestore, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
+import { timestampToDate } from "./utils";
 
-export const createWordList = async (userUid:string, db: Firestore, title: string, description: string): Promise<void> => {
+
+
+
+
+export const createWordList = async (userUid: string, db: Firestore, title: string, description: string): Promise<void> => {
   try {
-
     const newWordList: WordList = {
       title: title,
       description: description,
-      wordIds: [], // Initially empty, can be updated later with word IDs
-      userUid: userUid
+      wordIds: [],
+      userUid: userUid,
+      createdAt: serverTimestamp(),
+      lastUpdatedAt: serverTimestamp()
     };
 
     // Add the new word list to Firestore
     await addDoc(collection(db, "wordLists"), newWordList);
-
     console.log("Word list created successfully");
   } catch (error) {
     console.error("Error creating word list: ", error);
   }
 };
-
 
 export const addWordToWordList = async (db: Firestore, wordListRef: DocumentReference, wordId: number): Promise<void> => {
   try {
@@ -49,7 +53,6 @@ export const addWordToWordList = async (db: Firestore, wordListRef: DocumentRefe
   }
 };
 
-
 export const removeWordFromWordList = async (db: Firestore, wordListRef: DocumentReference, wordId: number): Promise<void> => {
   try {
     // Update the wordIds array in Firestore to remove the wordId
@@ -69,10 +72,9 @@ export const editWordList = async (wordListRef: DocumentReference, newTitle?: st
     const updateData: Partial<WordList> = {};
     if (newTitle !== undefined) updateData.title = newTitle;
     if (newDescription !== undefined) updateData.description = newDescription;
+    updateData.lastUpdatedAt = serverTimestamp(); // Update lastUpdatedAt
 
-    // Update the word list with the provided fields
     await updateDoc(wordListRef, updateData);
-
     console.log("Word list updated successfully");
   } catch (error) {
     console.error("Error updating word list: ", error);
@@ -80,12 +82,38 @@ export const editWordList = async (wordListRef: DocumentReference, newTitle?: st
   }
 };
 
-export const getUserWordLists = async (db: Firestore, userUid: string): Promise<WordList[]> => {
+export const getUserWordLists = async (
+  db: Firestore,
+  userUid: string,
+  sortOption: SortOption = SortOption.Recent// default sort option
+): Promise<WordList[]> => {
   try {
-    const q = query(collection(db, "wordLists"), where("userUid", "==", userUid));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.data() as WordList);
+    let q;
 
+    switch (sortOption) {
+      case SortOption.Recent:
+        // Replace 'createdAt' with the actual field name used in your Firestore collection
+        q = query(collection(db, "wordLists"), where("userUid", "==", userUid), orderBy("lastUpdatedAt", "desc"));
+        break;
+      case SortOption.Oldest:
+        q = query(collection(db, "wordLists"), where("userUid", "==", userUid), orderBy("lastUpdatedAt", "asc"));
+        break;
+      case SortOption.Alphabetical:
+        q = query(collection(db, "wordLists"), where("userUid", "==", userUid), orderBy("title", "asc"));
+        break;
+      case SortOption.ReverseAlphabetical:
+        q = query(collection(db, "wordLists"), where("userUid", "==", userUid), orderBy("title", "desc"));
+        break;
+      default:
+        q = query(collection(db, "wordLists"), where("userUid", "==", userUid));
+    }
+
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => {
+      const data = doc.data() as WordList;
+      return { ...data, id: doc.id }; // Include the document ID
+    });
   } catch (error) {
     console.error("Error fetching user's word lists: ", error);
     throw error;
@@ -112,7 +140,12 @@ export const getWordListByDocId = async (db: Firestore, docId: string): Promise<
   }
 };
 
-
-
-
-
+export const deleteWordList = async (db: Firestore, wordListId: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, "wordLists", wordListId));
+    console.log("Word list deleted successfully");
+  } catch (error) {
+    console.error("Error deleting word list: ", error);
+    throw error;
+  }
+};

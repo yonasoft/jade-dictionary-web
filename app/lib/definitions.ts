@@ -1,3 +1,5 @@
+import { FieldValue } from "firebase/firestore";
+
 export enum QueryType {
 	English = 'English',
 	Hanzi = 'Hanzi',
@@ -15,6 +17,7 @@ export interface FirestoreUserData {
 	photoURL: string | null;
 	photoFileName: string| null;
 }
+
 export type Word = {
 	_id: number;
 	definition: string;
@@ -22,9 +25,20 @@ export type Word = {
 	simplified: string;
 	traditional: string;
 };
+
 export type WordList = {
-	title: string;
-	description: string;
-	wordIds: number[];
-	userUid: string;
+  id?: string; // Optional document ID
+  title: string;
+  description: string;
+  wordIds: number[];
+  userUid: string;
+  createdAt: FieldValue; // Updated type
+  lastUpdatedAt: FieldValue; // Updated type 
+};
+
+export enum SortOption {
+  Recent = "Recent",
+  Oldest = "Oldest",
+  Alphabetical = "Alphabetical",
+  ReverseAlphabetical = "ReverseAlphabetical",
 }

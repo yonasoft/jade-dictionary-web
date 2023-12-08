@@ -18,6 +18,8 @@ import {
   IconRun,
   IconTrash,
 } from "@tabler/icons-react";
+import { deleteWordList } from "@/app/lib/firebase/wordLists-storage";
+import { doc } from "firebase/firestore";
 
 type Props = {
   wordList: WordList;
@@ -30,7 +32,13 @@ const WordListCard = ({ wordList }: Props) => {
     colorScheme === "dark" ? "card-hover-dark" : "card-hover-light";
 
   const handleRemoveWordList = async () => {
-    // Logic to remove the word list from Firestore
+    try {
+      await deleteWordList(firestore, wordList.id as string);
+      console.log("Word list removed successfully");
+      // Optionally, trigger a state update or a re-fetch of word lists
+    } catch (error) {
+      console.error("Failed to remove word list: ", error);
+    }
   };
 
   const handlePractice = async () => {};
