@@ -65,50 +65,50 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="p-4">
-      <Group justify="flex-end">
-        <Button onClick={handleSave}>Save</Button>
-      </Group>
-
-      <div className="mb-4">
-        <Input.Label htmlFor="title">Title</Input.Label>
-        <Input
-          className="shadow appearance-none  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="title"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-
-      <div className="mb-4">
-        <Input.Label htmlFor="description">Description</Input.Label>
-        <Textarea
-          className="shadow "
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={3}
-        />
-      </div>
-
-      {isEmpty && (
-        <Center className="h-full">
-        <Text color="dimmed" size="md" >
-          Your word list is empty. Search for words using the search bar
-          (Ctrl+K) and add them from there.
-          </Text>
-          </Center>
-      )}
-
-      <div className="flex flex-wrap justify-start">
-        {words.map((word) => (
-          <WordCard
-            key={word._id}
-            word={word}
-            wordList={wordList as WordList}
-            onWordRemove={handleWordRemove}
+      <div style={{ maxWidth: "800px", margin: "auto" }}>
+        <Group justify="flex-end">
+          <Button variant="filled" onClick={handleSave}>
+            Save
+          </Button>
+        </Group>
+        <div className="mb-4">
+          <Input.Label htmlFor="title">Title</Input.Label>
+          <Input
+            className="shadow appearance-none  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
-        ))}
+        </div>
+        <div className="mb-4">
+          <Input.Label htmlFor="description">Description</Input.Label>
+          <Textarea
+            className="shadow "
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={3}
+          />
+        </div>
+        {isEmpty && (
+          <Center className="h-full">
+            <Text color="dimmed" size="md">
+              Your word list is empty. Search for words using the search bar
+              (Ctrl+K) and add them from there.
+            </Text>
+          </Center>
+        )}
+        <div className="flex flex-wrap justify-start">
+          {words.map((word) => (
+            <WordCard
+              key={word._id}
+              word={word}
+              wordList={wordList as WordList}
+              onWordRemove={handleWordRemove}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
