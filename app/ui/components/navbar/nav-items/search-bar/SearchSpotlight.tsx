@@ -27,7 +27,7 @@ const SearchSpotlight = (props: Props) => {
   };
 
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" || event.key === "ArrowRight") {
       onSearch();
     }
   };

@@ -33,9 +33,9 @@ const SearchBar = (props: Props) => {
   };
 
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      onSearch();
-    }
+  if (event.key === "Enter" || event.key === "ArrowRight") {
+    onSearch();
+  }
   };
 
   const SearchInput = (): React.ReactNode => {
