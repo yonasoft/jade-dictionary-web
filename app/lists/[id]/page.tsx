@@ -106,7 +106,7 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
           </Text>
         </Center>
       )}
-      <Grid gutter={{ span: 6, lg: 8 }}>
+      <Grid gutter={{ base: 4, lg: 8 }}>
         {words.map((word) => (
           <Grid.Col span={{ base: 4, xs: 3, md: 2 }}>
             <WordCard
