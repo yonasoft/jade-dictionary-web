@@ -31,7 +31,7 @@ const AddNewListCard = ({ onListAdded }: Props) => {
 
   return (
     <Card
-      className={`mt-3 me-3 w-60 h-70 relative cursor-pointer rounded-lg ${hoverClass} ${classes.wordCard} focus-within:border focus-within:border-jade-color`}
+      className={`cursor-pointer ${hoverClass} ${classes.wordCard} focus-within:border focus-within:border-jade-color h-36 overflow-ellipsis`}
       shadow="lg"
       radius="md"
       withBorder

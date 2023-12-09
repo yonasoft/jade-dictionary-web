@@ -4,7 +4,7 @@ import { SortOption, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import WordListCard from "./word-list-card/WordListCard";
 import AddNewListCard from "./add-new-list-card/AddNewListCard";
-import { Text, Title, Center, Select } from "@mantine/core";
+import { Text, Title, Center, Select, Grid } from "@mantine/core";
 import { getUserWordLists } from "../lib/firebase/wordLists-storage";
 
 const AllLists = () => {
@@ -58,16 +58,20 @@ const AllLists = () => {
           },
         ]}
       />
-      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-        <AddNewListCard onListAdded={() => {}} />
+      <Grid gutter={{ base: 4, sm: 6, lg: 8 }} className="mt-5">
+        <Grid.Col span={{ base: 6, xs: 4, sm: 3, md: 2 }}>
+          <AddNewListCard onListAdded={() => {}} />
+        </Grid.Col>
         {wordLists.map((wordList, index) => (
-          <WordListCard
-            key={index}
-            wordList={wordList}
-            onListChange={() => {}}
-          />
+          <Grid.Col span={{ base: 6, xs: 4, sm: 3, md: 2 }}>
+            <WordListCard
+              key={index}
+              wordList={wordList}
+              onListChange={() => {}}
+            />
+          </Grid.Col>
         ))}
-      </div>
+      </Grid>
     </div>
   );
 };

@@ -7,7 +7,15 @@ import {
 import { getWordsByIds } from "@/app/lib/firebase/words-storage";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordCard from "@/app/ui/components/word-card/WordCard";
-import { Button, Group, Input, Textarea, Text, Center } from "@mantine/core";
+import {
+  Button,
+  Group,
+  Input,
+  Textarea,
+  Text,
+  Center,
+  Grid,
+} from "@mantine/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { doc } from "firebase/firestore";
@@ -64,52 +72,52 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <div className="p-4">
-      <div style={{ maxWidth: "800px", margin: "auto" }}>
-        <Group justify="flex-end">
-          <Button variant="filled" onClick={handleSave}>
-            Save
-          </Button>
-        </Group>
-        <div className="mb-4">
-          <Input.Label htmlFor="title">Title</Input.Label>
-          <Input
-            className="shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <Input.Label htmlFor="description">Description</Input.Label>
-          <Textarea
-            className="shadow "
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={3}
-          />
-        </div>
-        {isEmpty && (
-          <Center className="h-full">
-            <Text color="dimmed" size="md">
-              Your word list is empty. Search for words using the search bar
-              (Ctrl+K) and add them from there.
-            </Text>
-          </Center>
-        )}
-        <div className="flex flex-wrap justify-start gap-1">
-          {words.map((word) => (
+    <div className="p-4" style={{ maxWidth: "1200px", margin: "auto" }}>
+      <Group justify="flex-end">
+        <Button variant="filled" onClick={handleSave}>
+          Save
+        </Button>
+      </Group>
+      <div className="mb-4">
+        <Input.Label htmlFor="title">Title</Input.Label>
+        <Input
+          className="shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="title"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <Input.Label htmlFor="description">Description</Input.Label>
+        <Textarea
+          className="shadow "
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={3}
+        />
+      </div>
+      {isEmpty && (
+        <Center className="h-full">
+          <Text color="dimmed" size="md">
+            Your word list is empty. Search for words using the search bar
+            (Ctrl+K) and add them from there.
+          </Text>
+        </Center>
+      )}
+      <Grid gutter={{ span: 4, sm: 6, lg: 8 }}>
+        {words.map((word) => (
+          <Grid.Col span={{ base: 4, sm: 3, md: 2}}>
             <WordCard
               key={word._id}
               word={word}
               wordList={wordList as WordList}
               onWordRemove={handleWordRemove}
             />
-          ))}
-        </div>
-      </div>
+          </Grid.Col>
+        ))}
+      </Grid>
     </div>
   );
 };
