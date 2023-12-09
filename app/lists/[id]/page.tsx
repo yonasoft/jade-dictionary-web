@@ -74,7 +74,7 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
         <div className="mb-4">
           <Input.Label htmlFor="title">Title</Input.Label>
           <Input
-            className="shadow appearance-none  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="title"
             type="text"
             value={title}
@@ -99,7 +99,7 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
             </Text>
           </Center>
         )}
-        <div className="flex flex-wrap justify-start">
+        <div className="flex flex-wrap justify-start gap-1">
           {words.map((word) => (
             <WordCard
               key={word._id}

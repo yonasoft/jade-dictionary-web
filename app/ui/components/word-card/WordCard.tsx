@@ -32,7 +32,6 @@ const WordCard = ({ word, wordList, onWordRemove }: Props) => {
 
   return (
     <Card
-      className="mx-2 my-1"
       shadow="sm"
       padding="lg"
       style={{
