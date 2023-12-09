@@ -49,7 +49,7 @@ const WordResult = ({ query, word }: Props) => {
   return (
     <Card className="mx-2 my-1" shadow="sm" withBorder>
       <div className="flex">
-        <Group className="grow" align="start" wrap="wrap" grow>
+        <Group className="grow p-4" align="start" wrap="wrap" grow>
           <Flex justify="center" align="center" direction="column">
             <Text
               size="xl"
