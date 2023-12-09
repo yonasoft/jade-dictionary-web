@@ -3,14 +3,9 @@ import React, { useState, useContext, createContext, useEffect } from "react";
 import { initializeFirebase } from "../lib/firebase/init";
 import { getFirestore, doc, updateDoc, Firestore } from "firebase/firestore";
 import { User } from "@firebase/auth";
-import {
-  Auth,
-
-  getAuth,
-} from "firebase/auth";
+import { Auth, getAuth } from "firebase/auth";
 import {
   loginEmailAndPassword,
-
   monitorAuthState,
 } from "../lib/firebase/authentication";
 import {
@@ -20,6 +15,8 @@ import {
   ref,
 } from "firebase/storage";
 import { Database, getDatabase } from "firebase/database";
+import { SortOption, WordList } from "../lib/definitions";
+import { getUserWordLists } from "../lib/firebase/wordLists-storage";
 
 type Props = {
   children: React.ReactNode;
@@ -28,6 +25,7 @@ type Props = {
 type FirebaseContextType = {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+  wordLists: WordList[];
   auth: Auth;
   firestore: Firestore;
   db: Database;
@@ -48,6 +46,26 @@ export const FirebaseContextProvider: React.FC<{
   const storage = getStorage(app);
 
   const [currentUser, setCurrentUser] = useState<null | User>(auth.currentUser);
+  const [wordLists, setWordLists] = useState<WordList[]>([]);
+
+  const fetchWordLists = async () => {
+    if (currentUser) {
+      try {
+        const lists = await getUserWordLists(
+          firestore,
+          currentUser.uid,
+          SortOption.Recent
+        );
+        setWordLists(lists);
+      } catch (error) {
+        console.error("Error fetching word lists: ", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchWordLists();
+  }, [currentUser, firestore]);
 
   useEffect(() => {
     monitorAuthState(auth, setCurrentUser);
@@ -58,6 +76,7 @@ export const FirebaseContextProvider: React.FC<{
       value={{
         currentUser,
         setCurrentUser,
+        wordLists,
         auth,
         firestore,
         db,

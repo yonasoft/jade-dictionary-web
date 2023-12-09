@@ -59,7 +59,13 @@ const SearchSpotlight = (props: Props) => {
   };
 
   return (
-    <Spotlight.Root zIndex={2000} closeOnClickOutside closeOnEscape scrollable>
+    <Spotlight.Root
+      zIndex={2000}
+      closeOnEscape
+      withinPortal
+      closeOnClickOutside
+      scrollable
+    >
       <Group className="sticky my-3 flex w-full items-center">
         <Input
           className="flex-grow ms-3"
@@ -78,13 +84,11 @@ const SearchSpotlight = (props: Props) => {
         </Button>
       </Group>
 
-      <Spotlight.Action>
-        {dictionary.loading == true
-          ? showloading()
-          : dictionary.results.length > 0
-          ? showResults()
-          : showNothingFound()}
-      </Spotlight.Action>
+      {dictionary.loading == true
+        ? showloading()
+        : dictionary.results.length > 0
+        ? showResults()
+        : showNothingFound()}
     </Spotlight.Root>
   );
 };

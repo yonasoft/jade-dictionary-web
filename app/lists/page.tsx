@@ -1,65 +1,39 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
-import { getUserWordLists } from "../lib/firebase/wordLists-storage";
+import React, { useEffect, useState } from "react";
 import { SortOption, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import WordListCard from "./word-list-card/WordListCard";
 import AddNewListCard from "./add-new-list-card/AddNewListCard";
 import { Text, Title, Center, Select } from "@mantine/core";
+import { getUserWordLists } from "../lib/firebase/wordLists-storage";
 
 const AllLists = () => {
-  const { firestore, currentUser } = useFirebaseContext();
+  const { currentUser, firestore } = useFirebaseContext();
   const [wordLists, setWordLists] = useState<WordList[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortOption, setSortOption] = useState(SortOption.Recent);
 
-  const fetchWordLists = useCallback(async () => {
+  useEffect(() => {
     if (currentUser) {
-      setIsLoading(true); // Set loading before fetching
-      try {
-        const userWordLists = await getUserWordLists(
-          firestore,
-          currentUser.uid,
-          sortOption
-        );
-        setWordLists(userWordLists);
-      } catch (error) {
-        console.error("Error fetching word lists: ", error);
-      }
-      setIsLoading(false); // Reset loading after fetching or if an error occurs
-    }
-  }, [firestore, currentUser, sortOption]);
-
-  useEffect(() => {
-    fetchWordLists();
-  }, [fetchWordLists]);
-
-  useEffect(() => {
-    if (currentUser === undefined) {
       setIsLoading(true);
+      getUserWordLists(firestore, currentUser.uid, sortOption)
+        .then((fetchedWordLists) => {
+          setWordLists(fetchedWordLists);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching word lists: ", error);
+          setIsLoading(false);
+        });
     } else {
       setIsLoading(false);
     }
-  }, [currentUser]);
-
-  const handleListChange = () => {
-    fetchWordLists(); // Re-fetch the lists or modify the state directly
-  };
-
-  if (isLoading) {
-    return (
-      <Center className="h-full">
-        <Text size="lg" className="text-gray-600">
-          Loading...
-        </Text>
-      </Center>
-    );
-  }
+  }, [currentUser, firestore, sortOption]);
 
   if (!currentUser) {
     return (
-      <Center className="h-full">
-        <Text size="lg">Please log in to view and manage your word lists.</Text>
+      <Center style={{ height: "100vh" }}>
+        <Text>Please log in to view and manage your word lists.</Text>
       </Center>
     );
   }
@@ -73,10 +47,7 @@ const AllLists = () => {
         label="Sort by"
         placeholder="Select sort option"
         value={sortOption}
-        onChange={(value) => {
-          setSortOption(value as SortOption);
-          fetchWordLists();
-        }}
+        onChange={(value) => setSortOption(value as SortOption)}
         data={[
           { value: SortOption.Recent, label: "Most Recent" },
           { value: SortOption.Oldest, label: "Oldest" },
@@ -87,15 +58,14 @@ const AllLists = () => {
           },
         ]}
       />
-
       <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-        <div>
-          <AddNewListCard onListAdded={handleListChange} />
-        </div>
+        <AddNewListCard onListAdded={() => {}} />
         {wordLists.map((wordList, index) => (
-          <div key={index}>
-            <WordListCard wordList={wordList} onListChange={handleListChange} />
-          </div>
+          <WordListCard
+            key={index}
+            wordList={wordList}
+            onListChange={() => {}}
+          />
         ))}
       </div>
     </div>
