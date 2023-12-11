@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   description: "Chinese dictionary and language tools",
 };
 
+
 const modals: Record<string, FC<ContextModalProps<any>>> = {
   resetPassword: ResetPasswordModal,
   deleteUser: DeleteUserConfirmation,

@@ -23,6 +23,9 @@ const Home = () => {
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
 
+  const titleColor =
+    colorScheme === "dark" ? theme.colors.dark[9] : theme.white;
+
   const showloading = () => {
     return (
       <Center>
@@ -51,13 +54,7 @@ const Home = () => {
         <BackgroundImage src="image/jade-background.jpg" radius="sm" h={200}>
           <Center p="md">
             <Flex direction="column">
-              <Title
-                style={{
-                  color: colorScheme === "dark" ? theme.black : theme.white,
-                }}
-              >
-                Jade English-Chinese Dictionary
-              </Title>
+              <Title c={titleColor}>Jade English-Chinese Dictionary</Title>
               <Center className="mt-5">
                 <SearchBar
                   onSearch={async (query: string) => {
