@@ -50,8 +50,8 @@ const Home = () => {
 
   return (
     <Container size="lg" className="relative">
-      <Box h={200}>
-        <BackgroundImage src="image/jade-background.jpg" radius="sm" h={200}>
+      <Box h={250}>
+        <BackgroundImage src="image/jade-background.jpg" radius="sm" h={250}>
           <Center p="md">
             <Flex direction="column">
               <Title c={titleColor}>Jade English-Chinese Dictionary</Title>
