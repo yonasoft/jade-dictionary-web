@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 import {
@@ -21,30 +22,27 @@ import SearchSpotlight from "./SearchSpotlight";
 import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 
 type Props = {
-  width?: number;
+  onSearch: (query: string) => void;
 };
 
-const SearchBar = (props: Props) => {
+const SearchBar = ({ onSearch }: Props) => {
   const dictionary = useDictionaryContext();
 
-  const onSearch = async () => {
-    dictionary.performSearch(dictionary.query);
-    spotlight.open();
-  };
+  const [query, setQuery] = React.useState("");
 
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
     const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
     if (keysToTriggerSearch.includes(event.key)) {
-      onSearch();
+      onSearch;
     }
   };
 
   const SearchInput = (): React.ReactNode => {
     return (
       <TextInput
-        value={dictionary.query}
+        value={query}
         onChange={(event) => {
-          dictionary.setQuery(event.currentTarget.value);
+          setQuery(event.currentTarget.value);
         }}
         radius="xl"
         placeholder="Search..."
@@ -60,7 +58,8 @@ const SearchBar = (props: Props) => {
           <ActionIcon
             className={classes.icon}
             onClick={async () => {
-              onSearch();
+              dictionary.setQuery(query);
+              onSearch(query);
             }}
             size="md"
             radius="xl"

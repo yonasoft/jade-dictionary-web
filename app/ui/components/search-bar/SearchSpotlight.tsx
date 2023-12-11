@@ -14,16 +14,18 @@ import {
 import { Spotlight, SpotlightAction } from "@mantine/spotlight";
 import { setQuery } from "@mantine/spotlight/lib/spotlight.store";
 import { IconSearch } from "@tabler/icons-react";
-import React from "react";
-import WordResult from "../../../word-result/WordResult";
+import React, { useState } from "react";
+import WordResult from "../word-result/WordResult";
 
 type Props = {};
 
 const SearchSpotlight = (props: Props) => {
   const dictionary = useDictionaryContext();
+  const [query, setQuery] = useState("");
 
   const onSearch = async () => {
-    dictionary.performSearch(dictionary.query);
+    dictionary.setQuery(query);
+    dictionary.performSearch(query);
   };
 
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
@@ -71,7 +73,7 @@ const SearchSpotlight = (props: Props) => {
         <Input
           className="flex-grow ms-3"
           value={dictionary.query}
-          onChange={(event) => dictionary.setQuery(event.currentTarget.value)}
+          onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
           onKeyDown={handleEnterKeyPress}
         />

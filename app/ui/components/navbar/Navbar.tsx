@@ -19,12 +19,14 @@ import MenuItem from "./nav-items/menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
 import UserMenu from "../auth-items/UserMenu";
 import ThemeToggler from "../theme-toggler/ThemeToggler";
-import SearchBar from "./nav-items/search-bar/SearchBar";
+import SearchBar from "../search-bar/SearchBar";
 import ResultTypeSelector from "../script-selector/ScriptTypeSelector";
 import NavDrawer from "./drawer/NavDrawer";
 import AuthButtons from "../auth-items/AuthButtons";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import AuthItems from "../auth-items/AuthItems";
+import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
+import { spotlight } from "@mantine/spotlight";
 
 const links: Array<LinkData> = [
   {
@@ -54,6 +56,7 @@ const links: Array<LinkData> = [
 ];
 
 const Navbar = () => {
+  const dictionary = useDictionaryContext();
   const [drawerOpened, { open, close, toggle }] = useDisclosure(false);
 
   const renderMenuItems = () =>
@@ -75,7 +78,12 @@ const Navbar = () => {
             className="flex flex-1 justify-center items-center max-w-full"
             justify="center"
           >
-            <SearchBar />
+            <SearchBar
+              onSearch={async (query: string) => {
+                dictionary.performSearch(query);
+                spotlight.open();
+              }}
+            />
           </Group>
 
           <Group justify="flex-end" visibleFrom="sm">
