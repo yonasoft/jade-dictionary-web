@@ -46,11 +46,10 @@ const links: Array<LinkData> = [
     label: "Support",
     icon: <IconHelp />,
     sublinks: [
-      { link: "/", label: "Contact Us" },
-      { link: "/", label: "Donate" },
-      { link: "/", label: "Help" },
-      { link: "/", label: "FAQ" },
-      { link: "/", label: "About" },
+      { link: "/support/donate", label: "Donate" },
+      { link: "/support/contact", label: "Contact Us" },
+      { link: "/support/faq", label: "FAQ" },
+      { link: "/support/about", label: "About" },
     ],
   },
 ];
