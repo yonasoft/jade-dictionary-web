@@ -29,7 +29,7 @@ type Props = {
 };
 
 const WordResult = ({ query, word }: Props) => {
-  const { firestore, wordLists } = useFirebaseContext();
+  const { firestore, wordLists, currentUser } = useFirebaseContext();
   const traditional = `(${word.traditional})`;
 
   const handleAddWordToList = async (wordListId: string) => {
@@ -65,27 +65,29 @@ const WordResult = ({ query, word }: Props) => {
             {word.definition}
           </Highlight>
         </Group>
-        <Menu zIndex={3000} withinPortal>
-          <Menu.Target>
-            <Button variant="outline">
-              <IconPlus />
-            </Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            {wordLists && wordLists.length > 0 ? (
-              wordLists.map((list) => (
-                <Menu.Item
-                  key={list.id}
-                  onClick={() => handleAddWordToList(list.id as string)}
-                >
-                  {list.title}
-                </Menu.Item>
-              ))
-            ) : (
-              <Menu.Item style={{ fontStyle: "italic" }}>No lists</Menu.Item>
-            )}
-          </Menu.Dropdown>
-        </Menu>
+        {currentUser && ( // Only show if a user is logged in
+          <Menu zIndex={3000} withinPortal>
+            <Menu.Target>
+              <Button variant="outline">
+                <IconPlus />
+              </Button>
+            </Menu.Target>
+            <Menu.Dropdown>
+              {wordLists && wordLists.length > 0 ? (
+                wordLists.map((list) => (
+                  <Menu.Item
+                    key={list.id}
+                    onClick={() => handleAddWordToList(list.id as string)}
+                  >
+                    {list.title}
+                  </Menu.Item>
+                ))
+              ) : (
+                <Menu.Item style={{ fontStyle: "italic" }}>No lists</Menu.Item>
+              )}
+            </Menu.Dropdown>
+          </Menu>
+        )}
       </div>
     </Card>
   );

@@ -33,7 +33,8 @@ const SearchBar = ({ onSearch }: Props) => {
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
     const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
     if (keysToTriggerSearch.includes(event.key)) {
-      onSearch;
+      dictionary.setQuery(query);
+      onSearch(query);
     }
   };
 
@@ -47,7 +48,9 @@ const SearchBar = ({ onSearch }: Props) => {
         radius="xl"
         placeholder="Search..."
         rightSectionWidth={42}
-        onKeyDown={handleEnterKeyPress}
+        onKeyDown={(event) => {
+          handleEnterKeyPress(event);
+        }}
         leftSection={
           <IconSearch
             style={{ width: rem(18), height: rem(18) }}
