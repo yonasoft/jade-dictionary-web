@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { TextInput, Textarea, Button, Text } from "@mantine/core";
+import { TextInput, Textarea, Button, Text, Title } from "@mantine/core";
 
 const Contact = () => {
   const [email, setEmail] = useState("");
@@ -19,9 +19,11 @@ const Contact = () => {
 
   return (
     <div className="mt-10">
-      <Text>dfdf</Text>
+      <Title order={2}>Contact Us</Title>
+      <Text size="md">Questions, comments, need help? Contact Us!</Text>
       <form onSubmit={handleSubmit}>
         <TextInput
+          className="my-3"
           required
           label="Your Email"
           placeholder="your.email@example.com"
@@ -29,6 +31,7 @@ const Contact = () => {
           onChange={(event) => setEmail(event.currentTarget.value)}
         />
         <TextInput
+          className="my-3"
           required
           label="Topic"
           placeholder="Help with Jade"
@@ -37,13 +40,14 @@ const Contact = () => {
         />
 
         <Textarea
+          className="my-3"
           required
           label="Message"
           placeholder="Your message"
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <Button type="submit" className="mt-4">
+        <Button className="my-4" type="submit">
           Send Message
         </Button>
       </form>
