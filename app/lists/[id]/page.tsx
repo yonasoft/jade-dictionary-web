@@ -15,18 +15,22 @@ import {
   Text,
   Center,
   Grid,
+  ActionIcon,
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { doc } from "firebase/firestore";
+import { IconSearch, IconX } from "@tabler/icons-react";
 
 const ListDetailPage = ({ params }: { params: { id: string } }) => {
   const firebase = useFirebaseContext();
   const [wordList, setWordList] = useState<WordList | null>({} as WordList);
   const [words, setWords] = useState<Word[]>([]);
+  const [filteredWords, setFilteredWords] = useState<Word[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     if (params.id) {
@@ -45,9 +49,51 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
 
   useEffect(() => {
     if (wordList?.wordIds && wordList.wordIds.length > 0) {
-      getWordsByIds(firebase.firestore, wordList.wordIds).then(setWords);
+      getWordsByIds(firebase.firestore, wordList.wordIds).then((words) => {
+        setWords(words);
+        setFilteredWords(words);
+      });
     }
   }, [wordList, firebase.firestore]);
+
+  const onSearch = async () => {
+    if (query) {
+      const searchedWords = words.filter(
+        (word) =>
+          word.simplified.includes(query) ||
+          word.traditional.includes(query) ||
+          word.pinyin.includes(query)
+      );
+      setFilteredWords(searchedWords);
+    } else {
+      // If the query is empty, show all words
+      setFilteredWords(words);
+    }
+  };
+
+  const showWords = () => {
+    return (
+      <Grid gutter={{ base: 4, lg: 8 }}>
+        {filteredWords.map((word, index) => (
+          <Grid.Col key={word._id} span={{ base: 4, xs: 3, md: 2 }}>
+            <WordCard
+              word={word}
+              wordList={wordList as WordList}
+              onWordRemove={handleWordRemove}
+              query={query}
+            />
+          </Grid.Col>
+        ))}
+      </Grid>
+    );
+  };
+
+  const handleEnterKeyPress = (event: React.KeyboardEvent) => {
+    const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
+    if (keysToTriggerSearch.includes(event.key)) {
+      onSearch();
+    }
+  };
 
   const handleSave = async () => {
     if (wordList && params.id) {
@@ -68,7 +114,12 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
   };
 
   const handleWordRemove = (wordId: number) => {
-    setWords((currentWords) => currentWords.filter((w) => w._id !== wordId));
+    setWords((currentWords) =>
+      currentWords.filter((word) => word._id !== wordId)
+    );
+    setFilteredWords((currentFilteredWords) =>
+      currentFilteredWords.filter((word) => word._id !== wordId)
+    );
   };
 
   return (
@@ -98,26 +149,48 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
           rows={3}
         />
       </div>
-      {isEmpty && (
+      <Group className="stickyflex w-full items-center my-3">
+        <Input
+          className="flex-grow"
+          value={query}
+          onChange={(event) => setQuery(event.currentTarget.value)}
+          placeholder="Search via English, Pinyin, or Chinese..."
+          onKeyDown={handleEnterKeyPress}
+        />
+
+        <ActionIcon
+          variant="outline"
+          size="lg" // Ensure sufficient size for the clickable area
+          onClick={() => {
+            console.log("Clearing search");
+            setQuery("");
+            setFilteredWords(words);
+          }}
+          title="Clear"
+        >
+          <IconX size={24} />
+        </ActionIcon>
+
+        <Button
+          onClick={onSearch}
+          variant="outline"
+          color="gray"
+          className="me-3 shrink-0"
+        >
+          <IconSearch className="w-6 h-6" />
+        </Button>
+      </Group>
+
+      {isEmpty ? (
         <Center className="h-full">
           <Text color="dimmed" size="md">
             Your word list is empty. Search for words using the search bar
             (Ctrl+K) and add them from there.
           </Text>
         </Center>
+      ) : (
+        showWords()
       )}
-      <Grid gutter={{ base: 4, lg: 8 }}>
-        {words.map((word) => (
-          <Grid.Col span={{ base: 4, xs: 3, md: 2 }}>
-            <WordCard
-              key={word._id}
-              word={word}
-              wordList={wordList as WordList}
-              onWordRemove={handleWordRemove}
-            />
-          </Grid.Col>
-        ))}
-      </Grid>
     </div>
   );
 };

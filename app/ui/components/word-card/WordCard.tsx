@@ -10,6 +10,7 @@ import {
   useMantineColorScheme,
   useMantineTheme,
   Text,
+  Highlight,
 } from "@mantine/core";
 import { IconDotsVertical, IconTrash } from "@tabler/icons-react";
 import { removeWordFromList } from "@/app/lib/firebase/wordLists-storage";
@@ -20,9 +21,10 @@ type Props = {
   word: Word;
   wordList: WordList;
   onWordRemove: (wordId: number) => void;
+  query: string;
 };
 
-const WordCard = ({ word, wordList, onWordRemove }: Props) => {
+const WordCard = ({ word, wordList, onWordRemove, query }: Props) => {
   const { firestore } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
@@ -50,11 +52,15 @@ const WordCard = ({ word, wordList, onWordRemove }: Props) => {
             setModalOpened(true);
           }}
         >
-          <Text size="sm">{word.pinyin}</Text>
-          <Text fw={600} size="sm">
-            {word.simplified} ({word.traditional})
-          </Text>
-          <Text size="sm">{word.definition}</Text>
+          <Highlight highlight={query} size="sm">
+            {word.pinyin}
+          </Highlight>
+          <Highlight highlight={query} fw={600} size="sm">
+            {`word.simplified(${word.traditional})`}
+          </Highlight>
+          <Highlight highlight={query} size="sm">
+            {word.definition}
+          </Highlight>
         </div>
 
         <div className="absolute top-0 right-0 m-0">
