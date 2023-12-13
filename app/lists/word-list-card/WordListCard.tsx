@@ -8,6 +8,7 @@ import {
   Divider,
   useMantineTheme,
   useMantineColorScheme,
+  Highlight,
 } from "@mantine/core";
 import { Word, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
@@ -19,16 +20,17 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { deleteWordList } from "@/app/lib/firebase/wordLists-storage";
-import { doc } from "firebase/firestore";
+import { doc, query } from "firebase/firestore";
 import classes from "./WordListCard.module.css";
 import Link from "next/link";
 
 type Props = {
   wordList: WordList;
   onListChange: () => void;
+  query: string;
 };
 
-const WordListCard = ({ wordList, onListChange }: Props) => {
+const WordListCard = ({ wordList, onListChange, query }: Props) => {
   const { firestore } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
   const hoverClass =
@@ -37,8 +39,7 @@ const WordListCard = ({ wordList, onListChange }: Props) => {
   const handleRemoveWordList = async () => {
     try {
       await deleteWordList(firestore, wordList.id as string);
-      console.log("Word list removed successfully");
-      onListChange(); // Call the callback function passed from parent
+      onListChange(); // Refresh the word lists in the parent component
     } catch (error) {
       console.error("Failed to remove word list: ", error);
     }
@@ -55,11 +56,21 @@ const WordListCard = ({ wordList, onListChange }: Props) => {
     >
       <Link href={`/lists/${wordList.id}`}>
         <div className="p-3">
-          <h3 className="text-xl font-bold line-clamp-1">{wordList.title}</h3>
+          <Highlight
+            className="text-xl font-bold line-clamp-1"
+            highlight={query}
+            size="lg"
+            fw={700}
+          >
+            {wordList.title}
+          </Highlight>
           <Divider className="my-2" />
-          <p className="text-sm text-gray-600 line-clamp-2">
+          <Highlight
+            className="text-sm text-gray-600 line-clamp-2 high"
+            highlight={query}
+          >
             {wordList.description}
-          </p>
+          </Highlight>
         </div>
       </Link>
       <div className="absolute top-0 right-0 m-0">
