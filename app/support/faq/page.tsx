@@ -3,7 +3,9 @@ import React from "react";
 type Props = {};
 
 const FAQ = (props: Props) => {
-  return <div>faq</div>;
+  return <>
+  
+  </>;
 };
 
 export default FAQ;

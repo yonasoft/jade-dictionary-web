@@ -10,6 +10,7 @@ import {
   Card,
   Flex,
   Group,
+  Highlight,
   Menu,
   Text,
 } from "@mantine/core";
@@ -51,13 +52,18 @@ const WordResult = ({ query, word }: Props) => {
       <div className="flex">
         <Group className="grow p-4" align="start" wrap="wrap" grow>
           <Flex justify="center" align="center" direction="column">
-            <Text
+            <Highlight
               size="xl"
               fw="500"
-            >{`${word.simplified} ${traditional}`}</Text>
-            <Text size="md">{word.pinyin}</Text>
+              highlight={query}
+            >{`${word.simplified} ${traditional}`}</Highlight>
+            <Highlight size="md" highlight={query}>
+              {word.pinyin}
+            </Highlight>
           </Flex>
-          <Text className="h-auto align-middle">{word.definition}</Text>
+          <Highlight className="h-auto align-middle" highlight={query}>
+            {word.definition}
+          </Highlight>
         </Group>
         <Menu zIndex={3000} withinPortal>
           <Menu.Target>

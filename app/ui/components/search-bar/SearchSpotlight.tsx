@@ -72,7 +72,7 @@ const SearchSpotlight = (props: Props) => {
       <Group className="sticky my-3 flex w-full items-center">
         <Input
           className="flex-grow ms-3"
-          value={dictionary.query}
+          value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
           onKeyDown={handleEnterKeyPress}
