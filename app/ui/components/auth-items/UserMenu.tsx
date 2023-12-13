@@ -40,7 +40,7 @@ const UserMenu = (props: Props) => {
       zIndex={3000}
     >
       <Menu.Target>
-        <Link href="/profile">
+        <div className="cursor-pointer">
           <Group className="bg-stone-100 rounded-xl" darkHidden>
             <Avatar
               src={firebase.currentUser?.photoURL || ""}
@@ -74,27 +74,30 @@ const UserMenu = (props: Props) => {
               stroke={1.5}
             />
           </Group>
-        </Link>
+        </div>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item
-          rightSection={
-            <IconChevronRight
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
-          }
-        >
-          <Group>
-            <Avatar radius="xl" src={firebase.currentUser?.photoURL || ""} />
-            <div>
-              <Text fw={500}>{firebase.currentUser?.displayName}</Text>
-              <Text size="xs" c="dimmed">
-                {firebase.currentUser?.email}
-              </Text>
-            </div>
-          </Group>
-        </Menu.Item>
+        <Link href="/profile">
+          <Menu.Item
+            rightSection={
+              <IconChevronRight
+                style={{ width: rem(16), height: rem(16) }}
+                stroke={1.5}
+              />
+            }
+          >
+            <Group>
+              <Avatar radius="xl" src={firebase.currentUser?.photoURL || ""} />
+              <div>
+                <Text fw={500}>{firebase.currentUser?.displayName}</Text>
+                <Text size="xs" c="dimmed">
+                  {firebase.currentUser?.email}
+                </Text>
+              </div>
+            </Group>
+          </Menu.Item>
+        </Link>
+
         <Menu.Item
           leftSection={
             <IconLogout
