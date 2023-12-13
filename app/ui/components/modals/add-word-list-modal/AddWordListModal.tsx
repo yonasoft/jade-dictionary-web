@@ -1,83 +1,69 @@
-'use client';
-import React from "react";
-import { Word } from "@/app/lib/definitions";
+"use client";
+import { Button, Input, Textarea, Title, Text, Center } from "@mantine/core";
+import { ContextModalProps, modals } from "@mantine/modals";
+import classes from "./VerifyEmailModal.module.css";
+import React, { useEffect, useState } from "react";
+import { createWordList } from "@/app/lib/firebase/wordLists-storage";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import { Card, Flex, Group, Highlight, Menu, Button } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
-import {
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
 
-type Props = {
-  query: string;
-  word: Word;
-};
+type Props = {};
 
-const WordResult = ({ query, word }: Props) => {
-  const { firestore, wordLists, currentUser } = useFirebaseContext();
-  const traditional = `(${word.traditional})`;
+const AddWordListModal = ({
+  context,
+  id,
+  innerProps,
+}: ContextModalProps<{ onListAdded: () => void }>) => {
+  const firebase = useFirebaseContext();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-  const handleAddWordToList = async (wordListId: string) => {
-    if (!currentUser) return; // Check if user is logged in
-
+  const onSave = async () => {
     try {
-      const wordListRef = doc(firestore, "wordLists", wordListId);
-      await updateDoc(wordListRef, {
-        wordIds: arrayUnion(word._id),
-        lastUpdatedAt: serverTimestamp(),
-      });
-
-      console.log(`Word ${word._id} added to word list ${wordListId}`);
+      await createWordList(
+        firebase.currentUser?.uid as string,
+        firebase.firestore,
+        title,
+        description
+      );
+      context.closeModal(id);
+      innerProps.onListAdded(); // Invoke callback after successful addition
     } catch (error) {
-      console.error("Error adding word to word list: ", error);
+      console.error("Error creating word list:", error);
     }
   };
 
   return (
-    <Card className="mx-2 my-1" shadow="sm" withBorder>
-      <div className="flex">
-        <Group className="grow p-4" align="start" wrap="wrap" grow>
-          <Flex justify="center" align="center" direction="column">
-            <Highlight size="xl" fw="500" highlight={query}>
-              {`${word.simplified} ${traditional}`}
-            </Highlight>
-            <Highlight size="md" highlight={query}>
-              {word.pinyin}
-            </Highlight>
-          </Flex>
-          <Highlight className="h-auto align-middle" highlight={query}>
-            {word.definition}
-          </Highlight>
-        </Group>
-        {currentUser && (
-          <Menu zIndex={3000} withinPortal>
-            <Menu.Target>
-              <Button variant="outline">
-                <IconPlus />
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              {wordLists && wordLists.length > 0 ? (
-                wordLists.map((list) => (
-                  <Menu.Item
-                    key={list.id}
-                    onClick={() => handleAddWordToList(list.id as string)}
-                  >
-                    {list.title}
-                  </Menu.Item>
-                ))
-              ) : (
-                <Menu.Item style={{ fontStyle: "italic" }}>No lists</Menu.Item>
-              )}
-            </Menu.Dropdown>
-          </Menu>
-        )}
-      </div>
-    </Card>
+    <>
+      <Input.Wrapper label="Title">
+        <Input
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+        />
+      </Input.Wrapper>
+      <Textarea
+        value={description}
+        onChange={(e) => {
+          setDescription(e.target.value);
+        }}
+        label="Description(optional)"
+        autosize
+        minRows={3}
+      />
+      <Center className="mt-4">
+        <Button
+          variant="filled"
+          disabled={title.trim() == ""}
+          onClick={() => {
+            onSave();
+          }}
+        >
+          Save
+        </Button>
+      </Center>
+    </>
   );
 };
 
-export default WordResult;
+export default AddWordListModal;

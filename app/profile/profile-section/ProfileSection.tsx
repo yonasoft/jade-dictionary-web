@@ -17,7 +17,7 @@ const ProfileSection = (props: Props) => {
         />
         <Text size="md">Profile</Text>
       </Group>
-      <Grid grow>
+      <Grid >
         <Grid.Col span={{ base: 12, sm: 4, md: 3 }}>
           <DisplayInformation />
         </Grid.Col>

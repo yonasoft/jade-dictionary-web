@@ -26,8 +26,9 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
-import { addNewUserToDB, deleteuserFromDB } from "./user-storage";
+import { addNewUserToDB, deleteOldProfilePicture, deleteuserFromDB } from "./user-storage";
 import { Dispatch, SetStateAction } from "react";
+import { FirebaseStorage } from "firebase/storage";
 
 export async function setupEmulators(auth:Auth) {
   const authUrl = 'http://127.0.0.1:9099'
@@ -100,7 +101,7 @@ export const updateUserProfile = async (auth: Auth, data: { displayName: string,
   }).then(() => {
 
   }).catch((error) => {
-
+    console.error(error);
   });
 }
 
@@ -149,12 +150,13 @@ export const sendResetPassword = async (auth: Auth, email: string) => {
       });
 }
  
-export const deleteAUser = async (firestore:Firestore, auth: Auth ) => { 
+export const deleteAUser = async (firestore:Firestore, storage:FirebaseStorage, auth: Auth ) => { 
   await deleteUser(auth.currentUser as User)
     .then(() => {
       console.log("User deleted successfully")
-      deleteuserFromDB(firestore, auth.currentUser?.uid as string, )
-    }).catch((error) => {
-      console.error(error);
-    });
+      if (auth.currentUser?.photoURL) {
+        deleteOldProfilePicture(storage, firestore, auth.currentUser?.uid as string)
+      }
+      deleteuserFromDB(firestore, auth.currentUser?.uid as string)
+    })
 }

@@ -61,13 +61,18 @@ const DisplayInformation = (props: Props) => {
     setHideSuccess(true);
     try {
       if (isNewDisplayName()) {
-        const displayNameExists = await checkDisplayNameExists(displayName);
-        if (displayNameExists) {
-          setErrorMessage(
-            "Display name already in use. Please choose another."
-          );
-          return;
-        }
+        await checkDisplayNameExists(displayName)
+          .then((exists) => {
+            if (exists) {
+              setErrorMessage(
+                "Display name already in use. Please choose another."
+              );
+              return;
+            }
+          })
+          .catch((error) => {
+            console.error("Error checking if display name exists:", error);
+          });
       }
 
       let photoURL = firebase.currentUser?.photoURL;
@@ -77,7 +82,11 @@ const DisplayInformation = (props: Props) => {
           firebase.storage,
           firebase.firestore,
           firebase.currentUser?.uid?.toString() as string
-        );
+        )
+          .then(() => {})
+          .catch((error: any) => {
+            console.error("Error deleting old profile picture:", error);
+          });
 
         photoURL = await uploadNewProfilePicture(
           firebase.storage,
@@ -188,7 +197,9 @@ const DisplayInformation = (props: Props) => {
           label="Upload Profile Picture"
           placeholder="Upload"
           rightSectionPointerEvents="none"
+          className="max-w-full" // Apply Tailwind classes here
         />
+
         <Button className="my-2" variant="filled" onClick={onSave}>
           Save
         </Button>
