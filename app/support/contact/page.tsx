@@ -47,7 +47,7 @@ const Contact = () => {
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <Button className="my-4" type="submit">
+        <Button variant="outline" className="my-4" type="submit">
           Send Message
         </Button>
       </form>
