@@ -2,7 +2,7 @@ import emailjs from 'emailjs-com';
 
 
 export const sendEmail = (e:React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  	e.preventDefault();
 
 	emailjs.sendForm(
 	process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
@@ -14,6 +14,9 @@ export const sendEmail = (e:React.FormEvent<HTMLFormElement>) => {
 		console.log(result.text);
 	}, (error) => {
 		console.error(error.text);
+		console.log(
+			process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
+			process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
+			process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY as string)
 	});
-
 };
