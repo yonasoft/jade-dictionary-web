@@ -13,7 +13,7 @@ export const sendEmail = (e:React.FormEvent<HTMLFormElement>) => {
 	process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
 	process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
 	e.target as HTMLFormElement,
-	process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY as string
+	process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 	)
 	.then((result) => {
 		console.log(result.text);
