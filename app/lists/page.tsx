@@ -43,7 +43,7 @@ const AllLists = () => {
     } else {
       setIsLoading(false);
     }
-  }, [currentUser, firestore, sortOption]);
+  }, [currentUser, firestore, wordLists, sortOption]);
 
   const onSearch = () => {
     if (query) {

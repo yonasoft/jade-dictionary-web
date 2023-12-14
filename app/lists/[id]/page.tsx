@@ -23,7 +23,7 @@ import { doc } from "firebase/firestore";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
 const ListDetailPage = ({ params }: { params: { id: string } }) => {
-  const firebase = useFirebaseContext();
+  const {firestore, wordLists} = useFirebaseContext();
   const [wordList, setWordList] = useState<WordList | null>({} as WordList);
   const [words, setWords] = useState<Word[]>([]);
   const [filteredWords, setFilteredWords] = useState<Word[]>([]);
@@ -34,7 +34,7 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
 
   useEffect(() => {
     if (params.id) {
-      getWordListByDocId(firebase.firestore, params.id as string).then(
+      getWordListByDocId(firestore, params.id as string).then(
         (fetchedWordList) => {
           if (fetchedWordList) {
             setTitle(fetchedWordList.title);
@@ -45,16 +45,16 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
         }
       );
     }
-  }, [params.id, firebase.firestore]);
+  }, [params.id, firestore, wordLists]);
 
   useEffect(() => {
     if (wordList?.wordIds && wordList.wordIds.length > 0) {
-      getWordsByIds(firebase.firestore, wordList.wordIds).then((words) => {
+      getWordsByIds(firestore, wordList.wordIds).then((words) => {
         setWords(words);
         setFilteredWords(words);
       });
     }
-  }, [wordList, firebase.firestore]);
+  }, [wordList, firestore]);
 
   const onSearch = async () => {
     if (query) {
@@ -99,7 +99,7 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
     if (wordList && params.id) {
       try {
         await editWordList(
-          doc(firebase.firestore, "wordLists", params.id),
+          doc(firestore, "wordLists", params.id),
           title,
           description
         );

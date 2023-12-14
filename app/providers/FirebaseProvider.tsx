@@ -64,7 +64,6 @@ export const FirebaseContextProvider: React.FC<{
     }
   };
 
-  // Inside FirebaseContextProvider
 
   const updateWordLists = async () => {
     const lists = await getUserWordLists(

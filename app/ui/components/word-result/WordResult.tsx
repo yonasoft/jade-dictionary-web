@@ -21,7 +21,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import React from "react";
+import React, { useEffect } from "react";
 
 type Props = {
   query: string;
@@ -29,9 +29,9 @@ type Props = {
 };
 
 const WordResult = ({ query, word }: Props) => {
-  const { firestore, wordLists, currentUser } = useFirebaseContext();
+  const { firestore, wordLists, currentUser, updateWordLists } =
+    useFirebaseContext();
   const traditional = `(${word.traditional})`;
-  
 
   const handleAddWordToList = async (wordListId: string) => {
     try {
@@ -41,7 +41,7 @@ const WordResult = ({ query, word }: Props) => {
         wordIds: arrayUnion(word._id),
         lastUpdatedAt: serverTimestamp(), // Optional: Update lastUpdatedAt timestamp
       });
-
+      updateWordLists();
       console.log(`Word ${word._id} added to word list ${wordListId}`);
     } catch (error) {
       console.error("Error adding word to word list: ", error);
