@@ -3,7 +3,7 @@ import { Button, Input, Textarea, Title, Text, Center } from "@mantine/core";
 import { ContextModalProps, modals } from "@mantine/modals";
 import classes from "./VerifyEmailModal.module.css";
 import React, { useEffect, useState } from "react";
-import { createWordList } from "@/app/lib/firebase/wordLists-storage";
+import { createWordList } from "@/app/lib/firebase/firestore/wordLists-storage";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 
 type Props = {};
@@ -13,20 +13,23 @@ const AddWordListModal = ({
   id,
   innerProps,
 }: ContextModalProps<{ onListAdded: () => void }>) => {
-  const firebase = useFirebaseContext();
+  const { updateWordLists, currentUser, firestore } = useFirebaseContext();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  // Inside AddWordListModal
 
   const onSave = async () => {
     try {
       await createWordList(
-        firebase.currentUser?.uid as string,
-        firebase.firestore,
+        currentUser?.uid as string,
+        firestore,
         title,
         description
       );
       context.closeModal(id);
-      innerProps.onListAdded(); // Invoke callback after successful addition
+      innerProps.onListAdded(); // Existing callback
+      updateWordLists(); // Call to update the word lists in context
     } catch (error) {
       console.error("Error creating word list:", error);
     }

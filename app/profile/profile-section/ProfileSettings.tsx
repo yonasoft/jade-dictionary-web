@@ -15,12 +15,7 @@ import {
   updateUserPassword,
 } from "../../lib/firebase/authentication";
 import { useFirebaseContext } from "../../providers/FirebaseProvider";
-import { checkEmailExists } from "../../lib/firebase/user-storage";
-import {
-  AuthCredential,
-  User,
-  reauthenticateWithCredential,
-} from "firebase/auth";
+import { checkEmailExists } from "../../lib/firebase/firestore/user-storage";
 import { modals, openContextModal } from "@mantine/modals";
 import VerifyEmailModal from "../../ui/components/modals/verify-email-modal/VerifyEmailModal";
 
@@ -82,9 +77,11 @@ const ProfileSettings = (props: Props) => {
       return false;
     }
 
+    console.log("checking email exists");
     const emailExists = await checkEmailExists(firebase.firestore, email);
     if (emailExists) {
       setEmailError("Email already in use. Please use a different email.");
+      console.log("email exists");
       return false;
     }
 
@@ -127,10 +124,14 @@ const ProfileSettings = (props: Props) => {
       let isPasswordValid = true;
 
       if (form.values.email) {
+        console.log("validating email");
         isEmailValid = await validateEmail();
+        console.log("email validated");
         if (isEmailValid && form.values.email !== firebase.currentUser?.email) {
           try {
+            console.log("updating email");
             await updateUserEmail(firebase.auth, form.values.email);
+            console.log("email updated");
             setSuccessMessage("Email updated successfully");
           } catch (error: any) {
             console.error("Error updating email:", error);

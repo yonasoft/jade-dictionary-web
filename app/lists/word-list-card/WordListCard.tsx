@@ -12,14 +12,14 @@ import {
 } from "@mantine/core";
 import { Word, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import { getWordsByIds } from "@/app/lib/firebase/words-storage";
+import { getWordsByIds } from "@/app/lib/firebase/firestore/words-storage";
 import {
   IconDeviceGamepad,
   IconDotsVertical,
   IconRun,
   IconTrash,
 } from "@tabler/icons-react";
-import { deleteWordList } from "@/app/lib/firebase/wordLists-storage";
+import { deleteWordList } from "@/app/lib/firebase/firestore/wordLists-storage";
 import { doc, query } from "firebase/firestore";
 import classes from "./WordListCard.module.css";
 import Link from "next/link";

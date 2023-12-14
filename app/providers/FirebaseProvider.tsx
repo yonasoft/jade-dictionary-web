@@ -16,7 +16,7 @@ import {
 } from "firebase/storage";
 import { Database, getDatabase } from "firebase/database";
 import { SortOption, WordList } from "../lib/definitions";
-import { getUserWordLists } from "../lib/firebase/wordLists-storage";
+import { getUserWordLists } from "../lib/firebase/firestore/wordLists-storage";
 
 type Props = {
   children: React.ReactNode;
@@ -26,6 +26,7 @@ type FirebaseContextType = {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   wordLists: WordList[];
+  updateWordLists: () => void;
   auth: Auth;
   firestore: Firestore;
   db: Database;
@@ -63,6 +64,17 @@ export const FirebaseContextProvider: React.FC<{
     }
   };
 
+  // Inside FirebaseContextProvider
+
+  const updateWordLists = async () => {
+    const lists = await getUserWordLists(
+      firestore,
+      currentUser?.uid as string,
+      SortOption.Recent
+    );
+    setWordLists(lists);
+  };
+
   useEffect(() => {
     fetchWordLists();
   }, [currentUser, firestore]);
@@ -77,6 +89,7 @@ export const FirebaseContextProvider: React.FC<{
         currentUser,
         setCurrentUser,
         wordLists,
+        updateWordLists,
         auth,
         firestore,
         db,

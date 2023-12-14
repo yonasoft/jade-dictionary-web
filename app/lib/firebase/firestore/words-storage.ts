@@ -1,5 +1,5 @@
 import { Firestore, collection, query, where, getDocs, Query, DocumentData, DocumentSnapshot, startAfter, limit, addDoc, getDoc, doc } from "firebase/firestore";
-import { QueryType, Word, WordList } from "../definitions";
+import { QueryType, Word, WordList } from "../../definitions";
 import { Console } from "console";
 import { Auth } from "@firebase/auth";
 

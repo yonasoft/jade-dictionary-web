@@ -13,7 +13,7 @@ import {
   Highlight,
 } from "@mantine/core";
 import { IconDotsVertical, IconTrash } from "@tabler/icons-react";
-import { removeWordFromList } from "@/app/lib/firebase/wordLists-storage";
+import { removeWordFromList } from "@/app/lib/firebase/firestore/wordLists-storage";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordDetailModal from "./WordDetailModal";
 
@@ -56,7 +56,7 @@ const WordCard = ({ word, wordList, onWordRemove, query }: Props) => {
             {word.pinyin}
           </Highlight>
           <Highlight highlight={query} fw={600} size="sm">
-            {`word.simplified(${word.traditional})`}
+            {`${word.simplified}(${word.traditional})`}
           </Highlight>
           <Highlight highlight={query} size="sm">
             {word.definition}

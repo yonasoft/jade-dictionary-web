@@ -16,7 +16,7 @@ import {
   ActionIcon,
   Highlight,
 } from "@mantine/core";
-import { getUserWordLists } from "../lib/firebase/wordLists-storage";
+import { getUserWordLists } from "../lib/firebase/firestore/wordLists-storage";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
 const AllLists = () => {

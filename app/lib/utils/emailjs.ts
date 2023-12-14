@@ -4,10 +4,9 @@ import emailjs from 'emailjs-com';
 export const sendEmail = (e:React.FormEvent<HTMLFormElement>) => {
   	e.preventDefault();
 
-	console.log('Service ID:', process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
-	console.log('Template ID:', process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID);
-	console.log('Public Key:', process.env.NEXT_PUBLIC_EMAILJS_KEY);
-
+	// console.log('Service ID:', process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
+	// console.log('Template ID:', process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID);
+	// console.log('Public Key:', process.env.NEXT_PUBLIC_EMAILJS_KEY);
 
 	emailjs.sendForm(
 	process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,

@@ -1,5 +1,5 @@
 "use client";
-import { searchWords } from "@/app/lib/firebase/words-storage";
+import { searchWords } from "@/app/lib/firebase/firestore/words-storage";
 import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import {

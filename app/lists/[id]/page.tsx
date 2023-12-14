@@ -3,8 +3,8 @@ import { Word, WordList } from "@/app/lib/definitions";
 import {
   editWordList,
   getWordListByDocId,
-} from "@/app/lib/firebase/wordLists-storage";
-import { getWordsByIds } from "@/app/lib/firebase/words-storage";
+} from "@/app/lib/firebase/firestore/wordLists-storage";
+import { getWordsByIds } from "@/app/lib/firebase/firestore/words-storage";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordCard from "@/app/ui/components/word-card/WordCard";
 import {

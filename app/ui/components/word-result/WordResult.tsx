@@ -31,6 +31,7 @@ type Props = {
 const WordResult = ({ query, word }: Props) => {
   const { firestore, wordLists, currentUser } = useFirebaseContext();
   const traditional = `(${word.traditional})`;
+  
 
   const handleAddWordToList = async (wordListId: string) => {
     try {

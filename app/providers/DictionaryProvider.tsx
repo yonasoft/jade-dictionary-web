@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { ScriptType, Word } from "../lib/definitions";
 import { FirebaseContext, useFirebaseContext } from "./FirebaseProvider";
-import { searchWords } from "../lib/firebase/words-storage";
+import { searchWords } from "../lib/firebase/firestore/words-storage";
 
 type Props = {
   children: React.ReactNode;
