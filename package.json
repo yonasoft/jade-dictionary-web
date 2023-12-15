@@ -32,7 +32,6 @@
     "embla-carousel-react": "^7.1.0",
     "encoding": "^0.1.13",
     "firebase": "^10.6.0",
-    "firebaseui": "^6.1.0",
     "next": "^14.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
