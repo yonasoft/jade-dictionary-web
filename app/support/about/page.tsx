@@ -44,7 +44,7 @@ const About = (props: Props) => {
           user-friendly interface. I hope you find it helpful and enjoyable!
         </Text>
 
-        <Space h="lg" />
+        <Space h="md" />
 
         <Title order={2}>Technologies & Resources Used</Title>
         <Text>
@@ -87,12 +87,12 @@ const About = (props: Props) => {
           &nbsp;- for email contact form.
         </Text>
 
-        <Space h="lg" />
+        <Space h="md" />
 
         <Title order={2}>Other Projects</Title>
         <Text>
           <Anchor href="https://www.anitier.com/" target="_blank">
-            Anitier
+            AniTier
           </Anchor>
           &nbsp; - Anime tier list maker.
         </Text>
