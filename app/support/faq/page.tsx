@@ -24,43 +24,43 @@ const FAQ = (props: Props) => {
     );
   };
 
-  const account = [
-    {
-      question: "How do verify my account",
-      answer:
-        "An verification email will be sent to your email address when you sign up. You can also resend the verification email by clicking the 'Resend Verification Email' button the profile page by clicking the user menu on the right side of the navigation bar.",
-    },
-    {
-      question: "How do I reset my password?",
-      answer:
-        "Click 'Login', then click 'Forgot Password?' An email will be sent to reset your password.",
-    },
-    {
-      question: "How do I change my password?",
-      answer:
-        "Login, click the user menu on the right side of the navigation bar, then enter your new password and confirm. If the passwords are valid, it will be changed. You may be prompted to re-authenticate before changing the password.",
-    },
-    {
-      question: "How do I change my display name?",
-      answer:
-        "Login and click the user menu on the right side of the navigation bar. Then press the pencil icon, enter your new display name, and press the check icon. Finally, press 'Save'.",
-    },
-    {
-      question: "How do I change my profile picture?",
-      answer:
-        "Login and click the user menu on the right side of the navigation bar. Then upload your new profile picture. Finally, press 'Save'.",
-    },
-    {
-      question: "How do I change my email?",
-      answer:
-        "Login, click the user menu on the right side of the navigation bar, then enter your new email and confirm. If the emails are valid, it will be changed. You may be prompted to re-authenticate before changing the email.",
-    },
-    {
-      question: "How do I delete my account?",
-      answer:
-        "Login, click the user menu on the right side of the navigation bar. Click the 'Delete Account' button and confirm by inputting 'Delete Account'. You may be prompted to re-authenticate first.",
-    },
-  ];
+const account = [
+  {
+    question: "How do I verify my account?",
+    answer:
+      "A verification email will be sent to your email address when you sign up. You can also resend the verification email by clicking the 'Resend Verification Email' button on the profile page, accessible via the user menu on the right side of the navigation bar.",
+  },
+  {
+    question: "How do I reset my password?",
+    answer:
+      "Click 'Login', then click 'Forgot Password?' An email will be sent to reset your password.",
+  },
+  {
+    question: "How do I change my password?",
+    answer:
+      "Login, click the user menu on the right side of the navigation bar, then enter your new password and confirm. If the passwords are valid, it will be changed. You may be prompted to re-authenticate before changing the password.",
+  },
+  {
+    question: "How do I change my display name?",
+    answer:
+      "Login and click the user menu on the right side of the navigation bar. Then press the pencil icon, enter your new display name, and press the check icon. Finally, press 'Save'.",
+  },
+  {
+    question: "How do I change my profile picture?",
+    answer:
+      "Login and click the user menu on the right side of the navigation bar. Then upload your new profile picture. Finally, press 'Save'.",
+  },
+  {
+    question: "How do I change my email?",
+    answer:
+      "Login, click the user menu on the right side of the navigation bar, then enter your new email and confirm. If the emails are valid, it will be changed. You may be prompted to re-authenticate before changing the email.",
+  },
+  {
+    question: "How do I delete my account?",
+    answer:
+      "Login, click the user menu on the right side of the navigation bar. Click the 'Delete Account' button and confirm by inputting 'Delete Account'. You may be prompted to re-authenticate first.",
+  },
+];
 
   return (
     <>
