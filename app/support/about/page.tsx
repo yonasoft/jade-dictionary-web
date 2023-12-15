@@ -45,7 +45,7 @@ const About = (props: Props) => {
         </Text>
 
         <Space h="lg" />
-        
+
         <Title order={2}>Technologies & Resources Used</Title>
         <Text>
           <Anchor
@@ -86,7 +86,25 @@ const About = (props: Props) => {
           </Anchor>
           &nbsp;- for email contact form.
         </Text>
-        <Text></Text>
+
+        <Space h="lg" />
+
+        <Title order={2}>Other Projects</Title>
+        <Text>
+          <Anchor href="https://www.anitier.com/" target="_blank">
+            Anitier
+          </Anchor>
+          &nbsp; - Anime tier list maker.
+        </Text>
+        <Text>
+          <Anchor
+            href="https://play.google.com/store/apps/details?id=com.yonasoft.handballcourtmanager"
+            target="_blank"
+          >
+            Handball Court Manager
+          </Anchor>
+          &nbsp; - Handball court score and queue tracker.
+        </Text>
       </Flex>
     </>
   );
