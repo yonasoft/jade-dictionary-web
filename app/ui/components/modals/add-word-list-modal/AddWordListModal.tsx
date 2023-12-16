@@ -62,7 +62,7 @@ const AddWordListModal = ({
             onSave();
           }}
         >
-          Save
+          Create
         </Button>
       </Center>
     </>
