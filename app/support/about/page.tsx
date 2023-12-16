@@ -30,8 +30,6 @@ const About = (props: Props) => {
       >
         <Title order={2}>Story</Title>
 
-        <Avatar size="xl" alt="picture of Yonasoft" />
-
         <Text>
           &emsp;&emsp;Hello, I am Yonasoft. My passion lies in merging Software
           Engineering with my varied interests and hobbies. While learning
