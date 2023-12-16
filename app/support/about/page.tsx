@@ -54,7 +54,7 @@ const About = (props: Props) => {
           >
             CC-CEDICT
           </Anchor>
-          &nbsp;- For Chinese word data and parser to convert to SQlite.
+          &nbsp;- For Chinese word data and parser to convert the file.
         </Text>
         <Text>
           <Anchor href="https://firebase.google.com/" target="_blank">
