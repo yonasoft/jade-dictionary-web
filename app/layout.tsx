@@ -1,22 +1,25 @@
 import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
 import Head from "next/head";
-import { Murecho, Roboto } from "next/font/google";
-import "@mantine/core/styles.css";
-import "./globals.css";
+import { ReactNode, FC } from "react";
+
 import { MantineProvider } from "@mantine/core";
 import { ContextModalProps, ModalsProvider } from "@mantine/modals";
+
 import Navbar from "./ui/components/navbar/Navbar";
 import { theme } from "./lib/theme";
 import { FirebaseContextProvider } from "./providers/FirebaseProvider";
 import {
-  DictionaryContext,
   DictionaryContextProvider,
 } from "./providers/DictionaryProvider";
 import ResetPasswordModal from "./ui/components/modals/reset-password-modal/ResetPasswordModal";
 import DeleteUserConfirmation from "./ui/components/modals/confirm-delete-user-modal/DeleteUserConfirmation";
 import ReauthenticateModal from "./ui/components/modals/reauth-modal/ReauthenticateModal";
 import AddWordListModal from "./ui/components/modals/add-word-list-modal/AddWordListModal";
-import { ReactNode, FC } from "react";
+
+import "@mantine/core/styles.css";
+import "./globals.css";
+
 
 const roboto = Roboto({
   subsets: ["latin"],
