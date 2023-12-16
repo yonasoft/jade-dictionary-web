@@ -129,7 +129,6 @@ export const updateUserPassword = async (auth: Auth, password: string) => {
 export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<User|null>>) => {
     onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user);
       action(user);
     } else {
       action(null);

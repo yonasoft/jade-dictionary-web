@@ -21,9 +21,7 @@ type Props = {};
 const UserMenu = (props: Props) => {
   const firebase = useFirebaseContext();
 
-  useEffect(() => {
-    console.log(firebase.currentUser);
-  }, [firebase.currentUser]);
+  useEffect(() => {}, [firebase.currentUser]);
 
   const trimStringWithEllipsis = (str: string, maxLength: number) => {
     if (str.length > maxLength) {

@@ -17,7 +17,7 @@ export const theme = createTheme({
     ],
   },
   headings: {
-    fontFamily: 'Murecho, Roboto, sans-serif',
+    fontFamily: 'Roboto, Murecho, sans-serif',
     sizes: {
       h1: { fontSize: rem(36) },
     },
