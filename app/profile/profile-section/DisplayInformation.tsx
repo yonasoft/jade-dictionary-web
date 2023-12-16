@@ -28,7 +28,7 @@ import {
   deleteOldProfilePicture,
   updateUserToDB,
   uploadNewProfilePicture,
-} from "../../lib/firebase/firestore/user-storage";
+} from "../../lib/firebase/storage/user-storage";
 import { User, updateProfile } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { FirestoreUserData } from "../../lib/definitions";

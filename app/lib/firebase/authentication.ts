@@ -26,7 +26,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
-import { addNewUserToDB, deleteOldProfilePicture, deleteuserFromDB } from "./firestore/user-storage";
+import { addNewUserToDB, deleteOldProfilePicture, deleteuserFromDB } from "./storage/user-storage";
 import { Dispatch, SetStateAction } from "react";
 import { FirebaseStorage } from "firebase/storage";
 

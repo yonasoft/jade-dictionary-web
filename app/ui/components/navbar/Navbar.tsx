@@ -55,7 +55,6 @@ const links: Array<LinkData> = [
 ];
 
 const Navbar = () => {
-  const dictionary = useDictionaryContext();
   const [drawerOpened, { open, close, toggle }] = useDisclosure(false);
 
   const renderMenuItems = () =>
@@ -78,10 +77,7 @@ const Navbar = () => {
             justify="center"
           >
             <SearchBar
-              onSearch={async (query: string) => {
-                dictionary.performSearch(query);
-                spotlight.open();
-              }}
+              openSpotlight={true}
             />
           </Group>
 

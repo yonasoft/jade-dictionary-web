@@ -3,8 +3,8 @@ import { Word, WordList } from "@/app/lib/definitions";
 import {
   editWordList,
   getWordListByDocId,
-} from "@/app/lib/firebase/firestore/wordLists-storage";
-import { getWordsByIds } from "@/app/lib/firebase/firestore/words-storage";
+} from "@/app/lib/firebase/storage/wordLists-storage";
+import { getWordsByIds } from "@/app/lib/firebase/storage/words-storage";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordCard from "@/app/ui/components/word-card/WordCard";
 import {
@@ -23,7 +23,7 @@ import { doc } from "firebase/firestore";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
 const ListDetailPage = ({ params }: { params: { id: string } }) => {
-  const {firestore, wordLists} = useFirebaseContext();
+  const { firestore, wordLists } = useFirebaseContext();
   const [wordList, setWordList] = useState<WordList | null>({} as WordList);
   const [words, setWords] = useState<Word[]>([]);
   const [filteredWords, setFilteredWords] = useState<Word[]>([]);

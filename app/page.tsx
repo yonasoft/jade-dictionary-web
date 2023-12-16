@@ -14,6 +14,7 @@ import {
 import SearchBar from "./ui/components/search-bar/SearchBar";
 import { Word } from "./lib/definitions";
 import { useDictionaryContext } from "./providers/DictionaryProvider";
+import { spotlight } from "@mantine/spotlight";
 
 //Only import the components that are needed
 const WordResult = lazy(() => import("./ui/components/word-result/WordResult"));
@@ -52,8 +53,8 @@ const Home = () => {
     [colorScheme, theme]
   );
 
-  const onSearch = async (query: string) => {
-    performSearch(query);
+  const onSearch = async () => {
+    spotlight.open();
   };
 
   return (
@@ -64,7 +65,7 @@ const Home = () => {
             <Flex direction="column">
               <Title c={titleColor}>Jade English-Chinese Dictionary</Title>
               <Center className="mt-5">
-                <SearchBar onSearch={onSearch} />
+                <SearchBar openSpotlight={false} />
               </Center>
             </Flex>
           </Center>

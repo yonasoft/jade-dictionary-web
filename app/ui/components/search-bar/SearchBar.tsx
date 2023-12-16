@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   ActionIcon,
@@ -22,28 +22,35 @@ import SearchSpotlight from "./SearchSpotlight";
 import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 
 type Props = {
-  onSearch: (query: string) => void;
+  openSpotlight: boolean;
 };
 
-const SearchBar = ({ onSearch }: Props) => {
-  const dictionary = useDictionaryContext();
+const SearchBar = ({ openSpotlight }: Props) => {
+  const { setQuery, performSearch } = useDictionaryContext();
 
-  const [query, setQuery] = React.useState("");
+  const [queryLocal, setQueryLocal] = useState("");
+
+  const handleSearch = () => {
+    setQuery(queryLocal);
+    performSearch(queryLocal);
+    if (openSpotlight === true) {
+      spotlight.open();
+    }
+  };
 
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
     const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
     if (keysToTriggerSearch.includes(event.key)) {
-      dictionary.setQuery(query);
-      onSearch(query);
+      handleSearch();
     }
   };
 
   const SearchInput = (): React.ReactNode => {
     return (
       <TextInput
-        value={query}
+        value={queryLocal}
         onChange={(event) => {
-          setQuery(event.currentTarget.value);
+          setQueryLocal(event.currentTarget.value);
         }}
         radius="xl"
         placeholder="Search..."
@@ -60,10 +67,7 @@ const SearchBar = ({ onSearch }: Props) => {
         rightSection={
           <ActionIcon
             className={classes.icon}
-            onClick={async () => {
-              dictionary.setQuery(query);
-              onSearch(query);
-            }}
+            onClick={handleSearch}
             size="md"
             radius="xl"
             variant="filled"
