@@ -1,51 +1,59 @@
 "use client";
+import { Suspense, lazy, memo, useMemo } from "react";
 import {
   BackgroundImage,
   Box,
   Center,
   Container,
   Flex,
-  ScrollArea,
   Text,
   Title,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
-import Image from "next/image";
 import SearchBar from "./ui/components/search-bar/SearchBar";
-import WordResult from "./ui/components/word-result/WordResult";
-import { Spotlight } from "@mantine/spotlight";
+import { Word } from "./lib/definitions";
 import { useDictionaryContext } from "./providers/DictionaryProvider";
-import { useColorScheme } from "@mantine/hooks";
+
+//Only import the components that are needed
+const WordResult = lazy(() => import("./ui/components/word-result/WordResult"));
+
+const Loading = () => (
+  <Center>
+    <Text size="xl">Loading...</Text>
+  </Center>
+);
+
+const NothingFound = () => (
+  <Center>
+    <Text size="xl">Nothing found...</Text>
+  </Center>
+);
+
+const Results = memo(
+  ({ results, query }: { results: Word[]; query: string }) => (
+    <>
+      {results.map((word, index) => (
+        <Suspense key={index} fallback={<Loading />}>
+          <WordResult word={word} query={query} />
+        </Suspense>
+      ))}
+    </>
+  )
+);
 
 const Home = () => {
-  const dictionary = useDictionaryContext();
+  const { results, query, loading, performSearch } = useDictionaryContext();
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
 
-  const titleColor =
-    colorScheme === "dark" ? theme.colors.dark[9] : theme.white;
+  const titleColor = useMemo(
+    () => (colorScheme === "dark" ? theme.colors.dark[9] : theme.white),
+    [colorScheme, theme]
+  );
 
-  const showloading = () => {
-    return (
-      <Center>
-        <Text size="xl">Loading...</Text>
-      </Center>
-    );
-  };
-
-  const showResults = () => {
-    return dictionary.results.map((word, index) => {
-      return <WordResult key={index} word={word} query={dictionary.query} />;
-    });
-  };
-
-  const showNothingFound = () => {
-    return (
-      <Center>
-        <Text size="xl">Nothing found...</Text>
-      </Center>
-    );
+  const onSearch = async (query: string) => {
+    performSearch(query);
   };
 
   return (
@@ -56,21 +64,19 @@ const Home = () => {
             <Flex direction="column">
               <Title c={titleColor}>Jade English-Chinese Dictionary</Title>
               <Center className="mt-5">
-                <SearchBar
-                  onSearch={async (query: string) => {
-                    dictionary.performSearch(query);
-                  }}
-                />
+                <SearchBar onSearch={onSearch} />
               </Center>
             </Flex>
           </Center>
         </BackgroundImage>
       </Box>
-      {dictionary.loading == true
-        ? showloading()
-        : dictionary.results.length > 0
-        ? showResults()
-        : showNothingFound()}
+      {loading ? (
+        <Loading />
+      ) : results.length > 0 ? (
+        <Results results={results} query={query} />
+      ) : (
+        <NothingFound />
+      )}
     </Container>
   );
 };

@@ -20,7 +20,6 @@ import AddWordListModal from "./ui/components/modals/add-word-list-modal/AddWord
 import "@mantine/core/styles.css";
 import "./globals.css";
 
-
 const roboto = Roboto({
   subsets: ["latin"],
   weight: "400",

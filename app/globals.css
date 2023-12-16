@@ -15,18 +15,15 @@
   background-color: #2c2e33; /* Darker grey for dark mode */
 }
 
-
 input[type="checkbox"]:checked {
   background-color: var(--jade-color) !important;
 }
 
 Button[data-variant="filled"] {
   background-color: var(--jade-color) !important;
-  color: white !important;
 }
 
 Button[data-variant="outline"] {
-  background-color: white !important;
   color: var(--jade-color) !important;
   border-color: var(--jade-color) !important;
 }
