@@ -14,18 +14,51 @@ import {
 import { Spotlight, SpotlightAction } from "@mantine/spotlight";
 import { setQuery } from "@mantine/spotlight/lib/spotlight.store";
 import { IconSearch } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { Suspense, memo, useState } from "react";
 import WordResult from "../word-result/WordResult";
+import { Word } from "@/app/lib/definitions";
 
 type Props = {};
 
+const Loading = () => {
+  return (
+    <Spotlight.Empty>
+      <Center>
+        <Text size="xl">Loading...</Text>
+      </Center>
+    </Spotlight.Empty>
+  );
+};
+
+const Results = memo(
+  ({ results, query }: { results: Word[]; query: string }) => (
+    <>
+      {results.map((word, index) => (
+        <Suspense key={index} fallback={<Loading />}>
+          <WordResult word={word} query={query} />
+        </Suspense>
+      ))}
+    </>
+  )
+);
+
+const NothingFound = () => {
+  return (
+    <Spotlight.Empty>
+      <Center>
+        <Text size="xl">Nothing found...</Text>
+      </Center>
+    </Spotlight.Empty>
+  );
+};
+
 const SearchSpotlight = (props: Props) => {
-  const dictionary = useDictionaryContext();
-  const [query, setQuery] = useState("");
+  const { performSearch, results, loading, setQuery } = useDictionaryContext();
+  const [queryLocal, setQueryLocal] = useState("");
 
   const onSearch = async () => {
-    dictionary.setQuery(query);
-    dictionary.performSearch(query);
+    setQuery(queryLocal);
+    performSearch(queryLocal);
   };
 
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
@@ -33,32 +66,6 @@ const SearchSpotlight = (props: Props) => {
     if (keysToTriggerSearch.includes(event.key)) {
       onSearch();
     }
-  };
-
-  const showloading = () => {
-    return (
-      <Spotlight.Empty>
-        <Center>
-          <Text size="xl">Loading...</Text>
-        </Center>
-      </Spotlight.Empty>
-    );
-  };
-
-  const showResults = () => {
-    return dictionary.results.map((word, index) => {
-      return <WordResult key={index} word={word} query={dictionary.query} />;
-    });
-  };
-
-  const showNothingFound = () => {
-    return (
-      <Spotlight.Empty>
-        <Center>
-          <Text size="xl">Nothing found...</Text>
-        </Center>
-      </Spotlight.Empty>
-    );
   };
 
   return (
@@ -72,8 +79,8 @@ const SearchSpotlight = (props: Props) => {
       <Group className="sticky my-3 flex w-full items-center">
         <Input
           className="flex-grow ms-3"
-          value={query}
-          onChange={(event) => setQuery(event.currentTarget.value)}
+          value={queryLocal}
+          onChange={(event) => setQueryLocal(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
           onKeyDown={handleEnterKeyPress}
         />
@@ -87,11 +94,13 @@ const SearchSpotlight = (props: Props) => {
         </Button>
       </Group>
 
-      {dictionary.loading == true
-        ? showloading()
-        : dictionary.results.length > 0
-        ? showResults()
-        : showNothingFound()}
+      {loading == true ? (
+        <Loading />
+      ) : results.length > 0 ? (
+        <Results results={results} query={queryLocal} />
+      ) : (
+        <NothingFound />
+      )}
     </Spotlight.Root>
   );
 };
