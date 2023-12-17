@@ -25,6 +25,7 @@ type Props = {
 };
 
 const WordCard = ({ word, wordList, onWordRemove, query }: Props) => {
+  query = query.toLowerCase();
   const { firestore } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();

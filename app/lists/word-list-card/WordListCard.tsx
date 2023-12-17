@@ -31,6 +31,7 @@ type Props = {
 };
 
 const WordListCard = ({ wordList, onListChange, query }: Props) => {
+  query = query.toLowerCase();
   const { firestore } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
   const hoverClass =
