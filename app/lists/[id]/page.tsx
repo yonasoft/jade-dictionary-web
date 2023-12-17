@@ -1,4 +1,5 @@
 "use client";
+import React, { useEffect, useState, useCallback } from "react";
 import { Word, WordList } from "@/app/lib/definitions";
 import {
   editWordList,
@@ -17,83 +18,96 @@ import {
   Grid,
   ActionIcon,
 } from "@mantine/core";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { doc } from "firebase/firestore";
 import { IconSearch, IconX } from "@tabler/icons-react";
+import { doc } from "firebase/firestore";
 
-const ListDetailPage = ({ params }: { params: { id: string } }) => {
-  const { firestore, wordLists } = useFirebaseContext();
-  const [wordList, setWordList] = useState<WordList | null>({} as WordList);
+type Props = {
+  params: { id: string };
+};
+
+const applyFilter = (words: Word[], query: string): Word[] => {
+  return words.filter(
+    (word) =>
+      word.simplified.includes(query) ||
+      word.traditional.includes(query) ||
+      word.pinyin.includes(query)
+  );
+};
+
+const FilteredWords = ({
+  words,
+  wordList,
+  query,
+  onWordRemove,
+}: {
+  words: Word[];
+  wordList: WordList;
+  query: string;
+  onWordRemove: (wordId: number) => void;
+}) => {
+  return (
+    <Grid gutter={{ base: 4, lg: 8 }}>
+      {words.map((word, index) => (
+        <Grid.Col key={index} span={{ base: 4, xs: 3, md: 2 }}>
+          <WordCard
+            word={word}
+            wordList={wordList}
+            onWordRemove={onWordRemove}
+            query={query}
+          />
+        </Grid.Col>
+      ))}
+    </Grid>
+  );
+};
+
+const ListDetailPage = ({ params }: Props) => {
+  const { firestore } = useFirebaseContext();
+  const [wordList, setWordList] = useState<WordList | null>(null);
   const [words, setWords] = useState<Word[]>([]);
   const [filteredWords, setFilteredWords] = useState<Word[]>([]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [isEmpty, setIsEmpty] = useState(false);
-  const [query, setQuery] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [query, setQuery] = useState<string>("");
+
+  const fetchWords = useCallback(
+    async (wordIds: number[]) => {
+      const fetchedWords = await getWordsByIds(firestore, wordIds);
+      setWords(fetchedWords);
+      setFilteredWords(applyFilter(fetchedWords, query));
+    },
+    [firestore]
+  );
 
   useEffect(() => {
     if (params.id) {
-      getWordListByDocId(firestore, params.id as string).then(
-        (fetchedWordList) => {
-          if (fetchedWordList) {
-            setTitle(fetchedWordList.title);
-            setDescription(fetchedWordList.description);
-            setWordList(fetchedWordList);
-            setIsEmpty(fetchedWordList.wordIds.length === 0);
-          }
+      getWordListByDocId(firestore, params.id).then((fetchedWordList) => {
+        if (fetchedWordList) {
+          setTitle(fetchedWordList.title);
+          setDescription(fetchedWordList.description);
+          setWordList(fetchedWordList);
+          fetchWords(fetchedWordList.wordIds);
         }
-      );
-    }
-  }, [params.id, firestore, wordLists]);
-
-  useEffect(() => {
-    if (wordList?.wordIds && wordList.wordIds.length > 0) {
-      getWordsByIds(firestore, wordList.wordIds).then((words) => {
-        setWords(words);
-        setFilteredWords(words);
       });
     }
-  }, [wordList, firestore]);
+  }, [params.id, firestore, fetchWords]);
 
-  const onSearch = async () => {
-    if (query) {
-      const searchedWords = words.filter(
-        (word) =>
-          word.simplified.includes(query) ||
-          word.traditional.includes(query) ||
-          word.pinyin.includes(query)
-      );
-      setFilteredWords(searchedWords);
-    } else {
-      // If the query is empty, show all words
-      setFilteredWords(words);
-    }
-  };
+  useEffect(() => {
+    setFilteredWords(applyFilter(words, query));
+  }, [query, words]);
 
-  const showWords = () => {
-    return (
-      <Grid gutter={{ base: 4, lg: 8 }}>
-        {filteredWords.map((word, index) => (
-          <Grid.Col key={word._id} span={{ base: 4, xs: 3, md: 2 }}>
-            <WordCard
-              word={word}
-              wordList={wordList as WordList}
-              onWordRemove={handleWordRemove}
-              query={query}
-            />
-          </Grid.Col>
-        ))}
-      </Grid>
+  const onSearch = useCallback(() => {
+    setFilteredWords(applyFilter(words, query));
+  }, [words, query]);
+
+  const handleWordRemove = useCallback((wordId: number) => {
+    setWords((currentWords) =>
+      currentWords.filter((word) => word._id !== wordId)
     );
-  };
-
-  const handleEnterKeyPress = (event: React.KeyboardEvent) => {
-    const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
-    if (keysToTriggerSearch.includes(event.key)) {
-      onSearch();
-    }
-  };
+    setFilteredWords((currentFilteredWords) =>
+      currentFilteredWords.filter((word) => word._id !== wordId)
+    );
+  }, []);
 
   const handleSave = async () => {
     if (wordList && params.id) {
@@ -104,23 +118,20 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
           description
         );
         console.log("Word list updated successfully");
-        if (typeof window !== "undefined") {
-          window.location.href = "/lists";
-        }
+        // Redirect logic...
       } catch (error) {
         console.error("Error updating word list: ", error);
       }
     }
   };
 
-  const handleWordRemove = (wordId: number) => {
-    setWords((currentWords) =>
-      currentWords.filter((word) => word._id !== wordId)
+  if (!wordList) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Text>Loading word list details...</Text>
+      </Center>
     );
-    setFilteredWords((currentFilteredWords) =>
-      currentFilteredWords.filter((word) => word._id !== wordId)
-    );
-  };
+  }
 
   return (
     <div className="p-4" style={{ maxWidth: "1200px", margin: "auto" }}>
@@ -129,59 +140,47 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
           Save
         </Button>
       </Group>
+
       <div className="mb-4">
         <Input.Label htmlFor="title">Title</Input.Label>
         <Input
-          className="shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
+
       <div className="mb-4">
         <Input.Label htmlFor="description">Description</Input.Label>
         <Textarea
-          className="shadow "
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
         />
       </div>
-      <Group className="stickyflex w-full items-center my-3">
+
+      <Group className="sticky flex w-full items-center my-3">
         <Input
           className="flex-grow"
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
-          onKeyDown={handleEnterKeyPress}
         />
-
         <ActionIcon
           variant="outline"
-          size="lg" // Ensure sufficient size for the clickable area
+          size="lg"
           onClick={() => {
-            console.log("Clearing search");
             setQuery("");
-            setFilteredWords(words);
           }}
           title="Clear"
         >
           <IconX size={24} />
         </ActionIcon>
-
-        <Button
-          onClick={onSearch}
-          variant="outline"
-          color="gray"
-          className="me-3 shrink-0"
-        >
-          <IconSearch className="w-6 h-6" />
-        </Button>
       </Group>
 
-      {isEmpty ? (
+      {words.length === 0 ? (
         <Center className="h-full">
           <Text color="dimmed" size="md">
             Your word list is empty. Search for words using the search bar
@@ -189,7 +188,12 @@ const ListDetailPage = ({ params }: { params: { id: string } }) => {
           </Text>
         </Center>
       ) : (
-        showWords()
+        <FilteredWords
+          words={filteredWords}
+          wordList={wordList}
+          query={query}
+          onWordRemove={handleWordRemove}
+        />
       )}
     </div>
   );

@@ -78,19 +78,9 @@ const AllLists = () => {
     fetchWordLists();
   }, [fetchWordLists]);
 
-  const onSearch = useCallback(() => {
+  useEffect(() => {
     setFilteredWordLists(applyFilter(wordLists, query));
-  }, [wordLists, query]);
-
-  const handleEnterKeyPress = useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"];
-      if (keysToTriggerSearch.includes(event.key)) {
-        onSearch();
-      }
-    },
-    [onSearch]
-  );
+  }, [query]);
 
   if (!currentUser) {
     return (
@@ -126,27 +116,17 @@ const AllLists = () => {
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search Word Lists..."
-          onKeyDown={handleEnterKeyPress}
         />
         <ActionIcon
           variant="outline"
           size="lg"
           onClick={() => {
             setQuery("");
-            setFilteredWordLists(wordLists);
           }}
           title="Clear"
         >
           <IconX size={24} />
         </ActionIcon>
-        <Button
-          onClick={onSearch}
-          variant="outline"
-          color="gray"
-          className="me-3 shrink-0"
-        >
-          <IconSearch className="w-6 h-6" />
-        </Button>
       </Group>
       <Grid gutter={{ base: 4, sm: 6, lg: 8 }} className="mt-5">
         <Grid.Col span={{ base: 6, xs: 4, sm: 3, md: 2 }}>
