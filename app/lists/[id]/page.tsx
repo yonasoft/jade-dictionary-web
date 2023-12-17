@@ -30,7 +30,8 @@ const applyFilter = (words: Word[], query: string): Word[] => {
     (word) =>
       word.simplified.includes(query) ||
       word.traditional.includes(query) ||
-      word.pinyin.includes(query)
+      word.pinyin.includes(query) ||
+      word.definition.includes(query)
   );
 };
 
