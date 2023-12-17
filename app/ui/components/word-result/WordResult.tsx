@@ -32,6 +32,7 @@ const WordResult = ({ query, word }: Props) => {
   const { firestore, wordLists, currentUser, updateWordLists } =
     useFirebaseContext();
   const traditional = `(${word.traditional})`;
+  query = query.toLowerCase();
 
   const handleAddWordToList = async (wordListId: string) => {
     try {
