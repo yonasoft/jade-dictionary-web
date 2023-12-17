@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import { SortOption, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import WordListCard from "./word-list-card/WordListCard";
@@ -14,86 +14,83 @@ import {
   Group,
   Input,
   ActionIcon,
-  Highlight,
 } from "@mantine/core";
-import { getUserWordLists } from "../lib/firebase/storage/wordLists-storage";
 import { IconSearch, IconX } from "@tabler/icons-react";
+import { getUserWordLists } from "../lib/firebase/storage/wordLists-storage";
+
+const applyFilter = (wordLists: WordList[], query: string): WordList[] => {
+  return wordLists.filter(
+    (wordList) =>
+      wordList.title.toLowerCase().includes(query.toLowerCase()) ||
+      (wordList.description &&
+        wordList.description.toLowerCase().includes(query.toLowerCase()))
+  );
+};
+
+interface FilteredWordListsProps {
+  wordLists: WordList[];
+  fetchWordLists: () => void;
+  query: string;
+}
+
+const FilteredWordLists = memo(
+  ({ wordLists, fetchWordLists, query }: FilteredWordListsProps) => {
+    return (
+      <>
+        {wordLists.map((wordList, index) => (
+          <Grid.Col
+            key={wordList.id || index}
+            span={{ base: 6, xs: 4, sm: 3, md: 2 }}
+          >
+            <WordListCard
+              wordList={wordList}
+              onListChange={fetchWordLists}
+              query={query}
+            />
+          </Grid.Col>
+        ))}
+      </>
+    );
+  }
+);
 
 const AllLists = () => {
   const { currentUser, firestore } = useFirebaseContext();
   const [wordLists, setWordLists] = useState<WordList[]>([]);
   const [filteredWordLists, setFilteredWordLists] = useState<WordList[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [sortOption, setSortOption] = useState(SortOption.Recent);
-  const [query, setQuery] = useState("");
+  const [sortOption, setSortOption] = useState<SortOption>(SortOption.Recent);
+  const [query, setQuery] = useState<string>("");
 
-  useEffect(() => {
-    if (currentUser) {
-      setIsLoading(true);
-      getUserWordLists(firestore, currentUser.uid, sortOption)
-        .then((fetchedWordLists) => {
-          setWordLists(fetchedWordLists);
-          setFilteredWordLists(fetchedWordLists);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching word lists: ", error);
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
-    }
-  }, [currentUser, firestore, wordLists, sortOption]);
+  const fetchWordLists = useCallback(() => {
+    if (!currentUser) return;
 
-  const onSearch = () => {
-    if (query) {
-      const filtered = wordLists.filter((wordList) => {
-        return (
-          wordList.title.toLowerCase().includes(query.toLowerCase()) ||
-          wordList.description.toLowerCase().includes(query.toLowerCase())
-        );
-      });
-      setFilteredWordLists(filtered);
-    } else {
-      setFilteredWordLists(wordLists);
-    }
-  };
-
-  const fetchWordLists = () => {
-    setIsLoading(true);
-    getUserWordLists(firestore, currentUser?.uid as string, sortOption)
-      .then((fetchedWordLists) => {
+    getUserWordLists(firestore, currentUser.uid, sortOption)
+      .then((fetchedWordLists: WordList[]) => {
         setWordLists(fetchedWordLists);
-        setFilteredWordLists(fetchedWordLists); // Update filtered lists as well
-        setIsLoading(false);
+        setFilteredWordLists(applyFilter(fetchedWordLists, query));
       })
       .catch((error) => {
         console.error("Error fetching word lists: ", error);
-        setIsLoading(false);
       });
-  };
+  }, [currentUser, firestore, sortOption]);
 
-  const handleEnterKeyPress = (event: React.KeyboardEvent) => {
-    const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
-    if (keysToTriggerSearch.includes(event.key)) {
-      onSearch();
-    }
-  };
+  useEffect(() => {
+    fetchWordLists();
+  }, [fetchWordLists]);
 
-  const showFilteredWordLists = () => {
-    return filteredWordLists.map((wordList, index) => (
-      <Grid.Col
-        key={wordList.id || index}
-        span={{ base: 6, xs: 4, sm: 3, md: 2 }}
-      >
-        <WordListCard
-          wordList={wordList}
-          onListChange={fetchWordLists}
-          query={query}
-        />
-      </Grid.Col>
-    ));
-  };
+  const onSearch = useCallback(() => {
+    setFilteredWordLists(applyFilter(wordLists, query));
+  }, [wordLists, query]);
+
+  const handleEnterKeyPress = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"];
+      if (keysToTriggerSearch.includes(event.key)) {
+        onSearch();
+      }
+    },
+    [onSearch]
+  );
 
   if (!currentUser) {
     return (
@@ -123,21 +120,18 @@ const AllLists = () => {
           },
         ]}
       />
-      <Group className="stickyflex w-full items-center my-3">
+      <Group className="sticky flex w-full items-center my-3">
         <Input
           className="flex-grow"
           value={query}
-          onChange={(event) => {
-            setQuery(event.currentTarget.value);
-          }}
+          onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search Word Lists..."
           onKeyDown={handleEnterKeyPress}
         />
         <ActionIcon
           variant="outline"
-          size="lg" // Ensure sufficient size for the clickable area
+          size="lg"
           onClick={() => {
-            console.log("Clearing search");
             setQuery("");
             setFilteredWordLists(wordLists);
           }}
@@ -145,7 +139,6 @@ const AllLists = () => {
         >
           <IconX size={24} />
         </ActionIcon>
-
         <Button
           onClick={onSearch}
           variant="outline"
@@ -159,7 +152,11 @@ const AllLists = () => {
         <Grid.Col span={{ base: 6, xs: 4, sm: 3, md: 2 }}>
           <AddNewListCard onListAdded={fetchWordLists} />
         </Grid.Col>
-        {showFilteredWordLists()}
+        <FilteredWordLists
+          wordLists={filteredWordLists}
+          fetchWordLists={fetchWordLists}
+          query={query}
+        />
       </Grid>
     </div>
   );
