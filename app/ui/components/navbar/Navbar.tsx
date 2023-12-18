@@ -25,7 +25,6 @@ import NavDrawer from "./drawer/NavDrawer";
 import AuthButtons from "../auth-items/AuthButtons";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import AuthItems from "../auth-items/AuthItems";
-import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 import { spotlight } from "@mantine/spotlight";
 import NavSearchBar from "./search-bar/NavSearchBar";
 
@@ -77,7 +76,7 @@ const Navbar = () => {
             className="flex flex-1 justify-center items-center max-w-full"
             justify="center"
           >
-            <NavSearchBar openSpotlight={true} />
+            <NavSearchBar />
           </Group>
 
           <Group justify="flex-end" visibleFrom="sm">
