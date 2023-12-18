@@ -26,13 +26,12 @@ type Props = {
 };
 
 const SearchBar = ({ openSpotlight }: Props) => {
-  const { setQuery, performSearch } = useDictionaryContext();
+  const { performSearch } = useDictionaryContext();
 
-  const [queryLocal, setQueryLocal] = useState("");
+  const [query, setQuery] = useState("");
 
   const handleSearch = () => {
-    setQuery(queryLocal);
-    performSearch(queryLocal);
+    performSearch(query);
     if (openSpotlight === true) {
       spotlight.open();
     }
@@ -48,9 +47,9 @@ const SearchBar = ({ openSpotlight }: Props) => {
   const SearchInput = (): React.ReactNode => {
     return (
       <TextInput
-        value={queryLocal}
+        value={query}
         onChange={(event) => {
-          setQueryLocal(event.currentTarget.value);
+          setQuery(event.currentTarget.value);
         }}
         radius="xl"
         placeholder="Search..."
@@ -117,7 +116,7 @@ const SearchBar = ({ openSpotlight }: Props) => {
       <div className="flex-1 max-w-[20rem] w-full">
         {SearchHoverCard(SearchInput())}
       </div>
-      <SearchSpotlight />
+      <SearchSpotlight initialQuery={query} />
     </>
   );
 };

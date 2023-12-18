@@ -10,8 +10,6 @@ type Props = {
 };
 
 type DictionaryContextType = {
-  query: string;
-  setQuery: (query: string) => void;
   results: Word[];
   setResults: (results: Word[]) => void;
   loading: boolean;
@@ -27,7 +25,6 @@ export const DictionaryContext = createContext<
 export const DictionaryContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [query, setQuery] = useState("");
   const [results, setResults] = useState<Word[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [scriptType, setScriptType] = useState<ScriptType>(
@@ -36,7 +33,7 @@ export const DictionaryContextProvider: React.FC<{
 
   const firebase = useFirebaseContext();
 
-  const performSearch = async (input: string = query) => {
+  const performSearch = async (input: string) => {
     setSearchLoading(true);
     return await searchWords(firebase.firestore, input)
       .then((words) => {
@@ -53,8 +50,6 @@ export const DictionaryContextProvider: React.FC<{
   return (
     <DictionaryContext.Provider
       value={{
-        query,
-        setQuery,
         results,
         setResults,
         loading: searchLoading,

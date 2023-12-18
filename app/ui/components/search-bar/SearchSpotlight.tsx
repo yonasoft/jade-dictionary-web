@@ -14,11 +14,9 @@ import {
 import { Spotlight, SpotlightAction } from "@mantine/spotlight";
 import { setQuery } from "@mantine/spotlight/lib/spotlight.store";
 import { IconSearch } from "@tabler/icons-react";
-import React, { Suspense, memo, useState } from "react";
+import React, { Suspense, memo, useEffect, useState } from "react";
 import WordResult from "../word-result/WordResult";
 import { Word } from "@/app/lib/definitions";
-
-type Props = {};
 
 const Loading = () => {
   return (
@@ -52,13 +50,20 @@ const NothingFound = () => {
   );
 };
 
-const SearchSpotlight = (props: Props) => {
-  const { performSearch, results, loading, setQuery } = useDictionaryContext();
-  const [queryLocal, setQueryLocal] = useState("");
+type Props = {
+  initialQuery?: string;
+};
+
+const SearchSpotlight = ({ initialQuery }: Props) => {
+  const { performSearch, results, loading } = useDictionaryContext();
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    setQuery(initialQuery || "");
+  }, [initialQuery]);
 
   const onSearch = async () => {
-    setQuery(queryLocal);
-    performSearch(queryLocal);
+    performSearch(query);
   };
 
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
@@ -79,8 +84,8 @@ const SearchSpotlight = (props: Props) => {
       <Group className="sticky my-3 flex w-full items-center">
         <Input
           className="flex-grow ms-3"
-          value={queryLocal}
-          onChange={(event) => setQueryLocal(event.currentTarget.value)}
+          value={query}
+          onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
           onKeyDown={handleEnterKeyPress}
         />
@@ -97,7 +102,7 @@ const SearchSpotlight = (props: Props) => {
       {loading == true ? (
         <Loading />
       ) : results.length > 0 ? (
-        <Results results={results} query={queryLocal} />
+        <Results results={results} query={query} />
       ) : (
         <NothingFound />
       )}
