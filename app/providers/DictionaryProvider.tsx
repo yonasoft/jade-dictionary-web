@@ -13,8 +13,6 @@ type DictionaryContextType = {
   results: Word[];
   setResults: (results: Word[]) => void;
   loading: boolean;
-  scriptType: ScriptType;
-  setScriptType: (scriptType: ScriptType) => void;
   performSearch: (input: string) => void;
 };
 
@@ -27,9 +25,7 @@ export const DictionaryContextProvider: React.FC<{
 }> = ({ children }) => {
   const [results, setResults] = useState<Word[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [scriptType, setScriptType] = useState<ScriptType>(
-    ScriptType.Simplified
-  );
+
 
   const firebase = useFirebaseContext();
 
@@ -53,8 +49,6 @@ export const DictionaryContextProvider: React.FC<{
         results,
         setResults,
         loading: searchLoading,
-        scriptType,
-        setScriptType,
         performSearch,
       }}
     >
