@@ -18,9 +18,9 @@ type Props = {};
 const ScriptTypeSelector = (props: Props) => {
   const dictionaryContext = useDictionaryContext();
 
-  useEffect(() => {
-    console.log("ScriptType changed:", dictionaryContext.scriptType);
-  }, [dictionaryContext.scriptType]);
+  // useEffect(() => {
+  //   console.log("ScriptType changed:", dictionaryContext.scriptType);
+  // }, [dictionaryContext.scriptType]);
 
   return (
     <Group justify="center">
@@ -29,10 +29,10 @@ const ScriptTypeSelector = (props: Props) => {
           <SegmentedControl
             radius="lg"
             size="xs"
-            value={dictionaryContext.scriptType}
-            onChange={(value) => {
-              dictionaryContext.setScriptType(value as ScriptType);
-            }}
+            // value={dictionaryContext.scriptType}
+            // onChange={(value) => {
+            //   dictionaryContext.setScriptType(value as ScriptType);
+            // }}
             data={[ScriptType.Simplified, ScriptType.Traditional]}
             classNames={classes}
           />
