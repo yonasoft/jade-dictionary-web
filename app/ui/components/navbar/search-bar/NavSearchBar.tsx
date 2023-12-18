@@ -8,6 +8,7 @@ import {
   Text,
   rem,
   List,
+  useMantineColorScheme,
 } from "@mantine/core";
 import {
   Spotlight,
@@ -17,7 +18,7 @@ import {
 } from "@mantine/spotlight";
 import { IconArrowRight, IconHome, IconSearch } from "@tabler/icons-react";
 
-import classes from "./SearchBar.module.css";
+import classes from "./NavSearchBar.module.css";
 import SearchSpotlight from "./SearchSpotlight";
 import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 
@@ -31,7 +32,10 @@ const SearchInput = ({
   setQuery: (input: string) => void;
   handleSearch: () => void;
   handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-}) => {
+  }) => {
+  
+    const { colorScheme } = useMantineColorScheme();
+  
   return (
     <TextInput
       value={query}
@@ -45,10 +49,10 @@ const SearchInput = ({
           <IconArrowRight />
         </ActionIcon>
       }
-      onKeyDown={(e) => {
-        handleKeyPress(e);
-      }}
-      className="bg-white dark:bg-dark-6 text-black dark:text-white"
+      onKeyDown={handleKeyPress}
+      className={`text-black ${
+        colorScheme === "dark" ? "bg-dark-6 border-none" : "bg-white"
+      }`}
     />
   );
 };
@@ -59,7 +63,11 @@ type Props = {
   outsideSetQuery?: (query: string) => void;
 };
 
-const SearchBar = ({ openSpotlight, outsideQuery, outsideSetQuery }: Props) => {
+const NavSearchBar = ({
+  openSpotlight,
+  outsideQuery,
+  outsideSetQuery,
+}: Props) => {
   const { performSearch } = useDictionaryContext();
   const [query, setQuery] = useState("");
 
@@ -127,4 +135,4 @@ const SearchBar = ({ openSpotlight, outsideQuery, outsideSetQuery }: Props) => {
   );
 };
 
-export default SearchBar;
+export default NavSearchBar;

@@ -19,7 +19,7 @@ import MenuItem from "./nav-items/menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
 import UserMenu from "../auth-items/UserMenu";
 import ThemeToggler from "../theme-toggler/ThemeToggler";
-import SearchBar from "./search-bar/SearchBar";
+import SearchBar from "./search-bar/NavSearchBar";
 import ResultTypeSelector from "../script-selector/ScriptTypeSelector";
 import NavDrawer from "./drawer/NavDrawer";
 import AuthButtons from "../auth-items/AuthButtons";
@@ -27,6 +27,7 @@ import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import AuthItems from "../auth-items/AuthItems";
 import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 import { spotlight } from "@mantine/spotlight";
+import NavSearchBar from "./search-bar/NavSearchBar";
 
 const links: Array<LinkData> = [
   {
@@ -76,7 +77,7 @@ const Navbar = () => {
             className="flex flex-1 justify-center items-center max-w-full"
             justify="center"
           >
-            <SearchBar openSpotlight={true} />
+            <NavSearchBar openSpotlight={true} />
           </Group>
 
           <Group justify="flex-end" visibleFrom="sm">

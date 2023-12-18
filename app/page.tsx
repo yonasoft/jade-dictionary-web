@@ -14,7 +14,7 @@ import {
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
-import SearchBar from "./ui/components/navbar/search-bar/SearchBar";
+import SearchBar from "./ui/components/navbar/search-bar/NavSearchBar";
 import { Word } from "./lib/definitions";
 import { useDictionaryContext } from "./providers/DictionaryProvider";
 import { spotlight } from "@mantine/spotlight";
@@ -53,21 +53,19 @@ const Home = () => {
   const theme = useMantineTheme();
   const [query, setQuery] = useState("");
 
+  const titleColor = useMemo(
+    () => (colorScheme === "dark" ? theme.colors.dark[9] : theme.white),
+    [colorScheme, theme]
+  );
+
   return (
     <Container size="lg" className="my-8 mx-auto">
       <Paper shadow="md" p="lg" radius="md" className="mb-8">
         <BackgroundImage src="/image/jade-background.jpg" radius="lg">
           <Flex direction="column" className="p-8 text-center">
-            <Title
-              className={`text-${colorScheme === "dark" ? "white" : "black"}`}
-            >
-              Jade English-Chinese Dictionary
-            </Title>
+            <Title c={titleColor}>Jade English-Chinese Dictionary</Title>
             <Center className="mt-5">
-              <HomeSearchBar
-                query={query}
-                setQuery={setQuery}
-              />
+              <HomeSearchBar query={query} setQuery={setQuery} />
             </Center>
           </Flex>
         </BackgroundImage>
