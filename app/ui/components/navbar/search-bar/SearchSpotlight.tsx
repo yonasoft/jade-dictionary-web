@@ -111,7 +111,7 @@ const SearchSpotlight = ({ query, setQuery }: Props) => {
         </Button>
 
         {isFullScreen && (
-          <ActionIcon variant="outline" onClick={() => spotlight.close()}>
+          <ActionIcon variant="filled" onClick={() => spotlight.close()}>
             <IconX size={20} />
           </ActionIcon>
         )}
