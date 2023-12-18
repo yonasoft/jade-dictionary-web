@@ -8,7 +8,6 @@ import {
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { openContextModal } from "@mantine/modals";
-import classes from "./AddNewListCard.module.css";
 
 type Props = {
   onListAdded: () => void;
@@ -16,25 +15,39 @@ type Props = {
 
 const AddNewListCard = ({ onListAdded }: Props) => {
   const { colorScheme } = useMantineColorScheme();
-  const hoverClass =
-    colorScheme === "dark" ? "card-hover-dark" : "card-hover-light";
 
   const onAddNew = () => {
     openContextModal({
       centered: true,
       modal: "addWordList",
       title: "Add new word list",
-      innerProps: { onListAdded: onListAdded },
-      // Pass the callback to the modal
+      innerProps: { onListAdded },
     });
   };
 
+  const cardStyles = {
+    backgroundColor: colorScheme === "dark" ? "#1A1B1E" : "#FFF",
+    color: colorScheme === "dark" ? "#FFF" : "#000",
+    borderColor: colorScheme === "dark" ? "#333" : "#E2E8F0",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+    "&:hover": {
+      transform: "scale(1.02)",
+      backgroundColor: colorScheme === "dark" ? "#292A2D" : "#F7FAFC",
+    },
+  };
+
   return (
-    <Card className="cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-6 focus-within:border focus-within:border-jade-color shadow-lg rounded-md overflow-hidden flex items-center justify-center">
-      <Button onClick={onAddNew} variant="subtle" className="text-lg">
-        <IconPlus size={40} />
-        <Text className="mt-4">Add New List</Text>
-      </Button>
+    <Card
+      style={cardStyles}
+      className="cursor-pointer rounded-md overflow-hidden focus:outline-none focus:border-jade-color"
+      onClick={onAddNew}
+    >
+      <Center style={{ height: "100%" }}>
+        <Button variant="subtle" className="text-lg">
+          <IconPlus size={40} />
+          <Text className="mt-4">Add New List</Text>
+        </Button>
+      </Center>
     </Card>
   );
 };

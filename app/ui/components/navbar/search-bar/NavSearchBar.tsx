@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactEventHandler, memo, useState } from "react";
+import React, { ReactEventHandler, memo, useEffect, useState } from "react";
 
 import {
   ActionIcon,
@@ -34,7 +34,17 @@ const SearchInput = ({
   handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   }) => {
   
-    const { colorScheme } = useMantineColorScheme();
+  const { colorScheme } = useMantineColorScheme();
+  const [isMounted, setIsMounted] = useState(false);
+  
+    useEffect(() => {
+      setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+      return null; // Or a placeholder/spinner for better UX
+    }
+
   
   return (
     <TextInput

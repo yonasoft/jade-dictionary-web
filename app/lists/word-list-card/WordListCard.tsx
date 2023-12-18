@@ -46,15 +46,37 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
     }
   };
 
-  const handlePractice = async () => {};
+  const cardStyles = {
+    backgroundColor: colorScheme === "dark" ? "#1A1B1E" : "#FFF",
+    color: colorScheme === "dark" ? "#FFF" : "#000",
+    borderColor: colorScheme === "dark" ? "#333" : "#E2E8F0",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+    "&:hover": {
+      transform: "scale(1.02)",
+      backgroundColor: colorScheme === "dark" ? "#292A2D" : "#F7FAFC",
+    },
+  };
 
   return (
-    <Card className="cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-6 focus-within:border focus-within:border-jade-color shadow-lg rounded-md overflow-hidden">
+    <Card
+      style={cardStyles}
+      className="cursor-pointer rounded-md overflow-hidden relative focus:outline-none focus:border-jade-color"
+    >
       <Link href={`/lists/${wordList.id}`}>
         <div className="p-4">
-          <Text className="text-xl font-bold truncate">{wordList.title}</Text>
-          <div className="my-2 border-b"></div>
-          <Text className="text-sm text-gray-600 truncate">
+          <Highlight
+            className="text-xl font-bold line-clamp-1"
+            highlight={query}
+            size="lg"
+            fw={700}
+          >
+            {wordList.title}
+          </Highlight>
+          <Text
+            className={`text-sm truncate mt-2 ${
+              colorScheme === "dark" ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
             {wordList.description}
           </Text>
         </div>
@@ -73,12 +95,6 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
             >
               Remove
             </Menu.Item>
-            {/* <Menu.Item
-              leftSection={<IconDeviceGamepad />}
-              onClick={handlePractice}
-            >
-              Practice
-            </Menu.Item> */}
           </Menu.Dropdown>
         </Menu>
       </div>
