@@ -51,17 +51,12 @@ const NothingFound = () => {
 };
 
 type Props = {
-  initialQuery?: string;
+  query: string;
+  setQuery: (query: string) => void;
 };
 
-const SearchSpotlight = ({ initialQuery }: Props) => {
+const SearchSpotlight = ({ query, setQuery }: Props) => {
   const { performSearch, results, loading } = useDictionaryContext();
-  const [query, setQuery] = useState(initialQuery || "");
-
-  useEffect(() => {
-    // Update internal state when the initial query changes
-    setQuery(initialQuery || "");
-  }, [initialQuery]);
 
   const onSearch = async () => {
     performSearch(query);

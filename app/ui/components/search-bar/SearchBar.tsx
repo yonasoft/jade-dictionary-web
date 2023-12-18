@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 
 import {
   ActionIcon,
@@ -119,7 +119,9 @@ const SearchBar = ({ openSpotlight, outsideQuery, outsideSetQuery }: Props) => {
       <div className="flex-1 max-w-[20rem] w-full">
         {SearchHoverCard(SearchInput())}
       </div>
-      <SearchSpotlight initialQuery={outsideQuery ? outsideQuery : query} />
+      {openSpotlight ? (
+        <SearchSpotlight query={query} setQuery={setQuery} />
+      ) : null}
     </>
   );
 };
