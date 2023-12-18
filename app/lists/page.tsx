@@ -92,7 +92,7 @@ const AllLists = () => {
 
   return (
     <div className="p-4">
-      <Title order={1} className="font-bold text-gray-800 mb-6 text-center">
+      <Title className="font-bold text-gray-800 mb-6 text-center">
         My Word Lists
       </Title>
       <Select
@@ -110,7 +110,7 @@ const AllLists = () => {
           },
         ]}
       />
-      <Group className="sticky flex w-full items-center my-3">
+      <div className="sticky flex items-center mb-5">
         <Input
           className="flex-grow"
           value={query}
@@ -127,8 +127,8 @@ const AllLists = () => {
         >
           <IconX size={24} />
         </ActionIcon>
-      </Group>
-      <Grid gutter={{ base: 4, sm: 6, lg: 8 }} className="mt-5">
+      </div>
+      <Grid gutter="lg">
         <Grid.Col span={{ base: 6, xs: 4, sm: 3, md: 2 }}>
           <AddNewListCard onListAdded={fetchWordLists} />
         </Grid.Col>

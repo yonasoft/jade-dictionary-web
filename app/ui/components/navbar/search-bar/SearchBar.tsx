@@ -1,5 +1,5 @@
 "use client";
-import React, { memo, useState } from "react";
+import React, { ReactEventHandler, memo, useState } from "react";
 
 import {
   ActionIcon,
@@ -21,6 +21,38 @@ import classes from "./SearchBar.module.css";
 import SearchSpotlight from "./SearchSpotlight";
 import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 
+const SearchInput = ({
+  query,
+  setQuery,
+  handleSearch,
+  handleKeyPress,
+}: {
+  query: string;
+  setQuery: (input: string) => void;
+  handleSearch: () => void;
+  handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+}) => {
+  return (
+    <TextInput
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      radius="md"
+      placeholder="Search..."
+      size="md"
+      leftSection={<IconSearch />}
+      rightSection={
+        <ActionIcon onClick={handleSearch}>
+          <IconArrowRight />
+        </ActionIcon>
+      }
+      onKeyDown={(e) => {
+        handleKeyPress(e);
+      }}
+      className="bg-white dark:bg-dark-6 text-black dark:text-white"
+    />
+  );
+};
+
 type Props = {
   openSpotlight: boolean;
   outsideQuery?: string;
@@ -38,52 +70,11 @@ const SearchBar = ({ openSpotlight, outsideQuery, outsideSetQuery }: Props) => {
     }
   };
 
-  const handleEnterKeyPress = (event: React.KeyboardEvent) => {
+  const handleKeyPress = (event: React.KeyboardEvent) => {
     const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
     if (keysToTriggerSearch.includes(event.key)) {
       handleSearch();
     }
-  };
-
-  const SearchInput = (): React.ReactNode => {
-    return (
-      <TextInput
-        value={outsideQuery ? outsideQuery : query}
-        onChange={(event) => {
-          outsideSetQuery
-            ? outsideSetQuery(event.currentTarget.value)
-            : setQuery(event.currentTarget.value);
-        }}
-        radius="xl"
-        placeholder="Search..."
-        rightSectionWidth={42}
-        onKeyDown={(event) => {
-          handleEnterKeyPress(event);
-        }}
-        leftSection={
-          <IconSearch
-            style={{ width: rem(18), height: rem(18) }}
-            stroke={1.5}
-          />
-        }
-        rightSection={
-          <ActionIcon
-            className={classes.icon}
-            onClick={handleSearch}
-            size="md"
-            radius="xl"
-            variant="filled"
-            aria-label="Search"
-          >
-            <IconArrowRight
-              style={{ width: rem(18), height: rem(18) }}
-              stroke={1.5}
-              color="white"
-            />
-          </ActionIcon>
-        }
-      />
-    );
   };
 
   const SearchHoverCard = (searchBar: React.ReactNode): React.ReactNode => {
@@ -117,11 +108,21 @@ const SearchBar = ({ openSpotlight, outsideQuery, outsideSetQuery }: Props) => {
   return (
     <>
       <div className="flex-1 max-w-[20rem] w-full">
-        {SearchHoverCard(SearchInput())}
+        {SearchHoverCard(
+          <div className="flex w-full max-w-md mx-auto">
+            <SearchInput
+              query={query}
+              setQuery={setQuery}
+              handleSearch={handleSearch}
+              handleKeyPress={(e) => {
+                handleKeyPress(e);
+              }}
+            />
+
+            <SearchSpotlight query={query} setQuery={setQuery} />
+          </div>
+        )}
       </div>
-      {openSpotlight ? (
-        <SearchSpotlight query={query} setQuery={setQuery} />
-      ) : null}
     </>
   );
 };

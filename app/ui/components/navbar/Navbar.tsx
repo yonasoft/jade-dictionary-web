@@ -19,7 +19,7 @@ import MenuItem from "./nav-items/menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
 import UserMenu from "../auth-items/UserMenu";
 import ThemeToggler from "../theme-toggler/ThemeToggler";
-import SearchBar from "../search-bar/SearchBar";
+import SearchBar from "./search-bar/SearchBar";
 import ResultTypeSelector from "../script-selector/ScriptTypeSelector";
 import NavDrawer from "./drawer/NavDrawer";
 import AuthButtons from "../auth-items/AuthButtons";
@@ -76,9 +76,7 @@ const Navbar = () => {
             className="flex flex-1 justify-center items-center max-w-full"
             justify="center"
           >
-            <SearchBar
-              openSpotlight={true}
-            />
+            <SearchBar openSpotlight={true} />
           </Group>
 
           <Group justify="flex-end" visibleFrom="sm">

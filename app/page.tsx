@@ -14,10 +14,11 @@ import {
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
-import SearchBar from "./ui/components/search-bar/SearchBar";
+import SearchBar from "./ui/components/navbar/search-bar/SearchBar";
 import { Word } from "./lib/definitions";
 import { useDictionaryContext } from "./providers/DictionaryProvider";
 import { spotlight } from "@mantine/spotlight";
+import HomeSearchBar from "./ui/components/home-search-bar/HomeSearchBar";
 
 //Only import the components that are needed
 const WordResult = lazy(() => import("./ui/components/word-result/WordResult"));
@@ -63,10 +64,9 @@ const Home = () => {
               Jade English-Chinese Dictionary
             </Title>
             <Center className="mt-5">
-              <SearchBar
-                outsideQuery={query}
-                outsideSetQuery={setQuery}
-                openSpotlight={false}
+              <HomeSearchBar
+                query={query}
+                setQuery={setQuery}
               />
             </Center>
           </Flex>

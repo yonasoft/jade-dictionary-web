@@ -49,32 +49,17 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
   const handlePractice = async () => {};
 
   return (
-    <Card
-      className={`cursor-pointer ${hoverClass}focus-within:border focus-within:border-jade-color h-36 overflow-ellipsis `}
-      shadow="lg"
-      radius="md"
-      withBorder
-    >
+    <Card className="cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-6 focus-within:border focus-within:border-jade-color shadow-lg rounded-md overflow-hidden">
       <Link href={`/lists/${wordList.id}`}>
-        <div className="p-3">
-          <Highlight
-            className="text-xl font-bold line-clamp-1"
-            highlight={query}
-            size="lg"
-            fw={700}
-          >
-            {wordList.title}
-          </Highlight>
-          <Divider className="my-2" />
-          <Highlight
-            className="text-sm text-gray-600 line-clamp-2 high"
-            highlight={query}
-          >
+        <div className="p-4">
+          <Text className="text-xl font-bold truncate">{wordList.title}</Text>
+          <div className="my-2 border-b"></div>
+          <Text className="text-sm text-gray-600 truncate">
             {wordList.description}
-          </Highlight>
+          </Text>
         </div>
       </Link>
-      <div className="absolute top-0 right-0 m-0">
+      <div className="absolute top-2 right-2">
         <Menu position="bottom-end" withinPortal>
           <Menu.Target>
             <Button variant="subtle" size="xs">

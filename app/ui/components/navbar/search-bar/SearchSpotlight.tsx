@@ -15,7 +15,7 @@ import { Spotlight, SpotlightAction } from "@mantine/spotlight";
 import { setQuery } from "@mantine/spotlight/lib/spotlight.store";
 import { IconSearch } from "@tabler/icons-react";
 import React, { Suspense, memo, useEffect, useState } from "react";
-import WordResult from "../word-result/WordResult";
+import WordResult from "../../word-result/WordResult";
 import { Word } from "@/app/lib/definitions";
 
 const Loading = () => {
@@ -77,18 +77,19 @@ const SearchSpotlight = ({ query, setQuery }: Props) => {
       closeOnClickOutside
       scrollable
     >
-      <Group className="sticky my-3 flex w-full items-center">
+      <Group className="sticky top-0 px-4 py-2 bg-white dark:bg-dark-6">
         <Input
           className="flex-grow ms-3"
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
           onKeyDown={handleEnterKeyPress}
+          size="md"
         />
         <Button
           onClick={onSearch}
           variant="outline"
-          color="gray"
+          color="blue"
           className="me-3 shrink-0"
         >
           <IconSearch className="w-6 h-6" />

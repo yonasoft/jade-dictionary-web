@@ -30,19 +30,11 @@ const AddNewListCard = ({ onListAdded }: Props) => {
   };
 
   return (
-    <Card
-      className={`cursor-pointer ${hoverClass} ${classes.wordCard} focus-within:border focus-within:border-jade-color h-36 overflow-ellipsis`}
-      shadow="lg"
-      radius="md"
-      withBorder
-      onClick={onAddNew}
-    >
-      <Center style={{ height: "100%" }}>
-        <Button variant="subtle" size="lg">
-          <IconPlus size={40} />
-        </Button>
-      </Center>
-      <Text className="text-center mt-4 text-lg">Add New List</Text>
+    <Card className="cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-6 focus-within:border focus-within:border-jade-color shadow-lg rounded-md overflow-hidden flex items-center justify-center">
+      <Button onClick={onAddNew} variant="subtle" className="text-lg">
+        <IconPlus size={40} />
+        <Text className="mt-4">Add New List</Text>
+      </Button>
     </Card>
   );
 };
