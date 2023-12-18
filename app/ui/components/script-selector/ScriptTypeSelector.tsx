@@ -11,12 +11,10 @@ import {
 } from "@mantine/core";
 import { ScriptType } from "@/app/lib/definitions";
 import classes from "./ScriptTypeSelector.module.css";
-import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 
 type Props = {};
 
 const ScriptTypeSelector = (props: Props) => {
-  const dictionaryContext = useDictionaryContext();
 
   // useEffect(() => {
   //   console.log("ScriptType changed:", dictionaryContext.scriptType);
