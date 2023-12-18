@@ -4,6 +4,7 @@ import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import {
   Accordion,
+  ActionIcon,
   Button,
   Center,
   Group,
@@ -11,12 +12,12 @@ import {
   ScrollArea,
   Text,
 } from "@mantine/core";
-import { Spotlight, SpotlightAction } from "@mantine/spotlight";
 import { setQuery } from "@mantine/spotlight/lib/spotlight.store";
-import { IconSearch } from "@tabler/icons-react";
+import { IconSearch, IconX } from "@tabler/icons-react";
 import React, { Suspense, memo, useEffect, useState } from "react";
 import WordResult from "../../word-result/WordResult";
 import { Word } from "@/app/lib/definitions";
+import { Spotlight, spotlight } from "@mantine/spotlight";
 
 const Loading = () => {
   return (
@@ -57,6 +58,23 @@ type Props = {
 
 const SearchSpotlight = ({ query, setQuery }: Props) => {
   const { performSearch, results, loading } = useDictionaryContext();
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Check if window height is less than or equal to a certain threshold (e.g., 600 pixels)
+      setIsFullScreen(window.innerHeight <= 640);
+    };
+
+    // Set initial value based on current window height
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup function to remove event listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const onSearch = async () => {
     performSearch(query);
@@ -76,8 +94,10 @@ const SearchSpotlight = ({ query, setQuery }: Props) => {
       withinPortal
       closeOnClickOutside
       scrollable
+      fullScreen={isFullScreen} // Apply conditional fullScreen
+      centered
     >
-      <Group className="sticky top-0 px-4 py-2">
+      <Group className="top-0 px-4 py-2">
         <Input
           className="flex-grow ms-3"
           value={query}
@@ -86,14 +106,15 @@ const SearchSpotlight = ({ query, setQuery }: Props) => {
           onKeyDown={handleEnterKeyPress}
           size="md"
         />
-        <Button
-          onClick={onSearch}
-          variant="outline"
-          color="blue"
-          className="me-3 shrink-0"
-        >
+        <Button onClick={onSearch} variant="outline" className="me-3 shrink-0">
           <IconSearch className="w-6 h-6" />
         </Button>
+
+        {isFullScreen && (
+          <ActionIcon onClick={() => spotlight.close()}>
+            <IconX size={20} />
+          </ActionIcon>
+        )}
       </Group>
 
       {loading == true ? (

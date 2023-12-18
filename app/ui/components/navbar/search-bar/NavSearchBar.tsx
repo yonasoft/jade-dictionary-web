@@ -134,11 +134,10 @@ const NavSearchBar = ({
                 handleKeyPress(e);
               }}
             />
-
-            <SearchSpotlight query={query} setQuery={setQuery} />
           </div>
         )}
       </div>
+      <SearchSpotlight query={query} setQuery={setQuery} />
     </>
   );
 };
