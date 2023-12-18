@@ -1,8 +1,4 @@
 import { ScriptType, Word } from "@/app/lib/definitions";
-import {
-  DictionaryContext,
-  useDictionaryContext,
-} from "@/app/providers/DictionaryProvider";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import {
   Accordion,

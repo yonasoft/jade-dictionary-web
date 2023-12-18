@@ -1,26 +1,19 @@
-"use client";
-import React, { ReactEventHandler, memo, useEffect, useState } from "react";
-
+import React, { ReactNode, useState } from "react";
 import {
   ActionIcon,
   HoverCard,
   TextInput,
   Text,
-  rem,
   List,
   useMantineColorScheme,
 } from "@mantine/core";
-import {
-  Spotlight,
-  SpotlightAction,
-  SpotlightActionData,
-  spotlight,
-} from "@mantine/spotlight";
-import { IconArrowRight, IconHome, IconSearch } from "@tabler/icons-react";
+import { spotlight } from "@mantine/spotlight";
+import { IconArrowRight, IconSearch } from "@tabler/icons-react";
 
-import classes from "./NavSearchBar.module.css";
 import SearchSpotlight from "./SearchSpotlight";
-import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
+import { searchWords } from "@/app/lib/firebase/storage/words-storage";
+import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
+import { Word } from "@/app/lib/definitions";
 
 const SearchInput = ({
   query,
@@ -34,15 +27,6 @@ const SearchInput = ({
   handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }) => {
   const { colorScheme } = useMantineColorScheme();
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null; // Or a placeholder/spinner for better UX
-  }
 
   return (
     <TextInput
@@ -65,31 +49,33 @@ const SearchInput = ({
   );
 };
 
-type Props = {
-  openSpotlight: boolean;
-  outsideQuery?: string;
-  outsideSetQuery?: (query: string) => void;
-};
-
-const NavSearchBar = ({
-  openSpotlight,
-  outsideQuery,
-  outsideSetQuery,
-}: Props) => {
-  const { performSearch } = useDictionaryContext();
+const NavSearchBar = () => {
+  const { firestore } = useFirebaseContext();
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState<Word[]>([]);
+  const [searched, setSearched] = useState(false);
 
-  const handleSearch = () => {
-    outsideQuery ? performSearch(outsideQuery) : performSearch(query);
-    if (openSpotlight === true) {
-      spotlight.open();
-    }
+  const performSearch = async (input: string) => {
+    setSearched(false);
+    return await searchWords(firestore, input)
+      .then((words) => {
+        console.log(words);
+        setResults(words);
+        setSearched(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const onSearch = () => {
+    performSearch(query);
+    spotlight.open();
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
-    const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
+    const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"];
     if (keysToTriggerSearch.includes(event.key)) {
-      handleSearch();
+      onSearch();
     }
   };
 
@@ -129,7 +115,7 @@ const NavSearchBar = ({
             <SearchInput
               query={query}
               setQuery={setQuery}
-              handleSearch={handleSearch}
+              handleSearch={onSearch}
               handleKeyPress={(e) => {
                 handleKeyPress(e);
               }}
@@ -137,7 +123,13 @@ const NavSearchBar = ({
           </div>
         )}
       </div>
-      <SearchSpotlight query={query} setQuery={setQuery} />
+      <SearchSpotlight
+        query={query}
+        setQuery={setQuery}
+        results={results}
+        performSearch={performSearch}
+        searched={searched}
+      />
     </>
   );
 };

@@ -18,24 +18,19 @@ import {
 import { IconArrowRight, IconHome, IconSearch } from "@tabler/icons-react";
 
 import classes from "./HomeSearchBar.module.css";
-import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
+
 
 type Props = {
   query: string;
   setQuery: (query: string) => void;
+  performSearch: (input: string) => void;
 };
 
-const HomeSearchBar = ({ query, setQuery }: Props) => {
-  const { performSearch } = useDictionaryContext();
-
-  const handleSearch = () => {
-    performSearch(query);
-  };
-
+const HomeSearchBar = ({ query, setQuery, performSearch }: Props) => {
   const handleEnterKeyPress = (event: React.KeyboardEvent) => {
     const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
     if (keysToTriggerSearch.includes(event.key)) {
-      handleSearch();
+      performSearch(query);
     }
   };
 
@@ -61,7 +56,9 @@ const HomeSearchBar = ({ query, setQuery }: Props) => {
         rightSection={
           <ActionIcon
             className={classes.icon}
-            onClick={handleSearch}
+            onClick={() => {
+              performSearch(query);
+            }}
             size="md"
             radius="xl"
             variant="filled"

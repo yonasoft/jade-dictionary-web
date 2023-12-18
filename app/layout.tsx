@@ -9,9 +9,6 @@ import { ContextModalProps, ModalsProvider } from "@mantine/modals";
 import Navbar from "./ui/components/navbar/Navbar";
 import { theme } from "./lib/theme";
 import { FirebaseContextProvider } from "./providers/FirebaseProvider";
-import {
-  DictionaryContextProvider,
-} from "./providers/DictionaryProvider";
 import ResetPasswordModal from "./ui/components/modals/reset-password-modal/ResetPasswordModal";
 import DeleteUserConfirmation from "./ui/components/modals/confirm-delete-user-modal/DeleteUserConfirmation";
 import ReauthenticateModal from "./ui/components/modals/reauth-modal/ReauthenticateModal";
@@ -59,12 +56,10 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
       >
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <FirebaseContextProvider>
-            <DictionaryContextProvider>
-              <ModalsProvider modals={modals}>
-                <Navbar />
-                {children}
-              </ModalsProvider>
-            </DictionaryContextProvider>
+            <ModalsProvider modals={modals}>
+              <Navbar />
+              {children}
+            </ModalsProvider>
           </FirebaseContextProvider>
         </MantineProvider>
       </body>
