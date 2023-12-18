@@ -5,6 +5,7 @@ import {
   Center,
   Text,
   useMantineColorScheme,
+  Flex,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { openContextModal } from "@mantine/modals";
@@ -34,6 +35,7 @@ const AddNewListCard = ({ onListAdded }: Props) => {
       transform: "scale(1.02)",
       backgroundColor: colorScheme === "dark" ? "#292A2D" : "#F7FAFC",
     },
+    height: "8em", // Increased height
   };
 
   return (
@@ -43,9 +45,11 @@ const AddNewListCard = ({ onListAdded }: Props) => {
       onClick={onAddNew}
     >
       <Center style={{ height: "100%" }}>
-        <Button variant="subtle" className="text-lg">
-          <IconPlus size={40} />
-          <Text className="mt-4">Add New List</Text>
+        <Button variant="subtle" style={{ height: "100%" }} className="text-lg">
+          <Flex direction="column" align="center" justify="center">
+            <IconPlus size={40} />
+            <Text className="mt-4">Add New List</Text>
+          </Flex>
         </Button>
       </Center>
     </Card>

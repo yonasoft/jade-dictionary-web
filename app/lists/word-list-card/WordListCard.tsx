@@ -55,6 +55,7 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
       transform: "scale(1.02)",
       backgroundColor: colorScheme === "dark" ? "#292A2D" : "#F7FAFC",
     },
+    height: "8em", // Increased height
   };
 
   return (
