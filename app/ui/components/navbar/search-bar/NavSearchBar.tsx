@@ -32,20 +32,18 @@ const SearchInput = ({
   setQuery: (input: string) => void;
   handleSearch: () => void;
   handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  }) => {
-  
+}) => {
   const { colorScheme } = useMantineColorScheme();
   const [isMounted, setIsMounted] = useState(false);
-  
-    useEffect(() => {
-      setIsMounted(true);
-    }, []);
 
-    if (!isMounted) {
-      return null; // Or a placeholder/spinner for better UX
-    }
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-  
+  if (!isMounted) {
+    return null; // Or a placeholder/spinner for better UX
+  }
+
   return (
     <TextInput
       value={query}
@@ -55,7 +53,7 @@ const SearchInput = ({
       size="md"
       leftSection={<IconSearch />}
       rightSection={
-        <ActionIcon onClick={handleSearch}>
+        <ActionIcon variant="filled" onClick={handleSearch}>
           <IconArrowRight />
         </ActionIcon>
       }
