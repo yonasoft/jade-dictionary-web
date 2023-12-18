@@ -16,6 +16,7 @@ import AddWordListModal from "./ui/components/modals/add-word-list-modal/AddWord
 
 import "@mantine/core/styles.css";
 import "./globals.css";
+import Link from "next/link";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -41,15 +42,20 @@ const modals: Record<string, FC<ContextModalProps<any>>> = {
 const RootLayout: FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
-      <Head>
-        <link rel="icon" href="/image/jadeicon.ico" sizes="any" />
+      <head>
+        <link
+          rel="icon"
+          href="/image/jadeicon.ico"
+          type="image/icon"
+          sizes="<generated>"
+        />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
         <title>{metadata.title as string}</title>
         <meta name="description" content={metadata.description as string} />
-      </Head>
+      </head>
       <body
         className={`${roboto.className} antialiased`}
         suppressHydrationWarning={true}

@@ -114,6 +114,7 @@ const ReauthenticateModal = ({
       </form>
     );
   };
+  
   const showGoogleLogin = () => {
     return (
       <>
@@ -124,6 +125,7 @@ const ReauthenticateModal = ({
       </>
     );
   };
+
   const showFacebookLogin = () => {
     return (
       <>
