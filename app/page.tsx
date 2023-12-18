@@ -27,7 +27,7 @@ const WordResult = lazy(() => import("./ui/components/word-result/WordResult"));
 
 const Loading = () => (
   <Center>
-    <Loader color="green" />;\
+    <Loader color="green" />
   </Center>
 );
 
