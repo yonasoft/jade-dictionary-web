@@ -44,7 +44,7 @@ const Results = memo(
 );
 
 const Home = () => {
-  const { results, loading, performSearch } = useDictionaryContext();
+  const { results, loading } = useDictionaryContext();
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const [query, setQuery] = useState("");
