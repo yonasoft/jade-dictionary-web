@@ -8,6 +8,16 @@ type Props = ButtonProps & {
 };
 
 export function FacebookButton({ onClick, ...buttonProps }: Props) {
+  const { auth, firestore } = useFirebaseContext();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      signInWithFacebook(auth, firestore);
+    }
+  };
+
   return (
     <Button
       className="my-2"
@@ -20,14 +30,7 @@ export function FacebookButton({ onClick, ...buttonProps }: Props) {
       variant="default"
       {...buttonProps}
       fullWidth
-      onClick={() => {
-        if (onClick) {
-          onClick();
-        } else {
-          // Default onClick behavior (if not provided via props)
-          // Example: signInWithFacebook(firebase.auth, firebase.firestore);
-        }
-      }}
+      onClick={handleClick}
     />
   );
 }

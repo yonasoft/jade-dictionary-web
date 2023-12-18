@@ -77,13 +77,18 @@ export const signInWithFacebook = async (auth: Auth, db:Firestore): Promise< Use
 
   const provider = new FacebookAuthProvider();
   try {
-      const result = await signInWithPopup(auth, provider)
+    const result = await signInWithPopup(auth, provider)
+    if (result) {
+      console.log(result);
       await addNewUserToDB(db, result.user);
       return result;
-    } catch (error: any) {
-      console.error(error);
-      return error;
+    } else {
+      return result;
     }
+  } catch (error: any) {
+    console.error(error);
+    return error;
+  }
 };
 
 export const signOutUser = async (auth: Auth): Promise<void> => {

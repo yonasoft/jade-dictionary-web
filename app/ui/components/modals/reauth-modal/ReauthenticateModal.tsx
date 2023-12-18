@@ -15,24 +15,23 @@ import {
   reauthenticateWithPopup,
 } from "firebase/auth";
 import React, { useState } from "react";
-import { GoogleButton } from "../../buttons/GoogleButton";
-import { FacebookButton } from "../../buttons/FacebookButton";
+import { GoogleButton } from "../../auth-items/GoogleButton";
+import { FacebookButton } from "../../auth-items/FacebookButton";
 
 const ReauthenticateModal = ({
   context,
   id,
   innerProps,
 }: ContextModalProps<{ onSuccess: () => void }>) => {
-  const firebase = useFirebaseContext();
-  const providerId: string =
-    firebase.auth.currentUser!.providerData[0].providerId;
+  const { auth } = useFirebaseContext();
+  const providerId: string = auth.currentUser!.providerData[0].providerId;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleReauthenticate = async () => {
-    if (!firebase.auth.currentUser) {
+    if (!auth.currentUser) {
       console.error("No user is currently signed in");
       return;
     }
@@ -43,17 +42,16 @@ const ReauthenticateModal = ({
       switch (providerId) {
         case "password":
           credential = EmailAuthProvider.credential(email, password);
-          reauthenticateWithCredential(
-            firebase.auth.currentUser,
-            credential
-          ).then(() => {
-            if (innerProps.onSuccess) innerProps.onSuccess(); // Call the success callback
-            context.closeModal(id);
-          });
+          reauthenticateWithCredential(auth.currentUser, credential).then(
+            () => {
+              if (innerProps.onSuccess) innerProps.onSuccess(); // Call the success callback
+              context.closeModal(id);
+            }
+          );
           break;
         case "google.com":
           reauthenticateWithPopup(
-            firebase.auth.currentUser,
+            auth.currentUser,
             new GoogleAuthProvider()
           ).then(() => {
             if (innerProps.onSuccess) innerProps.onSuccess(); // Call the success callback
@@ -63,7 +61,7 @@ const ReauthenticateModal = ({
           break;
         case "facebook.com":
           reauthenticateWithPopup(
-            firebase.auth.currentUser,
+            auth.currentUser,
             new FacebookAuthProvider()
           ).then(() => {
             if (innerProps.onSuccess) innerProps.onSuccess(); // Call the success callback
