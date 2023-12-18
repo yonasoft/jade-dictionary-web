@@ -77,7 +77,7 @@ const SearchSpotlight = ({ query, setQuery }: Props) => {
       closeOnClickOutside
       scrollable
     >
-      <Group className="sticky top-0 px-4 py-2 bg-white dark:bg-dark-6">
+      <Group className="sticky top-0 px-4 py-2">
         <Input
           className="flex-grow ms-3"
           value={query}
