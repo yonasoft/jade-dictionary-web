@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, lazy, memo, useMemo } from "react";
+import { Suspense, lazy, memo, useMemo, useState } from "react";
 import {
   BackgroundImage,
   Box,
@@ -44,18 +44,15 @@ const Results = memo(
 );
 
 const Home = () => {
-  const { results, query, loading, performSearch } = useDictionaryContext();
+  const { results, loading, performSearch } = useDictionaryContext();
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
+  const [query, setQuery] = useState("");
 
   const titleColor = useMemo(
     () => (colorScheme === "dark" ? theme.colors.dark[9] : theme.white),
     [colorScheme, theme]
   );
-
-  const onSearch = async () => {
-    spotlight.open();
-  };
 
   return (
     <Container size="lg" className="relative">
@@ -65,7 +62,11 @@ const Home = () => {
             <Flex direction="column">
               <Title c={titleColor}>Jade English-Chinese Dictionary</Title>
               <Center className="mt-5">
-                <SearchBar openSpotlight={false} />
+                <SearchBar
+                  outsideQuery={query}
+                  outsideSetQuery={setQuery}
+                  openSpotlight={false}
+                />
               </Center>
             </Flex>
           </Center>

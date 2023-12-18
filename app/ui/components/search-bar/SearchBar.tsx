@@ -23,15 +23,16 @@ import { useDictionaryContext } from "@/app/providers/DictionaryProvider";
 
 type Props = {
   openSpotlight: boolean;
+  outsideQuery?: string;
+  outsideSetQuery?: (query: string) => void;
 };
 
-const SearchBar = ({ openSpotlight }: Props) => {
+const SearchBar = ({ openSpotlight, outsideQuery, outsideSetQuery }: Props) => {
   const { performSearch } = useDictionaryContext();
-
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
-    performSearch(query);
+    outsideQuery ? performSearch(outsideQuery) : performSearch(query);
     if (openSpotlight === true) {
       spotlight.open();
     }
@@ -47,9 +48,11 @@ const SearchBar = ({ openSpotlight }: Props) => {
   const SearchInput = (): React.ReactNode => {
     return (
       <TextInput
-        value={query}
+        value={outsideQuery ? outsideQuery : query}
         onChange={(event) => {
-          setQuery(event.currentTarget.value);
+          outsideSetQuery
+            ? outsideSetQuery(event.currentTarget.value)
+            : setQuery(event.currentTarget.value);
         }}
         radius="xl"
         placeholder="Search..."
@@ -116,7 +119,7 @@ const SearchBar = ({ openSpotlight }: Props) => {
       <div className="flex-1 max-w-[20rem] w-full">
         {SearchHoverCard(SearchInput())}
       </div>
-      <SearchSpotlight initialQuery={query} />
+      <SearchSpotlight initialQuery={outsideQuery ? outsideQuery : query} />
     </>
   );
 };

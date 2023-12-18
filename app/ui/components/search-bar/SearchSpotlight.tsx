@@ -56,11 +56,7 @@ type Props = {
 
 const SearchSpotlight = ({ initialQuery }: Props) => {
   const { performSearch, results, loading } = useDictionaryContext();
-  const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    setQuery(initialQuery || "");
-  }, [initialQuery]);
+  const [query, setQuery] = useState(initialQuery || "");
 
   const onSearch = async () => {
     performSearch(query);
