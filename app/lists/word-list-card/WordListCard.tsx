@@ -49,8 +49,6 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
   const cardStyles = {
     backgroundColor: colorScheme === "dark" ? "#1A1B1E" : "#FFF",
     color: colorScheme === "dark" ? "#FFF" : "#000",
-    borderColor: colorScheme === "dark" ? "#333" : "#E2E8F0",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
     "&:hover": {
       transform: "scale(1.02)",
       backgroundColor: colorScheme === "dark" ? "#292A2D" : "#F7FAFC",
@@ -62,6 +60,9 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
     <Card
       style={cardStyles}
       className="cursor-pointer rounded-md overflow-hidden relative focus:outline-none focus:border-jade-color"
+      shadow="sm"
+      p="lg"
+      
     >
       <Link href={`/lists/${wordList.id}`}>
         <div className="p-4">

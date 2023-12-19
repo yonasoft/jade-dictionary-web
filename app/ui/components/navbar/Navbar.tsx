@@ -40,7 +40,7 @@ const links: Array<LinkData> = [
     label: "Lists",
     icon: <IconList />,
   },
-  { link: "/", label: "Practice", icon: <IconDeviceGamepad /> },
+  { link: "/practice", label: "Practice", icon: <IconDeviceGamepad /> },
   {
     link: "#1",
     label: "Support",

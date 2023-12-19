@@ -29,8 +29,6 @@ const AddNewListCard = ({ onListAdded }: Props) => {
   const cardStyles = {
     backgroundColor: colorScheme === "dark" ? "#1A1B1E" : "#FFF",
     color: colorScheme === "dark" ? "#FFF" : "#000",
-    borderColor: colorScheme === "dark" ? "#333" : "#E2E8F0",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
     "&:hover": {
       transform: "scale(1.02)",
       backgroundColor: colorScheme === "dark" ? "#292A2D" : "#F7FAFC",
