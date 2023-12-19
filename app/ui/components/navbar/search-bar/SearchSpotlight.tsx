@@ -14,10 +14,10 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
 import React, { Suspense, memo, useEffect, useState } from "react";
-import WordResult from "../../word-result/WordResult";
 import { Word } from "@/app/lib/definitions";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { searchWords } from "@/app/lib/firebase/storage/words-storage";
+import WordResult from "../../word-components/word-result/WordResult";
 
 const Loading = () => (
   <Spotlight.Empty>

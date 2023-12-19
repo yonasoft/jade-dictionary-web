@@ -23,7 +23,9 @@ import { useFirebaseContext } from "./providers/FirebaseProvider";
 import { searchWords } from "./lib/firebase/storage/words-storage";
 
 //Only import the components that are needed
-const WordResult = lazy(() => import("./ui/components/word-result/WordResult"));
+const WordResult = lazy(
+  () => import("./ui/components/word-components/word-result/WordResult")
+);
 
 const Loading = () => (
   <Center>

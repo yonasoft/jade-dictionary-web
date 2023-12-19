@@ -4,10 +4,11 @@ import { Word, WordList } from "@/app/lib/definitions";
 import {
   editWordList,
   getWordListByDocId,
+  removeWordFromList,
 } from "@/app/lib/firebase/storage/wordLists-storage";
 import { getWordsByIds } from "@/app/lib/firebase/storage/words-storage";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import WordCard from "@/app/ui/components/word-card/WordCard";
+import WordCard from "@/app/ui/components/word-components/word-card/WordCard";
 import {
   Button,
   Group,
@@ -19,7 +20,8 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
-import { doc } from "firebase/firestore";
+import { Firestore, doc } from "firebase/firestore";
+import { on } from "events";
 
 type Props = {
   params: { id: string };
@@ -37,12 +39,10 @@ const applyFilter = (words: Word[], query: string): Word[] => {
 
 const FilteredWords = ({
   words,
-  wordList,
   query,
   onWordRemove,
 }: {
   words: Word[];
-  wordList: WordList;
   query: string;
   onWordRemove: (wordId: number) => void;
 }) => {
@@ -52,8 +52,9 @@ const FilteredWords = ({
         <Grid.Col key={index} span={{ base: 4, xs: 3, md: 2 }}>
           <WordCard
             word={word}
-            wordList={wordList}
-            onWordRemove={onWordRemove}
+            onWordRemove={() => {
+              onWordRemove(word._id);
+            }}
             query={query}
           />
         </Grid.Col>
@@ -101,14 +102,27 @@ const ListDetailPage = ({ params }: Props) => {
     setFilteredWords(applyFilter(words, query));
   }, [words, query]);
 
-  const handleWordRemove = useCallback((wordId: number) => {
-    setWords((currentWords) =>
-      currentWords.filter((word) => word._id !== wordId)
-    );
-    setFilteredWords((currentFilteredWords) =>
-      currentFilteredWords.filter((word) => word._id !== wordId)
-    );
-  }, []);
+  const handleWordRemove = useCallback(
+    async (wordId: number) => {
+      // Check if wordList and wordList.id are defined
+      if (wordList && wordList.id) {
+        try {
+          await removeWordFromList(firestore, wordList.id, wordId);
+          setWords((currentWords) =>
+            currentWords.filter((word) => word._id !== wordId)
+          );
+          setFilteredWords((currentFilteredWords) =>
+            currentFilteredWords.filter((word) => word._id !== wordId)
+          );
+        } catch (error) {
+          console.error("Error removing word from list: ", error);
+        }
+      } else {
+        console.error("Word list or word list ID is undefined");
+      }
+    },
+    [wordList, firestore]
+  );
 
   const handleSave = async () => {
     if (wordList && params.id) {
@@ -191,7 +205,6 @@ const ListDetailPage = ({ params }: Props) => {
       ) : (
         <FilteredWords
           words={filteredWords}
-          wordList={wordList}
           query={query}
           onWordRemove={handleWordRemove}
         />

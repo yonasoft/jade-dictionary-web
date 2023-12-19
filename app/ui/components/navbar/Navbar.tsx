@@ -15,7 +15,7 @@ import { LinkData } from "@/app/lib/definitions";
 
 import classes from "./Navbar.module.css";
 
-import MenuItem from "./nav-items/menu-item/MenuItem";
+import MenuItem from "./menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
 import UserMenu from "../auth-items/UserMenu";
 import ThemeToggler from "../theme-toggler/ThemeToggler";

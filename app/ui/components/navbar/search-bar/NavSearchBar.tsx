@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   ActionIcon,
   HoverCard,
@@ -27,6 +27,17 @@ const SearchInput = ({
   handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }) => {
   const { colorScheme } = useMantineColorScheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const inputText = isMounted
+    ? `text-black ${
+        colorScheme === "dark" ? "bg-dark-6 border-none" : "bg-white"
+      }`
+    : "text-black";
 
   return (
     <TextInput
@@ -42,9 +53,7 @@ const SearchInput = ({
         </ActionIcon>
       }
       onKeyDown={handleKeyPress}
-      className={`text-black ${
-        colorScheme === "dark" ? "bg-dark-6 border-none" : "bg-white"
-      }`}
+      className={`text-black ${inputText}`}
     />
   );
 };

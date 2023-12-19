@@ -11,10 +11,18 @@ import {
 } from "@mantine/core";
 import { IconCards, IconListCheck } from "@tabler/icons-react";
 import PracticeModeCard from "./practice-mode-card/PracticeModeCard";
+import WordRow from "../ui/components/word-components/word-row/WordRow";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { Word } from "../lib/definitions";
+import WordCard from "../ui/components/word-components/word-card/WordCard";
 
 const PracticeSelections = () => {
-  const [selectedMode, setSelectedMode] = useState("");
+  const [selectedMode, setSelectedMode] = useState("flashcards"); // Set default to 'flashcards'
+  const [wordIds, setWordIds] = useState([]);
+  const [words, setWords] = useState([]);
+  const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const isMobile = useMediaQuery("(max-width: 768px)"); // Adjust breakpoint as needed
 
   const practiceModes = [
     {
@@ -35,13 +43,7 @@ const PracticeSelections = () => {
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
         <Title order={2}>Select Practice Mode</Title>
-        <Button
-          variant="filled"
-          disabled={selectedMode === ""}
-          style={{
-            backgroundColor: selectedMode ? theme.colors.jadeGreen[6] : "",
-          }}
-        >
+        <Button variant="filled" disabled={selectedMode === ""}>
           Next
         </Button>
       </div>
@@ -63,6 +65,28 @@ const PracticeSelections = () => {
           />
         ))}
       </SimpleGrid>
+
+      <div>
+        <Title order={2}>Add Words to Practice</Title>
+        <Text color="dimmed" size="sm">
+          Choose words to practice from your word lists or search words to add.
+        </Text>
+      </div>
+      <div>
+        <Button className="mt-3" variant="filled">
+          Add
+        </Button>
+
+        <div>
+          {words.map((word: Word) =>
+            isMobile ? (
+              <WordRow word={word} onWordRemove={() => {}} query={""} />
+            ) : (
+              <WordCard word={word} onWordRemove={() => {}} query={""} />
+            )
+          )}
+        </div>
+      </div>
     </div>
   );
 };

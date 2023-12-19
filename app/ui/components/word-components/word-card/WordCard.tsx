@@ -19,22 +19,15 @@ import WordDetailModal from "./WordDetailModal";
 
 type Props = {
   word: Word;
-  wordList: WordList;
-  onWordRemove: (wordId: number) => void;
+  onWordRemove: () => void;
   query: string;
 };
 
-const WordCard = ({ word, wordList, onWordRemove, query }: Props) => {
+const WordCard = ({ word, onWordRemove, query }: Props) => {
   query = query.toLowerCase();
-  const { firestore } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const [modalOpened, setModalOpened] = useState(false);
-
-  const handleRemoveWord = async () => {
-    await removeWordFromList(firestore, wordList.id as string, word._id);
-    onWordRemove(word._id); // Notify parent component about the removal
-  };
 
   return (
     <>
@@ -53,13 +46,13 @@ const WordCard = ({ word, wordList, onWordRemove, query }: Props) => {
             setModalOpened(true);
           }}
         >
-          <Highlight highlight={query} size="sm">
+          <Highlight highlight={query || ""} size="sm">
             {word.pinyin}
           </Highlight>
-          <Highlight highlight={query} fw={600} size="sm">
+          <Highlight highlight={query || ""} fw={600} size="sm">
             {`${word.simplified}(${word.traditional})`}
           </Highlight>
-          <Highlight highlight={query} size="sm">
+          <Highlight highlight={query || ""} size="sm">
             {word.definition}
           </Highlight>
         </div>
@@ -72,7 +65,13 @@ const WordCard = ({ word, wordList, onWordRemove, query }: Props) => {
               </Button>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item leftSection={<IconTrash />} onClick={handleRemoveWord}>
+              <Menu.Item
+                leftSection={<IconTrash />}
+                onClick={() => {
+                  console.log("Removing word", word._id);
+                  onWordRemove();
+                }}
+              >
                 Remove
               </Menu.Item>
             </Menu.Dropdown>
