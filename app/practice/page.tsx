@@ -15,6 +15,7 @@ import WordRow from "../ui/components/word-components/word-row/WordRow";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Word } from "../lib/definitions";
 import WordCard from "../ui/components/word-components/word-card/WordCard";
+import AddWordToPracticeModal from "../ui/components/modals/add-word-to-practice-modal/AddWordToPracticeModal";
 
 const PracticeSelections = () => {
   const [selectedMode, setSelectedMode] = useState("flashcards"); // Set default to 'flashcards'
@@ -43,7 +44,8 @@ const PracticeSelections = () => {
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
         <Title order={2}>Select Practice Mode</Title>
-        <Button variant="filled" disabled={selectedMode === ""}>
+
+        <Button variant="filled" disabled={wordIds.length < 4}>
           Next
         </Button>
       </div>
@@ -73,7 +75,12 @@ const PracticeSelections = () => {
         </Text>
       </div>
       <div>
-        <Button className="mt-3" variant="filled">
+        {wordIds.length < 4 && (
+          <Text color="red" size="sm">
+            Please select at add 4 words
+          </Text>
+        )}
+        <Button className="mt-3" variant="filled" onClick={open}>
           Add
         </Button>
 
@@ -87,6 +94,12 @@ const PracticeSelections = () => {
           )}
         </div>
       </div>
+      <AddWordToPracticeModal
+        opened={opened}
+        close={close}
+        words={words}
+        wordIds={wordIds}
+      />
     </div>
   );
 };
