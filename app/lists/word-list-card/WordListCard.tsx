@@ -9,6 +9,7 @@ import {
   useMantineTheme,
   useMantineColorScheme,
   Highlight,
+  Flex,
 } from "@mantine/core";
 import { Word, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
@@ -47,41 +48,37 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
   };
 
   const cardStyles = {
-    backgroundColor: colorScheme === "dark" ? "#1A1B1E" : "#FFF",
-    color: colorScheme === "dark" ? "#FFF" : "#000",
-    "&:hover": {
-      transform: "scale(1.02)",
-      backgroundColor: colorScheme === "dark" ? "#292A2D" : "#F7FAFC",
-    },
-    height: "8em", // Increased height
+    height: "8em",
   };
 
   return (
     <Card
-      style={cardStyles}
-      className="cursor-pointer rounded-md overflow-hidden relative focus:outline-none focus:border-jade-color"
+      className="cursor-pointer overflow-hidden"
       shadow="sm"
       p="lg"
-      
+      style={{ height: "8em" }} // Set a fixed height
     >
       <Link href={`/lists/${wordList.id}`}>
-        <div className="p-4">
-          <Highlight
-            className="text-xl font-bold line-clamp-1"
-            highlight={query}
-            size="lg"
-            fw={700}
-          >
-            {wordList.title}
+        <Flex
+          justify="center"
+          align="center"
+          direction="column"
+          style={{ height: "100%" }}
+        >
+          <Highlight className="line-clamp-1" highlight={query} fw={700}>
+            {wordList.title.charAt(0).toUpperCase() + wordList.title.slice(1)}
           </Highlight>
-          <Text
+          <Highlight
+            highlight={query}
+            size="sm"
             className={`text-sm truncate mt-2 ${
               colorScheme === "dark" ? "text-gray-300" : "text-gray-600"
             }`}
           >
-            {wordList.description}
-          </Text>
-        </div>
+            {wordList.description.charAt(0).toUpperCase() +
+              wordList.description.slice(1)}
+          </Highlight>
+        </Flex>
       </Link>
       <div className="absolute top-2 right-2">
         <Menu position="bottom-end" withinPortal>

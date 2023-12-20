@@ -95,21 +95,22 @@ const AllLists = () => {
       <Title className="font-bold text-gray-800 mb-6 text-center">
         My Word Lists
       </Title>
-      <Select
-        label="Sort by"
-        placeholder="Select sort option"
-        value={sortOption}
-        onChange={(value) => setSortOption(value as SortOption)}
-        data={[
-          { value: SortOption.Recent, label: "Most Recent" },
-          { value: SortOption.Oldest, label: "Oldest" },
-          { value: SortOption.Alphabetical, label: "Alphabetical" },
-          {
-            value: SortOption.ReverseAlphabetical,
-            label: "Reverse Alphabetical",
-          },
-        ]}
-      />
+      <Group mb="md">
+        <Select
+          label="Sort by"
+          value={sortOption}
+          onChange={(value) => setSortOption(value as SortOption)}
+          data={[
+            { value: SortOption.Recent, label: "Most Recent" },
+            { value: SortOption.Oldest, label: "Oldest" },
+            { value: SortOption.Alphabetical, label: "Alphabetical" },
+            {
+              value: SortOption.ReverseAlphabetical,
+              label: "Reverse Alphabetical",
+            },
+          ]}
+        />
+      </Group>
       <div className="sticky flex items-center mb-5">
         <Input
           className="flex-grow"
@@ -128,7 +129,7 @@ const AllLists = () => {
           <IconX size={24} />
         </ActionIcon>
       </div>
-      <Grid gutter="lg">
+      <Grid gutter="md">
         <Grid.Col span={{ base: 6, xs: 4, sm: 3, md: 2 }}>
           <AddNewListCard onListAdded={fetchWordLists} />
         </Grid.Col>

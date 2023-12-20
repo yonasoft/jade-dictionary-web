@@ -32,7 +32,7 @@ const WordCard = ({ word, onWordRemove, query }: Props) => {
   return (
     <>
       <Card
-        className="overflow-ellipsis h-28 cursor-pointer bg-white text-black dark:bg-dark-6 dark:text-white"
+        className="hover:bg-gray-100 dark:hover:bg-dark-5 h-30 cursor-pointer"
         shadow="sm"
         padding="lg"
         style={{
@@ -41,18 +41,28 @@ const WordCard = ({ word, onWordRemove, query }: Props) => {
           color: colorScheme === "dark" ? theme.white : theme.black,
         }}
       >
-        <div
-          onClick={() => {
-            setModalOpened(true);
-          }}
-        >
-          <Highlight highlight={query || ""} size="sm">
-            {word.pinyin}
-          </Highlight>
-          <Highlight highlight={query || ""} fw={600} size="sm">
+        <div onClick={() => setModalOpened(true)}>
+          <Highlight
+            className="line-clamp-1 text-ellipsis my-1"
+            fw={600}
+            size="md"
+            highlight={query}
+          >
             {`${word.simplified}(${word.traditional})`}
           </Highlight>
-          <Highlight highlight={query || ""} size="sm">
+          <Highlight
+            className="line-clamp-1 text-ellipsis my-1"
+            size="sm"
+            highlight={query}
+          >
+            {word.pinyin}
+          </Highlight>
+          <Highlight
+            className="line-clamp-2 text-ellipsis my-1"
+            size="sm"
+            highlight={query}
+            fs="italic"
+          >
             {word.definition}
           </Highlight>
         </div>

@@ -21,7 +21,7 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
 import { Firestore, doc } from "firebase/firestore";
-import { on } from "events";
+import { notifications } from "@mantine/notifications";
 
 type Props = {
   params: { id: string };
@@ -44,7 +44,7 @@ const FilteredWords = ({
 }: {
   words: Word[];
   query: string;
-  onWordRemove: (wordId: number) => void;
+  onWordRemove: (wordToRemove: Word) => Promise<boolean>;
 }) => {
   return (
     <Grid gutter={{ base: 4, lg: 8 }}>
@@ -53,7 +53,18 @@ const FilteredWords = ({
           <WordCard
             word={word}
             onWordRemove={() => {
-              onWordRemove(word._id);
+              onWordRemove(word).then((success) => {
+                if (success === true) {
+                  notifications.show({
+                    withCloseButton: true,
+                    autoClose: 3000,
+                    title: "Word Removed",
+                    message: `${word.simplified} has been removed from the list.`,
+                    color: "green",
+                    loading: false,
+                  });
+                }
+              });
             }}
             query={query}
           />
@@ -92,7 +103,7 @@ const ListDetailPage = ({ params }: Props) => {
         }
       });
     }
-  }, [params.id, firestore, fetchWords]);
+  }, [params.id, firestore, fetchWords, wordList]);
 
   useEffect(() => {
     setFilteredWords(applyFilter(words, query));
@@ -103,22 +114,25 @@ const ListDetailPage = ({ params }: Props) => {
   }, [words, query]);
 
   const handleWordRemove = useCallback(
-    async (wordId: number) => {
+    async (wordToRemove: Word): Promise<boolean> => {
       // Check if wordList and wordList.id are defined
       if (wordList && wordList.id) {
         try {
-          await removeWordFromList(firestore, wordList.id, wordId);
+          await removeWordFromList(firestore, wordList.id, wordToRemove._id);
           setWords((currentWords) =>
-            currentWords.filter((word) => word._id !== wordId)
+            currentWords.filter((word) => word._id !== wordToRemove._id)
           );
           setFilteredWords((currentFilteredWords) =>
-            currentFilteredWords.filter((word) => word._id !== wordId)
+            currentFilteredWords.filter((word) => word._id !== wordToRemove._id)
           );
+          return true;
         } catch (error) {
           console.error("Error removing word from list: ", error);
+          return false;
         }
       } else {
         console.error("Word list or word list ID is undefined");
+        return false;
       }
     },
     [wordList, firestore]
@@ -149,51 +163,47 @@ const ListDetailPage = ({ params }: Props) => {
   }
 
   return (
-    <div className="p-4" style={{ maxWidth: "1200px", margin: "auto" }}>
+    <div className="p-4 max-w-7xl mx-auto">
       <Group justify="flex-end">
         <Button variant="filled" onClick={handleSave}>
           Save
         </Button>
       </Group>
 
-      <div className="mb-4">
-        <Input.Label htmlFor="title">Title</Input.Label>
+      <div className="flex flex-col gap-4">
         <Input
           id="title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          // Styling for Input
         />
-      </div>
-
-      <div className="mb-4">
-        <Input.Label htmlFor="description">Description</Input.Label>
         <Textarea
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
+          // Styling for Textarea
         />
       </div>
 
-      <Group className="sticky flex w-full items-center my-3">
+      <div className="flex items-center gap-2 my-5">
         <Input
           className="flex-grow"
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
-          placeholder="Search via English, Pinyin, or Chinese..."
+          placeholder="Search..."
+          // Styling for Input
         />
         <ActionIcon
           variant="outline"
-          size="lg"
-          onClick={() => {
-            setQuery("");
-          }}
+          onClick={() => setQuery("")}
           title="Clear"
+          // Styling for ActionIcon
         >
           <IconX size={24} />
         </ActionIcon>
-      </Group>
+      </div>
 
       {words.length === 0 ? (
         <Center className="h-full">

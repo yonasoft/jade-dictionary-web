@@ -27,19 +27,15 @@ const AddNewListCard = ({ onListAdded }: Props) => {
   };
 
   const cardStyles = {
-    backgroundColor: colorScheme === "dark" ? "#1A1B1E" : "#FFF",
-    color: colorScheme === "dark" ? "#FFF" : "#000",
-    "&:hover": {
-      transform: "scale(1.02)",
-      backgroundColor: colorScheme === "dark" ? "#292A2D" : "#F7FAFC",
-    },
     height: "8em", // Increased height
   };
 
   return (
     <Card
       style={cardStyles}
-      className="cursor-pointer rounded-md overflow-hidden focus:outline-none focus:border-jade-color"
+      className="cursor-pointer overflow-hidden"
+      shadow="sm"
+      p="lg"
       onClick={onAddNew}
     >
       <Center style={{ height: "100%" }}>
