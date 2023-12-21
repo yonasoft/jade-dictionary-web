@@ -16,36 +16,46 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import SearchBar from "./ui/components/navbar/search-bar/NavSearchBar";
-import { Word } from "./lib/definitions";
+import { Word, WordList } from "./lib/definitions";
 import { spotlight } from "@mantine/spotlight";
 import HomeSearchBar from "./ui/components/home-search-bar/HomeSearchBar";
 import { useFirebaseContext } from "./providers/FirebaseProvider";
-import { searchWords } from "./lib/firebase/storage/words-storage";
+import { searchWords } from "./lib/firebase/storage/words";
+import {
+  Firestore,
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { performAddWordToList, performSearch } from "./lib/utils/words";
+import { handleKeyPress } from "./lib/utils/events";
+import Loading from "./ui/components/loading/Loading";
 
 //Only import the components that are needed
 const WordResult = lazy(
   () => import("./ui/components/word-components/word-result/WordResult")
 );
 
-const Loading = () => (
-  <Center>
-    <Loader color="green" />
-  </Center>
-);
-
-const NothingFound = () => (
-  <Center>
-    <Text size="xl">Nothing found...</Text>
-  </Center>
-);
-
 const Results = memo(
-  ({ results, query }: { results: Word[]; query: string }) => (
+  ({
+    results,
+    query,
+    onAdd,
+  }: {
+    results: Word[];
+    query: string;
+    onAdd: (
+      firestore: Firestore,
+      wordList: WordList,
+      word: Word
+    ) => Promise<void>;
+  }) => (
     <Grid>
       {results.map((word, index) => (
         <Grid.Col key={index} span={{ base: 12, sm: 6, lg: 4 }}>
           <Suspense fallback={<Loading />}>
-            <WordResult word={word} query={query} />
+            <WordResult word={word} query={query} onAdd={onAdd} />
           </Suspense>
         </Grid.Col>
       ))}
@@ -54,7 +64,7 @@ const Results = memo(
 );
 
 const Home = () => {
-  const { firestore } = useFirebaseContext();
+  const { firestore, updateWordLists } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const [query, setQuery] = useState("");
@@ -66,15 +76,11 @@ const Home = () => {
     [colorScheme, theme]
   );
 
-  const performSearch = async (input: string) => {
-    return await searchWords(firestore, input)
-      .then((words) => {
-        console.log(words);
-        setResults(words);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const onSearch = () => {
+    performSearch(firestore, query).then((results) => {
+      setSearched(true);
+      setResults(results);
+    });
   };
 
   return (
@@ -87,14 +93,22 @@ const Home = () => {
               <HomeSearchBar
                 query={query}
                 setQuery={setQuery}
-                performSearch={performSearch}
+                onSearch={onSearch}
               />
             </Center>
           </Flex>
         </BackgroundImage>
       </Paper>
 
-      {results.length > 0 && <Results results={results} query={query} />}
+      {results.length > 0 && (
+        <Results results={results} query={query} onAdd={performAddWordToList} />
+      )}
+
+      {results.length === 0 && searched && (
+        <Center>
+          <Text size="xl">Nothing found...</Text>
+        </Center>
+      )}
     </Container>
   );
 };

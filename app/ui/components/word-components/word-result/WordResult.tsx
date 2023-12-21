@@ -1,4 +1,4 @@
-import { ScriptType, Word } from "@/app/lib/definitions";
+import { ScriptType, Word, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import {
   Accordion,
@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import {
+  Firestore,
   arrayUnion,
   doc,
   serverTimestamp,
@@ -22,28 +23,17 @@ import React, { useEffect } from "react";
 type Props = {
   query: string;
   word: Word;
+  onAdd: (
+    firestore: Firestore,
+    wordList: WordList,
+    word: Word
+  ) => Promise<void>;
 };
 
-const WordResult = ({ query, word }: Props) => {
-  const { firestore, wordLists, currentUser, updateWordLists } =
-    useFirebaseContext();
+const WordResult = ({ query, word, onAdd }: Props) => {
+  const { firestore, wordLists, currentUser } = useFirebaseContext();
   const traditional = `(${word.traditional})`;
   query = query.toLowerCase();
-
-  const handleAddWordToList = async (wordListId: string) => {
-    try {
-      const wordListRef = doc(firestore, "wordLists", wordListId);
-      // Update the word list document to add the word's ID to wordIds array
-      await updateDoc(wordListRef, {
-        wordIds: arrayUnion(word._id),
-        lastUpdatedAt: serverTimestamp(), // Optional: Update lastUpdatedAt timestamp
-      });
-      updateWordLists();
-      console.log(`Word ${word._id} added to word list ${wordListId}`);
-    } catch (error) {
-      console.error("Error adding word to word list: ", error);
-    }
-  };
 
   return (
     <Card className="mx-2 my-1" shadow="sm" withBorder>
@@ -75,7 +65,9 @@ const WordResult = ({ query, word }: Props) => {
                 wordLists.map((list) => (
                   <Menu.Item
                     key={list.id}
-                    onClick={() => handleAddWordToList(list.id as string)}
+                    onClick={() => {
+                      onAdd(firestore, list, word);
+                    }}
                   >
                     {list.title}
                   </Menu.Item>

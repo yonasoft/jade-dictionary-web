@@ -14,46 +14,58 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
 import React, { Suspense, memo, useEffect, useState } from "react";
-import { Word } from "@/app/lib/definitions";
+import { Word, WordList } from "@/app/lib/definitions";
 import { Spotlight, spotlight } from "@mantine/spotlight";
-import { searchWords } from "@/app/lib/firebase/storage/words-storage";
+import { searchWords } from "@/app/lib/firebase/storage/words";
 import WordResult from "../../word-components/word-result/WordResult";
-
-const Loading = () => (
-  <Spotlight.Empty>
-    <Center>
-      <Loader color="green" />
-    </Center>
-  </Spotlight.Empty>
-);
+import {
+  Firestore,
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { performAddWordToList } from "@/app/lib/utils/words";
+import { handleKeyPress } from "@/app/lib/utils/events";
+import NothingFound from "../../nothing-found/NothingFound";
+import Loading from "../../loading/Loading";
 
 const Results = memo(
-  ({ results, query }: { results: Word[]; query: string }) => (
+  ({
+    results,
+    query,
+    onAdd,
+  }: {
+    results: Word[];
+    query: string;
+    onAdd: (
+      firestore: Firestore,
+      wordList: WordList,
+      word: Word
+    ) => Promise<void>;
+  }) => (
     <>
       {results.map((word, index) => (
-        <Suspense key={index} fallback={<Loading />}>
-          <WordResult word={word} query={query} />
+        <Suspense
+          key={index}
+          fallback={
+            <Spotlight.Empty>
+              <Loading />
+            </Spotlight.Empty>
+          }
+        >
+          <WordResult word={word} query={query} onAdd={onAdd} />
         </Suspense>
       ))}
     </>
   )
 );
 
-const NothingFound = () => {
-  return (
-    <Spotlight.Empty>
-      <Center>
-        <Text size="xl">Nothing found...</Text>
-      </Center>
-    </Spotlight.Empty>
-  );
-};
-
 type Props = {
   query: string;
   setQuery: (query: string) => void;
   results: Word[];
-  performSearch: (query: string) => void;
+  onSearch: () => void;
   searched: boolean;
 };
 
@@ -61,11 +73,11 @@ const SearchSpotlight = ({
   query,
   setQuery,
   results,
-  performSearch,
+  onSearch,
   searched,
 }: Props) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-
+  const { firestore, updateWordLists } = useFirebaseContext();
   useEffect(() => {
     const handleResize = () => {
       setIsFullScreen(window.innerHeight <= 640);
@@ -76,11 +88,10 @@ const SearchSpotlight = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleEnterKeyPress = (event: React.KeyboardEvent) => {
-    const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
-    if (keysToTriggerSearch.includes(event.key)) {
-      performSearch(query);
-    }
+  const handleKeyPressSearch = (event: React.KeyboardEvent) => {
+    handleKeyPress(event, ["Enter", "Go", "Search", "ArrowRight"], () => {
+      onSearch();
+    });
   };
 
   return (
@@ -99,11 +110,11 @@ const SearchSpotlight = ({
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search via English, Pinyin, or Chinese..."
-          onKeyDown={handleEnterKeyPress}
+          onKeyDown={handleKeyPressSearch}
           size="md"
         />
         <Button
-          onClick={() => performSearch(query)}
+          onClick={() => onSearch}
           variant="outline"
           className="me-3 shrink-0"
         >
@@ -117,11 +128,15 @@ const SearchSpotlight = ({
         )}
       </Group>
 
-      {results.length > 0 && <Results results={results} query={query} />}
+      {results.length > 0 && (
+        <Results results={results} query={query} onAdd={performAddWordToList} />
+      )}
 
       {results.length === 0 && searched && (
         <Center>
-          <NothingFound />
+          <Spotlight.Empty>
+            <NothingFound />
+          </Spotlight.Empty>
         </Center>
       )}
     </Spotlight.Root>

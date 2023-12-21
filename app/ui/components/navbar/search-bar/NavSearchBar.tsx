@@ -11,9 +11,12 @@ import { spotlight } from "@mantine/spotlight";
 import { IconArrowRight, IconSearch } from "@tabler/icons-react";
 
 import SearchSpotlight from "./SearchSpotlight";
-import { searchWords } from "@/app/lib/firebase/storage/words-storage";
+import { searchWords } from "@/app/lib/firebase/storage/words";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Word } from "@/app/lib/definitions";
+import { performSearch } from "@/app/lib/utils/words";
+import { on } from "events";
+import { handleKeyPress } from "@/app/lib/utils/events";
 
 const SearchInput = ({
   query,
@@ -64,28 +67,21 @@ const NavSearchBar = () => {
   const [results, setResults] = useState<Word[]>([]);
   const [searched, setSearched] = useState(false);
 
-  const performSearch = async (input: string) => {
-    setSearched(false);
-    return await searchWords(firestore, input)
-      .then((words) => {
-        console.log(words);
-        setResults(words);
-        setSearched(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   const onSearch = () => {
-    performSearch(query);
+    performSearch(firestore, query).then((results) => {
+      setResults(results);
+    });
+  };
+
+  const onInitialSearch = () => {
+    onSearch();
     spotlight.open();
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent) => {
-    const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"];
-    if (keysToTriggerSearch.includes(event.key)) {
-      onSearch();
-    }
+  const onKeyPressSearch = (event: React.KeyboardEvent) => {
+    handleKeyPress(event, ["Enter", "Go", "Search", "ArrowRight"], () => {
+      onInitialSearch();
+    });
   };
 
   const SearchHoverCard = (searchBar: React.ReactNode): React.ReactNode => {
@@ -124,9 +120,9 @@ const NavSearchBar = () => {
             <SearchInput
               query={query}
               setQuery={setQuery}
-              handleSearch={onSearch}
+              handleSearch={onInitialSearch}
               handleKeyPress={(e) => {
-                handleKeyPress(e);
+                onKeyPressSearch(e);
               }}
             />
           </div>
@@ -136,7 +132,7 @@ const NavSearchBar = () => {
         query={query}
         setQuery={setQuery}
         results={results}
-        performSearch={performSearch}
+        onSearch={onSearch}
         searched={searched}
       />
     </>

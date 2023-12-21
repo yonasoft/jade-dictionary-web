@@ -13,7 +13,7 @@ import {
   Highlight,
 } from "@mantine/core";
 import { IconDotsVertical, IconTrash } from "@tabler/icons-react";
-import { removeWordFromList } from "@/app/lib/firebase/storage/wordLists-storage";
+import { removeWordFromList } from "@/app/lib/firebase/storage/wordLists";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordDetailModal from "./WordDetailModal";
 

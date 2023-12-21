@@ -13,9 +13,7 @@ import ResetPasswordModal from "./ui/components/modals/reset-password-modal/Rese
 import DeleteUserConfirmation from "./ui/components/modals/confirm-delete-user-modal/DeleteUserConfirmation";
 import ReauthenticateModal from "./ui/components/modals/reauth-modal/ReauthenticateModal";
 import AddWordListModal from "./ui/components/modals/add-word-list-modal/AddWordListModal";
-
 import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
 import "./globals.css";
 import Link from "next/link";
 

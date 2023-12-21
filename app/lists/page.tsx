@@ -16,7 +16,7 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
-import { getUserWordLists } from "../lib/firebase/storage/wordLists-storage";
+import { getUserWordLists } from "../lib/firebase/storage/wordLists";
 
 const applyFilter = (wordLists: WordList[], query: string): WordList[] => {
   return wordLists.filter(

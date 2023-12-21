@@ -15,7 +15,7 @@ import {
   updateUserPassword,
 } from "../../lib/firebase/authentication";
 import { useFirebaseContext } from "../../providers/FirebaseProvider";
-import { checkEmailExists } from "../../lib/firebase/storage/user-storage";
+import { checkEmailExists } from "../../lib/firebase/storage/user";
 import { modals, openContextModal } from "@mantine/modals";
 import VerifyEmailModal from "../../ui/components/modals/verify-email-modal/VerifyEmailModal";
 

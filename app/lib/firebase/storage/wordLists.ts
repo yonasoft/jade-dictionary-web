@@ -1,7 +1,7 @@
 
 import { SortOption, WordList } from "../../definitions";
 import { DocumentReference, DocumentSnapshot, Firestore, addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
-import { timestampToDate } from "../utils";
+
 
 export const createWordList = async (userUid: string, db: Firestore, title: string, description: string): Promise<void> => {
   try {

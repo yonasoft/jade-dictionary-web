@@ -3,7 +3,7 @@ import { Button, Input, Textarea, Title, Text, Center } from "@mantine/core";
 import { ContextModalProps, modals } from "@mantine/modals";
 import classes from "./VerifyEmailModal.module.css";
 import React, { useEffect, useState } from "react";
-import { createWordList } from "@/app/lib/firebase/storage/wordLists-storage";
+import { createWordList } from "@/app/lib/firebase/storage/wordLists";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 
 type Props = {};

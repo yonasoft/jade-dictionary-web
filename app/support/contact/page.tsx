@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { TextInput, Textarea, Button, Text, Title } from "@mantine/core";
-import { sendEmail } from "@/app/lib/utils/emailjs";
+import { sendEmail } from "@/app/lib/services/emailjs/emailjs";
 
 const Contact = () => {
   const [email, setEmail] = useState("");

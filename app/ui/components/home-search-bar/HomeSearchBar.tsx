@@ -1,4 +1,3 @@
-"use client";
 import React, { memo, useState } from "react";
 
 import {
@@ -18,20 +17,23 @@ import {
 import { IconArrowRight, IconHome, IconSearch } from "@tabler/icons-react";
 
 import classes from "./HomeSearchBar.module.css";
-
+import { update } from "firebase/database";
+import { Firestore } from "firebase/firestore";
+import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
+import { handleKeyPress } from "@/app/lib/utils/events";
 
 type Props = {
   query: string;
   setQuery: (query: string) => void;
-  performSearch: (input: string) => void;
+  onSearch: () => void;
 };
 
-const HomeSearchBar = ({ query, setQuery, performSearch }: Props) => {
-  const handleEnterKeyPress = (event: React.KeyboardEvent) => {
-    const keysToTriggerSearch = ["Enter", "Go", "Search", "ArrowRight"]; // Add other keys as needed
-    if (keysToTriggerSearch.includes(event.key)) {
-      performSearch(query);
-    }
+const HomeSearchBar = ({ query, setQuery, onSearch }: Props) => {
+  
+  const onKeyPressSearch = (event: React.KeyboardEvent) => {
+    handleKeyPress(event, ["Enter", "Go", "Search", "ArrowRight"], () => {
+      onSearch();
+    });
   };
 
   const SearchInput = (): React.ReactNode => {
@@ -45,7 +47,7 @@ const HomeSearchBar = ({ query, setQuery, performSearch }: Props) => {
         placeholder="Search..."
         rightSectionWidth={42}
         onKeyDown={(event) => {
-          handleEnterKeyPress(event);
+          onKeyPressSearch(event);
         }}
         leftSection={
           <IconSearch
@@ -56,9 +58,7 @@ const HomeSearchBar = ({ query, setQuery, performSearch }: Props) => {
         rightSection={
           <ActionIcon
             className={classes.icon}
-            onClick={() => {
-              performSearch(query);
-            }}
+            onClick={onSearch}
             size="md"
             radius="xl"
             variant="filled"

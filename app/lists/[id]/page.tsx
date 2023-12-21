@@ -5,8 +5,8 @@ import {
   editWordList,
   getWordListByDocId,
   removeWordFromList,
-} from "@/app/lib/firebase/storage/wordLists-storage";
-import { getWordsByIds } from "@/app/lib/firebase/storage/words-storage";
+} from "@/app/lib/firebase/storage/wordLists";
+import { getWordsByIds } from "@/app/lib/firebase/storage/words";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordCard from "@/app/ui/components/word-components/word-card/WordCard";
 import {
@@ -20,7 +20,7 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
-import { Firestore, doc } from "firebase/firestore";
+import { doc } from "firebase/firestore";
 import { notifications } from "@mantine/notifications";
 
 type Props = {
