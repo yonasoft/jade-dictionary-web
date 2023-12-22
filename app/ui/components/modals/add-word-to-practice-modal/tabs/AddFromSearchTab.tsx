@@ -47,6 +47,7 @@ const AddFromSearchTab = ({ isWordInPractice, addWordFromSearch }: Props) => {
           onKeyUp={(event) => {handleKeyPressSearch(event) }}
         />
         <Button
+          variant="filled"
           onClick={() => {
             onSearch();
           }}
