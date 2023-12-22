@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 
-import { Group, Burger, Container } from "@mantine/core";
+import { Group, Burger, Container, Box } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconDeviceGamepad,
@@ -65,8 +65,8 @@ const Navbar = () => {
       <Container className="align-middle" size="lg">
         <Group h="56" justify="space-between">
           <Group justify="flex-start">
-            <Link href="\" aria-label="Jade Logo">
-              <JadeLogo h="48" />
+            <Link href="\" replace={true} passHref>
+              <JadeLogo h={56} />
             </Link>
 
             <Group visibleFrom="md">{renderMenuItems()}</Group>

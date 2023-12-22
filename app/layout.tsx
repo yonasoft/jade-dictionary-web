@@ -63,7 +63,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
           <FirebaseContextProvider>
             <ModalsProvider modals={modals}>
               <Navbar />
-              {children}
+              <main>{children}</main>
             </ModalsProvider>
           </FirebaseContextProvider>
         </MantineProvider>

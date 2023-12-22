@@ -36,10 +36,8 @@ const NavDrawer = ({ links, opened, onClose }: Props) => {
       >
         <Drawer.Header>
           <Group className="grow" justify="space-between">
-            <JadeLogo h="40" />
-            {/* <Box hiddenFrom="sm">
-              <ResultTypeSelector />
-            </Box> */}
+            <JadeLogo h={52} />
+
             <Box hiddenFrom="sm">
               <ThemeToggler />
             </Box>

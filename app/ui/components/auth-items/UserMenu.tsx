@@ -42,7 +42,7 @@ const UserMenu = (props: Props) => {
           <Group className="bg-stone-100 rounded-xl" darkHidden>
             <Avatar
               src={firebase.currentUser?.photoURL || ""}
-              alt="no image here"
+              alt="user profile picture"
               radius="xl"
             />
             <Text size="sm">

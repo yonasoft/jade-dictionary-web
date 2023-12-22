@@ -33,7 +33,7 @@ const MenuItem = ({ link }: Props) => {
   } else {
     return (
       <Menu trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
-        <Link className={classes.link} href={link.link}>
+        <Link className={classes.link} href={link.link} passHref>
           <Text className={classes.linkLabel}>{link.label}</Text>
         </Link>
       </Menu>

@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, lazy, memo, useMemo, useState } from "react";
+import { Suspense, lazy, memo, useEffect, useMemo, useState } from "react";
 import {
   BackgroundImage,
   Box,
@@ -39,18 +39,16 @@ const WordSearchResultS = lazy(
 );
 
 const Home = () => {
-  const { firestore, updateWordLists } = useFirebaseContext();
+  const { firestore } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
-  const theme = useMantineTheme();
-
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Word[]>([]);
   const [searched, setSearched] = useState(false);
+  const [titleColor, setTitleColor] = useState("black"); // default color
 
-  const titleColor = useMemo(
-    () => (colorScheme === "dark" ? theme.colors.dark[9] : theme.white),
-    [colorScheme, theme]
-  );
+  useEffect(() => {
+    setTitleColor(colorScheme === "dark" ? "black" : "white");
+  }, [colorScheme]);
 
   const onSearch = () => {
     performSearch(firestore, query).then((results) => {
