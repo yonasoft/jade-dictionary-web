@@ -5,7 +5,7 @@ import { searchWords } from "../firebase/storage/words";
 
 export const performSearch = async(firestore: Firestore, input: string) => {
 	return await searchWords(firestore, input);
-  };
+};
 
 export const performAddWordToList = async (firestore:Firestore, wordList: WordList, word: Word, ) => {
 
@@ -14,5 +14,5 @@ export const performAddWordToList = async (firestore:Firestore, wordList: WordLi
     await updateDoc(wordListRef, {
         wordIds: arrayUnion(word._id),
         lastUpdatedAt: serverTimestamp(), 
-    });
-  };
+	});
+};

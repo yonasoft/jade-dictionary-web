@@ -13,7 +13,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
-import React, { Suspense, memo, useEffect, useState } from "react";
+import React, { Suspense, lazy, memo, useEffect, useState } from "react";
 import { Word, WordList } from "@/app/lib/definitions";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { searchWords } from "@/app/lib/firebase/storage/words";
@@ -27,38 +27,10 @@ import {
 } from "firebase/firestore";
 import { performAddWordToList } from "@/app/lib/utils/words";
 import { handleKeyPress } from "@/app/lib/utils/events";
-import NothingFound from "../../nothing-found/NothingFound";
-import Loading from "../../loading/Loading";
+import NothingFound from "../../results/nothing-found/NothingFound";
 
-const Results = memo(
-  ({
-    results,
-    query,
-    onAdd,
-  }: {
-    results: Word[];
-    query: string;
-    onAdd: (
-      firestore: Firestore,
-      wordList: WordList,
-      word: Word
-    ) => Promise<void>;
-  }) => (
-    <>
-      {results.map((word, index) => (
-        <Suspense
-          key={index}
-          fallback={
-            <Spotlight.Empty>
-              <Loading />
-            </Spotlight.Empty>
-          }
-        >
-          <WordResult word={word} query={query} onAdd={onAdd} />
-        </Suspense>
-      ))}
-    </>
-  )
+const WordSearchResults = lazy(
+  () => import("../../results/word-search-results/WordSearchResults")
 );
 
 type Props = {
@@ -129,7 +101,12 @@ const SearchSpotlight = ({
       </Group>
 
       {results.length > 0 && (
-        <Results results={results} query={query} onAdd={performAddWordToList} />
+        <WordSearchResults
+          results={results}
+          query={query}
+          searched={searched}
+          onAddToWordList={performAddWordToList}
+        />
       )}
 
       {results.length === 0 && searched && (

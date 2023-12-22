@@ -15,16 +15,16 @@ import {
 import { IconDotsVertical, IconTrash } from "@tabler/icons-react";
 import { removeWordFromList } from "@/app/lib/firebase/storage/wordLists";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import WordDetailModal from "./WordDetailModal";
+import WordDetailModal from "../WordDetailModal";
 
 type Props = {
   word: Word;
   onWordRemove: () => void;
-  query: string;
+  query?: string;
 };
 
 const WordCard = ({ word, onWordRemove, query }: Props) => {
-  query = query.toLowerCase();
+  query = query ? query.toLowerCase() : "";
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const [modalOpened, setModalOpened] = useState(false);
@@ -46,7 +46,7 @@ const WordCard = ({ word, onWordRemove, query }: Props) => {
             className="line-clamp-1 text-ellipsis my-1"
             fw={600}
             size="md"
-            highlight={query}
+            highlight={query || ""}
           >
             {`${word.simplified}(${word.traditional})`}
           </Highlight>

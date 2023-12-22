@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   Card,
@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   Title,
   useMantineTheme,
+  Grid,
 } from "@mantine/core";
 import { IconCards, IconListCheck } from "@tabler/icons-react";
 import PracticeModeCard from "./practice-mode-card/PracticeModeCard";
@@ -19,11 +20,14 @@ import AddWordToPracticeModal from "../ui/components/modals/add-word-to-practice
 
 const PracticeSelections = () => {
   const [selectedMode, setSelectedMode] = useState("flashcards"); // Set default to 'flashcards'
-  const [wordIds, setWordIds] = useState([]);
-  const [words, setWords] = useState([]);
+  const [wordIds, setWordIds] = useState<number[]>([]);
+  const [words, setWords] = useState<Word[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
-  const isMobile = useMediaQuery("(max-width: 768px)"); // Adjust breakpoint as needed
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  useEffect(() => {}, [words, wordIds]);
+  // Adjust breakpoint as needed
 
   const practiceModes = [
     {
@@ -84,21 +88,35 @@ const PracticeSelections = () => {
           Add
         </Button>
 
-        <div>
-          {words.map((word: Word) =>
-            isMobile ? (
-              <WordRow word={word} onWordRemove={() => {}} query={""} />
-            ) : (
-              <WordCard word={word} onWordRemove={() => {}} query={""} />
-            )
-          )}
-        </div>
+        {isMobile ? (
+          <Grid className="w-full">
+            {words.map((word, index) => (
+              <Grid.Col key={index} span={{ base: 12, xs: 12, md: 12 }}>
+                <WordRow word={word} onWordRemove={() => {}} />
+              </Grid.Col>
+            ))}
+          </Grid>
+        ) : (
+          <Grid className="w-full" gutter={{ base: 4, lg: 8 }}>
+            {words.map((word, index) => (
+              <Grid.Col key={index} span={{ base: 4, xs: 3, md: 2 }}>
+                <WordCard word={word} onWordRemove={() => {}} />
+              </Grid.Col>
+            ))}
+          </Grid>
+        )}
       </div>
       <AddWordToPracticeModal
         opened={opened}
         close={close}
         words={words}
+        addWord={(word: Word) => {
+          setWords([word, ...words]);
+        }}
         wordIds={wordIds}
+        addWordIds={(wordId: number) => {
+          setWordIds([wordId, ...wordIds]);
+        }}
       />
     </div>
   );

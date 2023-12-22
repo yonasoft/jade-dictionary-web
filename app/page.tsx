@@ -30,43 +30,19 @@ import {
 } from "firebase/firestore";
 import { performAddWordToList, performSearch } from "./lib/utils/words";
 import { handleKeyPress } from "./lib/utils/events";
-import Loading from "./ui/components/loading/Loading";
+import Loading from "./ui/components/results/loading/Loading";
+import WordSearchResults from "./ui/components/results/word-search-results/WordSearchResults";
 
 //Only import the components that are needed
-const WordResult = lazy(
+const WordSearchResultS = lazy(
   () => import("./ui/components/word-components/word-result/WordResult")
-);
-
-const Results = memo(
-  ({
-    results,
-    query,
-    onAdd,
-  }: {
-    results: Word[];
-    query: string;
-    onAdd: (
-      firestore: Firestore,
-      wordList: WordList,
-      word: Word
-    ) => Promise<void>;
-  }) => (
-    <Grid>
-      {results.map((word, index) => (
-        <Grid.Col key={index} span={{ base: 12, sm: 6, lg: 4 }}>
-          <Suspense fallback={<Loading />}>
-            <WordResult word={word} query={query} onAdd={onAdd} />
-          </Suspense>
-        </Grid.Col>
-      ))}
-    </Grid>
-  )
 );
 
 const Home = () => {
   const { firestore, updateWordLists } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
+
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Word[]>([]);
   const [searched, setSearched] = useState(false);
@@ -101,7 +77,13 @@ const Home = () => {
       </Paper>
 
       {results.length > 0 && (
-        <Results results={results} query={query} onAdd={performAddWordToList} />
+        <WordSearchResults
+          gridSpan={{ base: 12, sm: 6, lg: 4 }}
+          searched={searched}
+          results={results}
+          query={query}
+          onAddToWordList={performAddWordToList}
+        />
       )}
 
       {results.length === 0 && searched && (
