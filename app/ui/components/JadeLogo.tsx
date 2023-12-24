@@ -21,10 +21,10 @@ const JadeLogo = ({ h , w }: Props) => {
       src={logoSrc}
       alt="Jade logo"
       height={h}
-      width={w ? w : 120} // This sets the width attribute, not the style
+      width={w ? w : 120} 
       quality={100}
       priority={true}
-      style={imageStyle} // Apply the style object here
+      style={imageStyle} 
     />
   );
 };

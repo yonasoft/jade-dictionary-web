@@ -55,48 +55,51 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
     <Card
       className="cursor-pointer overflow-hidden"
       shadow="sm"
-      p="lg"
       style={{ height: "8em" }} // Set a fixed height
     >
-      <Link href={`/lists/${wordList.id}`}>
-        <Flex
-          justify="center"
-          align="center"
-          direction="column"
-          style={{ height: "100%" }}
+      <Flex className="w-full" direction="column">
+        <Group justify="flex-end">
+          <Menu position="bottom-end" withinPortal>
+            <Menu.Target>
+              <IconDotsVertical color="green" />
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                leftSection={<IconTrash />}
+                onClick={handleRemoveWordList}
+              >
+                Remove
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Group>
+        <Link
+          className="cursor-pointer h-full w-auto"
+          href={`/lists/${wordList.id}`}
+          passHref
         >
-          <Highlight className="line-clamp-1" highlight={query} fw={700}>
-            {wordList.title.charAt(0).toUpperCase() + wordList.title.slice(1)}
-          </Highlight>
-          <Highlight
-            highlight={query}
-            size="sm"
-            className={`text-sm truncate mt-2 ${
-              colorScheme === "dark" ? "text-gray-300" : "text-gray-600"
-            }`}
+          <Flex
+            className="h-full w-full"
+            justify="center"
+            align="center"
+            direction="column"
           >
-            {wordList.description.charAt(0).toUpperCase() +
-              wordList.description.slice(1)}
-          </Highlight>
-        </Flex>
-      </Link>
-      <div className="absolute top-2 right-2">
-        <Menu position="bottom-end" withinPortal>
-          <Menu.Target>
-            <Button variant="subtle" size="xs">
-              <IconDotsVertical />
-            </Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              leftSection={<IconTrash />}
-              onClick={handleRemoveWordList}
+            <Highlight className="line-clamp-1" highlight={query} fw={700}>
+              {wordList.title.charAt(0).toUpperCase() + wordList.title.slice(1)}
+            </Highlight>
+            <Highlight
+              highlight={query}
+              size="sm"
+              className={`text-sm truncate mt-2 ${
+                colorScheme === "dark" ? "text-gray-300" : "text-gray-600"
+              }`}
             >
-              Remove
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      </div>
+              {wordList.description.charAt(0).toUpperCase() +
+                wordList.description.slice(1)}
+            </Highlight>
+          </Flex>
+        </Link>
+      </Flex>
     </Card>
   );
 };
