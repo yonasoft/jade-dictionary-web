@@ -22,6 +22,7 @@ import {
 import { IconSearch, IconX } from "@tabler/icons-react";
 import { doc } from "firebase/firestore";
 import { notifications } from "@mantine/notifications";
+import classes from "./page.module.css";
 
 type Props = {
   params: { id: string };
@@ -161,12 +162,6 @@ const ListDetailPage = ({ params }: Props) => {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <Group justify="flex-end">
-        <Button variant="filled" onClick={handleSave}>
-          Save
-        </Button>
-      </Group>
-
       <div className="flex flex-col gap-4">
         <Input
           id="title"
@@ -179,11 +174,15 @@ const ListDetailPage = ({ params }: Props) => {
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          rows={3}
+          rows={2}
           // Styling for Textarea
         />
       </div>
-
+      <Group justify="center" className="mt-5 mb-2">
+        <Button variant="filled" onClick={handleSave}>
+          Save
+        </Button>
+      </Group>
       <div className="flex items-center gap-2 my-5">
         <Input
           className="flex-grow"
