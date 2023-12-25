@@ -161,10 +161,9 @@ const ListDetailPage = ({ params }: Props) => {
   }
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
+    <div className="p2- max-w-7xl mx-auto">
       <div className="flex flex-col gap-4">
         <Input.Wrapper label="Title" size="lg" fw={900} />
-
         <Input
           id="title"
           name="title"
