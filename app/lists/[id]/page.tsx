@@ -163,15 +163,21 @@ const ListDetailPage = ({ params }: Props) => {
   return (
     <div className="p-4 max-w-7xl mx-auto">
       <div className="flex flex-col gap-4">
+        <Input.Wrapper label="Title" size="lg" fw={900} />
+
         <Input
           id="title"
+          name="title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           // Styling for Input
         />
+        <Input.Wrapper label="Description" size="lg" fw={900} />
+
         <Textarea
           id="description"
+          name="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={2}
