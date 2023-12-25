@@ -19,11 +19,12 @@ import { IconSearch, IconX } from "@tabler/icons-react";
 import { getUserWordLists } from "../lib/firebase/storage/wordLists";
 
 const applyFilter = (wordLists: WordList[], query: string): WordList[] => {
+  const queryLower = query.toLowerCase();
   return wordLists.filter(
     (wordList) =>
-      wordList.title.toLowerCase().includes(query.toLowerCase()) ||
+      wordList.title.toLowerCase().includes(queryLower) ||
       (wordList.description &&
-        wordList.description.toLowerCase().includes(query.toLowerCase()))
+        wordList.description.toLowerCase().includes(queryLower))
   );
 };
 
@@ -61,10 +62,10 @@ const AllLists = () => {
   const [sortOption, setSortOption] = useState<SortOption>(SortOption.Recent);
   const [query, setQuery] = useState<string>("");
 
-  const fetchWordLists = useCallback(() => {
+  const fetchWordLists = useCallback(async () => {
     if (!currentUser) return;
 
-    getUserWordLists(firestore, currentUser.uid, sortOption)
+    await getUserWordLists(firestore, currentUser.uid, sortOption)
       .then((fetchedWordLists: WordList[]) => {
         setWordLists(fetchedWordLists);
         setFilteredWordLists(applyFilter(fetchedWordLists, query));

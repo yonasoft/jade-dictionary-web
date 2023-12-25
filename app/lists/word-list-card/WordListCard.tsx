@@ -53,11 +53,11 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
 
   return (
     <Card
-      className="cursor-pointer overflow-hidden"
+      className="overflow-hidden"
       shadow="sm"
       style={{ height: "8em" }} // Set a fixed height
     >
-      <Flex className="w-full" direction="column">
+      <Flex className="h-full w-full" direction="column">
         <Group justify="flex-end">
           <Menu position="bottom-end" withinPortal>
             <Menu.Target>
@@ -74,13 +74,12 @@ const WordListCard = ({ wordList, onListChange, query }: Props) => {
           </Menu>
         </Group>
         <Link
-          className="cursor-pointer h-full w-auto"
+          className="cursor-pointer h-full w-full"
           href={`/lists/${wordList.id}`}
-          passHref
         >
           <Flex
             className="h-full w-full"
-            justify="center"
+            justify="flex-start"
             align="center"
             direction="column"
           >

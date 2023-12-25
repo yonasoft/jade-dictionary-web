@@ -28,27 +28,28 @@ type Props = {
 };
 
 const applyFilter = (words: Word[], query: string): Word[] => {
+  const queryLower = query.toLowerCase();
   return words.filter(
     (word) =>
-      word.simplified.includes(query) ||
-      word.traditional.includes(query) ||
-      word.pinyin.includes(query) ||
-      word.definition.includes(query)
+      word.simplified.includes(queryLower) ||
+      word.traditional.includes(queryLower) ||
+      word.pinyin.includes(queryLower) ||
+      word.definition.includes(queryLower)
   );
 };
 
 const FilteredWords = ({
-  words,
+  filteredWords,
   query,
   onWordRemove,
 }: {
-  words: Word[];
+  filteredWords: Word[];
   query: string;
   onWordRemove: (wordToRemove: Word) => Promise<boolean>;
 }) => {
   return (
-    <Grid gutter={{ base: 4, lg: 8 }}>
-      {words.map((word, index) => (
+    <>
+      {filteredWords.map((word, index) => (
         <Grid.Col key={index} span={{ base: 4, xs: 3, md: 2 }}>
           <WordCard
             word={word}
@@ -70,12 +71,12 @@ const FilteredWords = ({
           />
         </Grid.Col>
       ))}
-    </Grid>
+    </>
   );
 };
 
 const ListDetailPage = ({ params }: Props) => {
-  const { firestore } = useFirebaseContext();
+  const { firestore, currentUser } = useFirebaseContext();
   const [wordList, setWordList] = useState<WordList | null>(null);
   const [words, setWords] = useState<Word[]>([]);
   const [filteredWords, setFilteredWords] = useState<Word[]>([]);
@@ -89,7 +90,7 @@ const ListDetailPage = ({ params }: Props) => {
       setWords(fetchedWords);
       setFilteredWords(applyFilter(fetchedWords, query));
     },
-    [firestore]
+    [firestore, currentUser]
   );
 
   useEffect(() => {
@@ -103,15 +104,11 @@ const ListDetailPage = ({ params }: Props) => {
         }
       });
     }
-  }, [params.id, firestore, fetchWords, wordList]);
+  }, [params.id]);
 
   useEffect(() => {
     setFilteredWords(applyFilter(words, query));
-  }, [query, words]);
-
-  const onSearch = useCallback(() => {
-    setFilteredWords(applyFilter(words, query));
-  }, [words, query]);
+  }, [query]);
 
   const handleWordRemove = useCallback(
     async (wordToRemove: Word): Promise<boolean> => {
@@ -193,7 +190,6 @@ const ListDetailPage = ({ params }: Props) => {
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search..."
-          // Styling for Input
         />
         <ActionIcon
           variant="outline"
@@ -213,11 +209,13 @@ const ListDetailPage = ({ params }: Props) => {
           </Text>
         </Center>
       ) : (
-        <FilteredWords
-          words={filteredWords}
-          query={query}
-          onWordRemove={handleWordRemove}
-        />
+        <Grid gutter={{ base: 4, lg: 8 }}>
+          <FilteredWords
+            filteredWords={filteredWords}
+            query={query}
+            onWordRemove={handleWordRemove}
+          />
+        </Grid>
       )}
     </div>
   );
