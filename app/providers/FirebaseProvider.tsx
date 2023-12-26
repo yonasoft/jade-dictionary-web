@@ -15,7 +15,7 @@ import {
   ref,
 } from "firebase/storage";
 import { Database, getDatabase } from "firebase/database";
-import { SortOption, WordList } from "../lib/definitions";
+import { FirestoreUserData, SortOption, WordList } from "../lib/definitions";
 import { getUserWordLists } from "../lib/firebase/storage/wordLists";
 
 type Props = {
@@ -23,7 +23,7 @@ type Props = {
 };
 
 type FirebaseContextType = {
-  currentUser: User | null;
+  currentUser: User | FirestoreUserData | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   wordLists: WordList[];
   updateWordLists: () => void;
@@ -46,8 +46,18 @@ export const FirebaseContextProvider: React.FC<{
   const db = getDatabase(app);
   const storage = getStorage(app);
 
-  const [currentUser, setCurrentUser] = useState<null | User>(auth.currentUser);
+  const [currentUser, setCurrentUser] = useState<
+    null | User 
+  >(auth.currentUser);
   const [wordLists, setWordLists] = useState<WordList[]>([]);
+
+  useEffect(() => {
+    fetchWordLists();
+  }, [currentUser, firestore]);
+
+  useEffect(() => {
+    monitorAuthState(auth, setCurrentUser);
+  }, [auth]);
 
   const fetchWordLists = async () => {
     if (currentUser) {
@@ -72,14 +82,6 @@ export const FirebaseContextProvider: React.FC<{
     );
     setWordLists(lists);
   };
-
-  useEffect(() => {
-    fetchWordLists();
-  }, [currentUser, firestore]);
-
-  useEffect(() => {
-    monitorAuthState(auth, setCurrentUser);
-  }, [auth]);
 
   return (
     <FirebaseContext.Provider

@@ -15,7 +15,8 @@ export interface FirestoreUserData {
 	email: string | null;
 	displayName: string | null;
 	photoURL: string | null;
-	photoFileName: string| null;
+	photoFileName: string | null;
+	emailVerified: boolean | null;
 }
 
 export type Word = {

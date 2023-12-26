@@ -170,7 +170,6 @@ const ListDetailPage = ({ params }: Props) => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          // Styling for Input
         />
         <Input.Wrapper label="Description" size="lg" fw={900} />
 

@@ -19,13 +19,22 @@ export const addNewUserToDB = async (db: Firestore, user: User) => {
     }
 }
 
-export const updateUserToDB = async (db: Firestore, userData: FirestoreUserData) => {
+export const updateUserToDB = async (db: Firestore, userData: User) => {
+  // Create a plain object with only the data you want to store
+  const dataToSave = {
+    uid: userData.uid,
+    email: userData.email,
+    displayName: userData.displayName,
+    photoURL: userData.photoURL,
+  };
+
   try {
-    await setDoc(doc(db, "users", userData.uid), userData);
+    await setDoc(doc(db, "users", userData.uid), dataToSave);
   } catch (e) {
     console.error("Error updating user in DB:", e);
   }
 };
+
 
 export const deleteOldProfilePicture = async (storage: FirebaseStorage, db:Firestore, userUid: string) => {
 

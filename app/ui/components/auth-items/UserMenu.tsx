@@ -19,9 +19,11 @@ import React, { useContext, useEffect } from "react";
 type Props = {};
 
 const UserMenu = (props: Props) => {
-  const firebase = useFirebaseContext();
+  const { currentUser, auth } = useFirebaseContext();
 
-  useEffect(() => {}, [firebase.currentUser]);
+  useEffect(() => {
+    console.log("currentUser updated:", currentUser);
+  }, [currentUser]);
 
   const trimStringWithEllipsis = (str: string, maxLength: number) => {
     if (str.length > maxLength) {
@@ -41,15 +43,13 @@ const UserMenu = (props: Props) => {
         <div className="cursor-pointer">
           <Group className="bg-stone-100 rounded-xl" darkHidden>
             <Avatar
-              src={firebase.currentUser?.photoURL || ""}
+              src={currentUser?.photoURL || ""}
               alt="user profile picture"
               radius="xl"
             />
             <Text size="sm">
               {trimStringWithEllipsis(
-                firebase.currentUser?.displayName ||
-                  firebase.currentUser?.email ||
-                  "",
+                currentUser?.displayName || currentUser?.email || "",
                 15
               )}
             </Text>
@@ -60,12 +60,12 @@ const UserMenu = (props: Props) => {
           </Group>
           <Group className="bg-stone-800 rounded-xl" lightHidden>
             <Avatar
-              src={firebase.currentUser?.photoURL || ""}
+              src={currentUser?.photoURL || ""}
               alt="no image here"
               radius="xl"
             />
             <Text size="sm">
-              {firebase.currentUser?.displayName || firebase.currentUser?.email}
+              {currentUser?.displayName || currentUser?.email}
             </Text>
             <IconChevronDown
               style={{ width: rem(14), height: rem(14) }}
@@ -85,11 +85,11 @@ const UserMenu = (props: Props) => {
             }
           >
             <Group>
-              <Avatar radius="xl" src={firebase.currentUser?.photoURL || ""} />
+              <Avatar radius="xl" src={currentUser?.photoURL || ""} />
               <div>
-                <Text fw={500}>{firebase.currentUser?.displayName}</Text>
+                <Text fw={500}>{currentUser?.displayName}</Text>
                 <Text size="xs" c="dimmed">
-                  {firebase.currentUser?.email}
+                  {currentUser?.email}
                 </Text>
               </div>
             </Group>
@@ -104,7 +104,7 @@ const UserMenu = (props: Props) => {
             />
           }
           onClick={() => {
-            signOutUser(firebase.auth);
+            signOutUser(auth);
           }}
         >
           Logout

@@ -36,21 +36,30 @@ import { FirestoreUserData } from "../../lib/definitions";
 type Props = {};
 
 const DisplayInformation = (props: Props) => {
-  const firebase = useFirebaseContext();
+  const { currentUser, setCurrentUser, firestore, storage, auth } =
+    useFirebaseContext();
 
   const [editDisplayName, setEditDisplayName] = useState(false);
-  const [displayName, setDisplayName] = useState(
-    firebase.currentUser?.displayName || ""
-  );
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
 
+  const [displayName, setDisplayName] = useState(
+    currentUser?.displayName || ""
+  );
+  const [displayPhoto, setDisplayPhoto] = useState(currentUser?.photoURL || "");
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [hideSuccess, setHideSuccess] = useState(true);
 
-  useEffect(() => {}, [firebase.currentUser]);
+  useEffect(() => {}, [currentUser]);
+  useEffect(() => {
+    return () => {
+      if (displayPhoto && displayPhoto.startsWith("blob:")) {
+        URL.revokeObjectURL(displayPhoto);
+      }
+    };
+  }, [displayPhoto]);
 
   const checkDisplayNameExists = async (displayName: string) => {
-    const usersRef = collection(firebase.firestore, "users");
+    const usersRef = collection(firestore, "users");
     const q = query(usersRef, where("displayName", "==", displayName));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
@@ -59,60 +68,52 @@ const DisplayInformation = (props: Props) => {
   const onSave = async () => {
     setErrorMessage("");
     setHideSuccess(true);
+
     try {
       if (isNewDisplayName()) {
-        await checkDisplayNameExists(displayName)
-          .then((exists) => {
-            if (exists) {
-              setErrorMessage(
-                "Display name already in use. Please choose another."
-              );
-              return;
-            }
-          })
-          .catch((error) => {
-            console.error("Error checking if display name exists:", error);
-          });
+        const exists = await checkDisplayNameExists(displayName);
+        if (exists) {
+          setErrorMessage(
+            "Display name already in use. Please choose another."
+          );
+          return;
+        }
       }
 
-      let photoURL = firebase.currentUser?.photoURL;
-
+      let photoURL = currentUser?.photoURL;
       if (photoFile) {
         await deleteOldProfilePicture(
-          firebase.storage,
-          firebase.firestore,
-          firebase.currentUser?.uid?.toString() as string
-        )
-          .then(() => {})
-          .catch((error: any) => {
-            console.error("Error deleting old profile picture:", error);
-          });
-
+          storage,
+          firestore,
+          currentUser?.uid as string
+        );
         photoURL = await uploadNewProfilePicture(
-          firebase.storage,
+          storage,
           photoFile,
-          firebase.currentUser?.uid?.toString() as string
+          currentUser?.uid as string
         );
       }
 
-      if (firebase.auth.currentUser) {
-        await updateUserProfile(firebase.auth, {
+      if (auth.currentUser) {
+        await updateUserProfile(auth, {
           displayName: displayName,
           photoUrl: photoURL as string,
         });
 
-        const updatedUserData: FirestoreUserData = {
-          uid: firebase.auth.currentUser.uid,
-          email: firebase.auth.currentUser.email,
+        const updatedUserData: User = {
+          ...auth.currentUser,
+          uid: auth.currentUser.uid,
+          email: auth.currentUser.email,
           displayName: displayName,
           photoURL: photoURL as string,
-          photoFileName: photoFile?.name as string,
+          emailVerified: auth.currentUser.emailVerified,
         };
-        await updateUserToDB(firebase.firestore, updatedUserData);
+        await updateUserToDB(firestore, updatedUserData);
+        setCurrentUser(updatedUserData);
       }
+
       setEditDisplayName(false);
       setHideSuccess(false);
-      setErrorMessage("");
     } catch (error) {
       console.error("Error updating user profile:", error);
       setErrorMessage("An error occurred while updating the profile.");
@@ -120,7 +121,18 @@ const DisplayInformation = (props: Props) => {
   };
 
   const isNewDisplayName = () => {
-    return displayName !== firebase.currentUser?.displayName;
+    return displayName !== currentUser?.displayName;
+  };
+
+  const handleFileChange = (file: File | null) => {
+    setPhotoFile(file);
+    if (file) {
+      const tempUrl = URL.createObjectURL(file);
+      setDisplayPhoto(tempUrl);
+    } else {
+      // Reset to the original photo URL if no file is selected
+      setDisplayPhoto(currentUser?.photoURL || "");
+    }
   };
 
   const showDisplayNameInput = () => {
@@ -144,7 +156,7 @@ const DisplayInformation = (props: Props) => {
             <IconX
               className="mx-2"
               onClick={() => {
-                setDisplayName(firebase.currentUser?.displayName as string);
+                setDisplayName(currentUser?.displayName as string);
                 setEditDisplayName(false);
               }}
               style={{ width: rem(18), height: rem(18) }}
@@ -154,7 +166,7 @@ const DisplayInformation = (props: Props) => {
           </Flex>
         ) : (
           <Flex justify="center" align="center" direction="row">
-            <Text>{displayName || firebase.currentUser?.displayName}</Text>
+            <Text>{displayName || currentUser?.displayName}</Text>
 
             <IconPencil
               className="mx-2"
@@ -179,7 +191,7 @@ const DisplayInformation = (props: Props) => {
       >
         {showDisplayNameInput()}
         <Avatar
-          src={firebase.currentUser?.photoURL || ""}
+          src={displayPhoto}
           alt="profile picture"
           size={150}
           radius="xl"
@@ -193,11 +205,11 @@ const DisplayInformation = (props: Props) => {
             />
           }
           value={photoFile}
-          onChange={setPhotoFile}
+          onChange={handleFileChange} // Updated to use handleFileChange
           label="Upload Profile Picture"
           placeholder="Upload"
           rightSectionPointerEvents="none"
-          className="max-w-full" // Apply Tailwind classes here
+          className="max-w-full"
         />
 
         <Button className="my-2" variant="filled" onClick={onSave}>
