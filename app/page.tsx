@@ -52,7 +52,8 @@ const Home = () => {
 
   useEffect(() => {
     // Load state from localStorage when the component mounts
-    const loadedQuery = JSON.parse(sessionStorage.getItem("homeQuery") || "");
+    const loadedQuery = JSON.parse(sessionStorage.getItem("homeQuery") || '""');
+
     const loadedResults = JSON.parse(
       sessionStorage.getItem("homeResults") || "[]"
     );
