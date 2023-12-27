@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback, memo } from "react";
 import { SortOption, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
-import WordListCard from "./word-list-card/WordListCard";
+import WordListCard from "../ui/components/word-list-components/word-list-card/WordListCard";
 import AddNewListCard from "./add-new-list-card/AddNewListCard";
 import {
   Text,

@@ -50,6 +50,26 @@ const Home = () => {
     setTitleColor(colorScheme === "dark" ? "black" : "white");
   }, [colorScheme]);
 
+  useEffect(() => {
+    // Load state from localStorage when the component mounts
+    const loadedQuery = JSON.parse(sessionStorage.getItem("homeQuery") || "");
+    const loadedResults = JSON.parse(
+      sessionStorage.getItem("homeResults") || "[]"
+    );
+
+    if (loadedQuery.length > 0) setQuery(loadedQuery);
+
+    if (loadedResults.length > 0) setResults(loadedResults);
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("homeQuery", JSON.stringify(query));
+  }, [query]);
+
+  useEffect(() => {
+    sessionStorage.setItem("homeResults", JSON.stringify(results));
+  }, [results]);
+
   const onSearch = () => {
     performSearch(firestore, query).then((results) => {
       setSearched(true);

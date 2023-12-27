@@ -1,34 +1,26 @@
-import { Word } from "@/app/lib/definitions";
+import { Word, WordList } from "@/app/lib/definitions";
 import { Modal, Tabs, rem } from "@mantine/core";
 import { IconList, IconSearch } from "@tabler/icons-react";
 import React from "react";
 import AddFromSearchTab from "./tabs/AddFromSearchTab";
+import AddFromListsTab from "./tabs/AddFromListsTab";
 
 type Props = {
   opened: boolean;
   close: () => void;
-  words: Word[];
-  addWord: (word: Word) => void;
-  wordIds: number[];
-  addWordIds: (wordId: number) => void;
+  addWord: (word: Word) => Promise<void>;
+  hasWord: (word: Word) => boolean;
+  addWords: (words: Word[]) => Promise<void>;
 };
 
 const AddWordToPracticeModal = ({
   opened,
   close,
-  words,
   addWord,
-  wordIds,
-  addWordIds,
+  addWords,
+  hasWord,
 }: Props) => {
-  const addWordFromSearch = async (word: Word) => {
-    addWord(word);
-    addWordIds(word._id);
-  };
 
-  const isWordInPractice = (word: Word) => {
-    return wordIds.includes(word._id);
-  };
   return (
     <Modal
       size="xl"
@@ -58,12 +50,14 @@ const AddWordToPracticeModal = ({
 
         <Tabs.Panel value="search">
           <AddFromSearchTab
-            isWordInPractice={isWordInPractice}
-            addWordFromSearch={addWordFromSearch}
+            isWordInPractice={hasWord}
+            addWordFromSearch={addWord}
           />
         </Tabs.Panel>
 
-        <Tabs.Panel value="lists">Messages tab content</Tabs.Panel>
+        <Tabs.Panel value="lists">
+          <AddFromListsTab addWords={addWords} />
+        </Tabs.Panel>
       </Tabs>
     </Modal>
   );

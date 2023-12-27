@@ -14,20 +14,69 @@ import { IconCards, IconListCheck } from "@tabler/icons-react";
 import PracticeModeCard from "./practice-mode-card/PracticeModeCard";
 import WordRow from "../ui/components/word-components/word-row/WordRow";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { Word } from "../lib/definitions";
+import { Word, WordList } from "../lib/definitions";
 import WordCard from "../ui/components/word-components/word-card/WordCard";
 import AddWordToPracticeModal from "../ui/components/modals/add-word-to-practice-modal/AddWordToPracticeModal";
+import { on } from "events";
 
 const PracticeSelections = () => {
   const [selectedMode, setSelectedMode] = useState("flashcards"); // Set default to 'flashcards'
-  const [wordIds, setWordIds] = useState<number[]>([]);
+  const [wordIds, setWordIds] = useState<Set<number>>(new Set([]));
   const [words, setWords] = useState<Word[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {}, [words, wordIds]);
-  // Adjust breakpoint as needed
+
+  useEffect(() => {
+    // Load state from localStorage when the component mounts
+    const loadedWordIds: Set<number> = new Set(
+      JSON.parse(sessionStorage.getItem("practiceWordIds") || "[]")
+    );
+    const loadedWords = JSON.parse(
+      sessionStorage.getItem("practiceWords") || "[]"
+    );
+
+    setWordIds(loadedWordIds);
+    if (loadedWords.length > 0) {
+      setWords(loadedWords);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save state to localStorage when wordIds or words change
+    sessionStorage.setItem(
+      "practiceWordIds",
+      JSON.stringify(Array.from(wordIds))
+    );
+    sessionStorage.setItem("practiceWords", JSON.stringify(words));
+  }, [wordIds, words]);
+
+  const onRemove = (word: Word) => {
+    const newWordIds = new Set(wordIds);
+    newWordIds.delete(word._id);
+    setWordIds(newWordIds);
+    setWords(words.filter((w) => w._id !== word._id));
+  };
+
+  const addWord = async (word: Word) => {
+    if (wordIds.has(word._id)) {
+      return;
+    } else {
+      setWordIds(new Set([...Array.from(wordIds), word._id]));
+      setWords([...words, word]);
+    }
+  };
+
+  const addWords = async (wordsToAdd: Word[]) => {
+    const newWordIds = new Set([...Array.from(wordIds)]);
+    words.forEach((word) => {
+      newWordIds.add(word._id);
+    });
+    setWordIds(newWordIds);
+    setWords([...words, ...wordsToAdd]);
+  };
 
   const practiceModes = [
     {
@@ -45,11 +94,11 @@ const PracticeSelections = () => {
   ];
 
   return (
-    <div className="p-4">
+    <div className="p-4 h-full">
       <div className="flex justify-between items-center mb-4">
         <Title order={2}>Select Practice Mode</Title>
 
-        <Button variant="filled" disabled={wordIds.length < 4}>
+        <Button variant="filled" disabled={wordIds.size < 4}>
           Next
         </Button>
       </div>
@@ -77,9 +126,8 @@ const PracticeSelections = () => {
         <Text color="dimmed" size="sm">
           Choose words to practice from your word lists or search words to add.
         </Text>
-      </div>
-      <div>
-        {wordIds.length < 4 && (
+
+        {wordIds.size < 4 && (
           <Text color="red" size="sm">
             Please select at add 4 words
           </Text>
@@ -87,35 +135,44 @@ const PracticeSelections = () => {
         <Button className="mt-3" variant="filled" onClick={open}>
           Add
         </Button>
-
+      </div>
+      <div className="mt-3">
         {isMobile ? (
-          <Grid className="w-full">
+          <Grid className="w-full ">
             {words.map((word, index) => (
               <Grid.Col key={index} span={{ base: 12, xs: 12, md: 12 }}>
-                <WordRow word={word} onWordRemove={() => {}} />
+                <WordRow
+                  word={word}
+                  onWordRemove={() => {
+                    onRemove(word);
+                  }}
+                />
               </Grid.Col>
             ))}
           </Grid>
         ) : (
-          <Grid className="w-full" gutter={{ base: 4, lg: 8 }}>
+          <Grid className="w-full mt-3" gutter={{ base: 4, lg: 8 }}>
             {words.map((word, index) => (
               <Grid.Col key={index} span={{ base: 4, xs: 3, md: 2 }}>
-                <WordCard word={word} onWordRemove={() => {}} />
+                <WordCard
+                  word={word}
+                  onWordRemove={() => {
+                    onRemove(word);
+                  }}
+                />
               </Grid.Col>
             ))}
           </Grid>
         )}
       </div>
+
       <AddWordToPracticeModal
         opened={opened}
         close={close}
-        words={words}
-        addWord={(word: Word) => {
-          setWords([word, ...words]);
-        }}
-        wordIds={wordIds}
-        addWordIds={(wordId: number) => {
-          setWordIds([wordId, ...wordIds]);
+        addWord={addWord}
+        addWords={addWords}
+        hasWord={(word: Word) => {
+          return wordIds.has(word._id);
         }}
       />
     </div>
