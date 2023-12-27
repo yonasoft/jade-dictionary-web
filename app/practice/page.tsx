@@ -60,6 +60,11 @@ const PracticeSelections = () => {
     setWords(words.filter((w) => w._id !== word._id));
   };
 
+  const onClear = async () => {
+    setWordIds(new Set([]));
+    setWords([]);
+  };
+
   const addWord = async (word: Word) => {
     if (wordIds.has(word._id)) {
       return;
@@ -135,10 +140,13 @@ const PracticeSelections = () => {
         <Button className="mt-3" variant="filled" onClick={open}>
           Add
         </Button>
+        <Button className="mt-3 ms-3" variant="outline" onClick={onClear}>
+          Clear
+        </Button>
       </div>
       <div className="mt-3">
         {isMobile ? (
-          <Grid className="w-full ">
+          <Grid className="w-full " gutter={{ base: 2 }}>
             {words.map((word, index) => (
               <Grid.Col key={index} span={{ base: 12, xs: 12, md: 12 }}>
                 <WordRow

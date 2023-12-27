@@ -11,6 +11,7 @@ import {
   Highlight,
   Menu,
   Card,
+  Flex,
 } from "@mantine/core";
 import { IconDotsVertical, IconTrash } from "@tabler/icons-react";
 import { removeWordFromList } from "@/app/lib/firebase/storage/wordLists";
@@ -42,17 +43,7 @@ const WordRow = ({ word, onWordRemove, query }: Props) => {
         }}
         onClick={() => setModalOpened(true)}
       >
-        <Group grow>
-          <Highlight highlight={query || ""} size="sm">
-            {word.pinyin}
-          </Highlight>
-          <Highlight highlight={query} fw={600} size="sm">
-            {`${word.simplified}(${word.traditional})`}
-          </Highlight>
-          <Highlight highlight={query} size="sm">
-            {word.definition}
-          </Highlight>
-
+        <Flex justify="flex-end" align="flex-start">
           <Menu position="bottom-end" withinPortal>
             <Menu.Target>
               <Button variant="subtle" size="xs">
@@ -65,7 +56,28 @@ const WordRow = ({ word, onWordRemove, query }: Props) => {
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
-        </Group>
+        </Flex>
+
+        <Flex direction="column">
+          <Group justify="space-between">
+            <Highlight highlight={query.toLowerCase()} fw={600} size="md">
+              {`${word.simplified}(${word.traditional})`}
+            </Highlight>
+
+            <Highlight highlight={query.toLowerCase()} size="sm">
+              {word.pinyin}
+            </Highlight>
+          </Group>
+
+          <Highlight
+            className="w-auto overflow-hidden"
+            highlight={query.toLowerCase()}
+            size="sm"
+            fs="italic"
+          >
+            {word.definition}
+          </Highlight>
+        </Flex>
       </Card>
       <WordDetailModal
         word={word}
