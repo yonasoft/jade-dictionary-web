@@ -23,9 +23,7 @@ const page = (props: Props) => {
     const savedStopwatchEnabled = JSON.parse(
       sessionStorage.getItem("practiceStopwatch") || "false"
     );
-    const savedWordIds = new Set<number>(
-      JSON.parse(sessionStorage.getItem("practiceWordIds") || "[]")
-    );
+
     const savedWords = JSON.parse(
       sessionStorage.getItem("practiceWords") || "[]"
     );

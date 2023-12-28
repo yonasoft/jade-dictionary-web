@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { Firestore, getFirestore, doc, setDoc, addDoc, collection, getDoc, query, getDocs, where, deleteDoc } from "firebase/firestore";
 import { FirebaseStorage, StorageReference, deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateUserProfile } from "../authentication";
-import { FirestoreUserData } from "../../definitions";
+
 
 export const addNewUserToDB = async (db: Firestore, user: User) => {
     try {
