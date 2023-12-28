@@ -21,13 +21,16 @@ import { PracticeType, Word, WordList } from "../lib/definitions";
 import WordCard from "../ui/components/word-components/word-card/WordCard";
 import AddWordToPracticeModal from "../ui/components/modals/add-word-to-practice-modal/AddWordToPracticeModal";
 import { on } from "events";
+import router from "next/router";
+import Link from "next/link";
 
 const PracticeSelections = () => {
-  const [selectedMode, setSelectedMode] = useState("flashcards");
-  const [selectedQuizTypes, setSelectedQuizTypes] = useState<PracticeType[]>([
-    PracticeType.HanziToDefinition,
-  ]);
-  const isQuizTypeSelected = selectedQuizTypes.length > 0;
+  const [selectedMode, setSelectedMode] = useState("flash-cards");
+
+  const [selectedPracticeTypes, setSelectedPracticeTypes] = useState<
+    PracticeType[]
+  >([]);
+  const isPracticeTypeSelected = selectedPracticeTypes.length > 0;
 
   const [timer, setTimer] = useState("none");
   const [stopwatchEnabled, setStopwatchEnabled] = useState(false);
@@ -45,13 +48,13 @@ const PracticeSelections = () => {
       title: "Flash Cards",
       description: "Practice with interactive flash cards.",
       icon: <IconCards />,
-      mode: "flashcards",
+      mode: "flash-cards",
     },
     {
       title: "Multiple Choice",
       description: "Test your knowledge with multiple choice questions.",
       icon: <IconListCheck />,
-      mode: "multipleChoice",
+      mode: "multiple-choice",
     },
   ];
 
@@ -64,31 +67,87 @@ const PracticeSelections = () => {
     { value: "60", label: "1 minute" },
   ];
 
-  useEffect(() => {}, [words, wordIds]);
+  useEffect(() => {
+    console.log("wordids", wordIds, "words", words);
+  }, [words, wordIds]);
 
   useEffect(() => {
-    // Load state from localStorage when the component mounts
-    const loadedWordIds: Set<number> = new Set(
+    const savedPracticeMode = JSON.parse(
+      sessionStorage.getItem("practiceMode") || '"flash-cards"'
+    );
+    const savedPracticeTypes = JSON.parse(
+      sessionStorage.getItem("practiceTypes") || "[]"
+    );
+    const savedTimer = JSON.parse(
+      sessionStorage.getItem("practiceTimer") || '"none"'
+    );
+    const savedStopwatchEnabled = JSON.parse(
+      sessionStorage.getItem("practiceStopwatch") || "false"
+    );
+    const savedWordIds = new Set<number>(
       JSON.parse(sessionStorage.getItem("practiceWordIds") || "[]")
     );
-    const loadedWords = JSON.parse(
+    const savedWords = JSON.parse(
       sessionStorage.getItem("practiceWords") || "[]"
     );
 
-    setWordIds(loadedWordIds);
-    if (loadedWords.length > 0) {
-      setWords(loadedWords);
+    if (savedPracticeMode !== selectedMode) setSelectedMode(savedPracticeMode);
+
+    if (savedWordIds.size > 0) {
+      setWordIds(savedWordIds);
     }
+    if (savedWords.length > 0) {
+      setWords(savedWords);
+    }
+
+    if (savedPracticeTypes.length > 0) {
+      setSelectedPracticeTypes(savedPracticeTypes);
+    }
+
+    if (savedTimer !== "none") setTimer(savedTimer);
+
+    if (stopwatchEnabled !== savedStopwatchEnabled)
+      setStopwatchEnabled(savedStopwatchEnabled);
   }, []);
 
   useEffect(() => {
-    // Save state to localStorage when wordIds or words change
+    console.log("Saving words to session storage");
+    sessionStorage.setItem("practiceMode", JSON.stringify(selectedMode));
+  }, [selectedMode]);
+
+  useEffect(() => {
+    console.log("Saving selectedQuizTypes to session storage");
+    sessionStorage.setItem(
+      "practiceTypes",
+      JSON.stringify(selectedPracticeTypes)
+    );
+  }, [selectedPracticeTypes]);
+
+  useEffect(() => {
+    console.log("Saving timer to session storage");
+    sessionStorage.setItem("practiceTimer", JSON.stringify(timer));
+  }, [timer]);
+
+  useEffect(() => {
+    console.log("Saving stopwatchEnabled to session storage");
+    sessionStorage.setItem(
+      "practiceStopwatch",
+      JSON.stringify(stopwatchEnabled)
+    );
+  }, [stopwatchEnabled]);
+
+  useEffect(() => {
+    console.log("Saving wordIds to session storage");
     sessionStorage.setItem(
       "practiceWordIds",
       JSON.stringify(Array.from(wordIds))
     );
+  }, [wordIds]);
+
+  useEffect(() => {
+    console.log("Saving words to session storage");
     sessionStorage.setItem("practiceWords", JSON.stringify(words));
-  }, [wordIds, words]);
+  }, [words]);
 
   const onRemove = (word: Word) => {
     const newWordIds = new Set(wordIds);
@@ -103,7 +162,7 @@ const PracticeSelections = () => {
   };
 
   const addWord = async (word: Word) => {
-    if (wordIds.has(word._id)) {
+    if (wordIds.size > 0 && wordIds.has(word._id)) {
       return;
     } else {
       setWordIds(new Set([...Array.from(wordIds), word._id]));
@@ -112,16 +171,23 @@ const PracticeSelections = () => {
   };
 
   const addWords = async (wordsToAdd: Word[]) => {
-    const newWordIds = new Set([...Array.from(wordIds)]);
-    words.forEach((word) => {
-      newWordIds.add(word._id);
+    const newWordIds = new Set(wordIds);
+
+    wordsToAdd.forEach((word) => {
+      if (newWordIds.size === 0 || !newWordIds.has(word._id)) {
+        newWordIds.add(word._id);
+      }
     });
+
     setWordIds(newWordIds);
-    setWords([...words, ...wordsToAdd]);
+    setWords([
+      ...words,
+      ...wordsToAdd.filter((word) => !wordIds.has(word._id)),
+    ]);
   };
 
   const handlePracticeTypeChange = (type: PracticeType) => {
-    setSelectedQuizTypes((current) =>
+    setSelectedPracticeTypes((current) =>
       current.includes(type)
         ? current.filter((t) => t !== type)
         : [...current, type]
@@ -132,27 +198,32 @@ const PracticeSelections = () => {
     <div className="p-4 h-full">
       <div className="flex justify-between items-center mb-4">
         <Title order={2}>Select Practice Mode</Title>
-        {isMobile ? (
-          <Button
-            variant="filled"
-            disabled={!isQuizTypeSelected || wordIds.size < 4}
-            style={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-              borderRadius: "50%", // Make it circular
-              width: "60px",
-              height: "60px",
-              padding: "0px",
-            }}
-          >
-            Start
-          </Button>
-        ) : (
-          <Button variant="filled" disabled={wordIds.size < 4}>
-            Next
-          </Button>
-        )}
+        <Link href={`practice/${selectedMode}`}>
+          {isMobile ? (
+            <Button
+              variant="filled"
+              disabled={!isPracticeTypeSelected || wordIds.size < 4}
+              style={{
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+                borderRadius: "50%", // Make it circular
+                width: "60px",
+                height: "60px",
+                padding: "0px",
+              }}
+            >
+              Start
+            </Button>
+          ) : (
+            <Button
+              variant="filled"
+              disabled={!isPracticeTypeSelected || wordIds.size < 4}
+            >
+              Next
+            </Button>
+          )}
+        </Link>
       </div>
 
       <Text color="dimmed" size="sm" className="mb-6">
@@ -175,14 +246,16 @@ const PracticeSelections = () => {
 
       <div>
         <Title order={2}>Select Quiz Types</Title>
-        {!isQuizTypeSelected && (
+        {!isPracticeTypeSelected && (
           <Text color="red" size="sm">
             Please select at least one quiz type
           </Text>
         )}
         <Group align="center" className="mb-4">
           <Chip
-            checked={selectedQuizTypes.includes(PracticeType.HanziToDefinition)}
+            checked={selectedPracticeTypes.includes(
+              PracticeType.HanziToDefinition
+            )}
             onClick={() =>
               handlePracticeTypeChange(PracticeType.HanziToDefinition)
             }
@@ -190,7 +263,7 @@ const PracticeSelections = () => {
             {"Hanzi <-> Definition"}
           </Chip>
           <Chip
-            checked={selectedQuizTypes.includes(PracticeType.HanziToPinyin)}
+            checked={selectedPracticeTypes.includes(PracticeType.HanziToPinyin)}
             onClick={() => handlePracticeTypeChange(PracticeType.HanziToPinyin)}
           >
             {"Hanzi <-> Pinyin"}
@@ -270,7 +343,7 @@ const PracticeSelections = () => {
         addWord={addWord}
         addWords={addWords}
         hasWord={(word: Word) => {
-          return wordIds.has(word._id);
+          return wordIds.size > 0 ? wordIds.has(word._id) : false;
         }}
       />
     </div>

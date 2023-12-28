@@ -28,11 +28,11 @@ const PracticeModeCard = ({
       onClick={onClick}
       className="cursor-pointer"
     >
-      <Grid justify="center">
+      <Grid className="h-full" justify="center">
         <Grid.Col span={{ base: 12, sm: 3, lg: 2 }}>
           <Center style={{ height: "100%" }}>{icon}</Center>
         </Grid.Col>
-        <Grid.Col span={{ base: 12, sm: 9, lg: 10 }}>
+        <Grid.Col className="h-full" span={{ base: 12, sm: 9, lg: 10 }}>
           <Text fw={600}>{title}</Text>
           <Text size="sm">{description}</Text>
         </Grid.Col>
