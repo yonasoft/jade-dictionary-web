@@ -198,6 +198,7 @@ const PracticeSelections = () => {
         </Group>
 
         <NativeSelect
+          className="mb-4"
           style={{ maxWidth: "400px" }} // Set max width using inline style
           data={timerOptions}
           value={timer}

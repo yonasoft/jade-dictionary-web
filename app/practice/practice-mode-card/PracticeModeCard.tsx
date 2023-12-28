@@ -33,7 +33,7 @@ const PracticeModeCard = ({
           <Center style={{ height: "100%" }}>{icon}</Center>
         </Grid.Col>
         <Grid.Col span={{ base: 12, sm: 9, lg: 10 }}>
-          <Text fw={500}>{title}</Text>
+          <Text fw={600}>{title}</Text>
           <Text size="sm">{description}</Text>
         </Grid.Col>
       </Grid>
