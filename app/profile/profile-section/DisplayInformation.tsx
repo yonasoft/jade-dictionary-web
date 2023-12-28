@@ -31,7 +31,6 @@ import {
 } from "../../lib/firebase/storage/user";
 import { User, updateProfile } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { FirestoreUserData } from "../../lib/definitions";
 
 type Props = {};
 

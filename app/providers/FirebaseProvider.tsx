@@ -15,15 +15,15 @@ import {
   ref,
 } from "firebase/storage";
 import { Database, getDatabase } from "firebase/database";
-import { FirestoreUserData, SortOption, WordList } from "../lib/definitions";
 import { getUserWordLists } from "../lib/firebase/storage/wordLists";
+import { SortOption, WordList } from "../lib/definitions";
 
 type Props = {
   children: React.ReactNode;
 };
 
 type FirebaseContextType = {
-  currentUser: User | FirestoreUserData | null;
+  currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   wordLists: WordList[];
   updateWordLists: () => void;

@@ -10,7 +10,7 @@ type Props = {};
 
 const AccountSection = (props: Props) => {
   const firebase = useFirebaseContext();
-  const [reauthCompleted, setReauthCompleted] = useState(false);
+
 
   const openDeleteConfirmationModal = () => {
     openContextModal({
