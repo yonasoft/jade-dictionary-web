@@ -43,3 +43,8 @@ export enum SortOption {
   Alphabetical = "Alphabetical",
   ReverseAlphabetical = "ReverseAlphabetical",
 }
+
+export enum PracticeType {
+  HanziToDefinition = 'Hanzi <-> Definition',
+  HanziToPinyin = 'Hanzi <-> Pinyin',
+}

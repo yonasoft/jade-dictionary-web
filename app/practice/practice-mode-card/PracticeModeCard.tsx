@@ -1,4 +1,4 @@
-import { Card, Group, Text } from "@mantine/core";
+import { Card, Center, Grid, Text } from "@mantine/core";
 import React from "react";
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
   icon: React.ReactNode;
   selected: boolean;
   onClick: () => void;
-  selectedColor?: string; // Add this line
+  selectedColor?: string;
 };
 
 const PracticeModeCard = ({
@@ -23,18 +23,20 @@ const PracticeModeCard = ({
       shadow="sm"
       p="lg"
       style={{
-        backgroundColor: selected ? selectedColor || "blue" : "white", // Use the selectedColor if provided
+        backgroundColor: selected ? selectedColor || "blue" : "white",
       }}
       onClick={onClick}
       className="cursor-pointer"
     >
-      <Group justify="center">
-        {icon}
-        <div>
+      <Grid justify="center">
+        <Grid.Col span={{ base: 12, sm: 3, lg: 2 }}>
+          <Center style={{ height: "100%" }}>{icon}</Center>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, sm: 9, lg: 10 }}>
           <Text fw={500}>{title}</Text>
           <Text size="sm">{description}</Text>
-        </div>
-      </Group>
+        </Grid.Col>
+      </Grid>
     </Card>
   );
 };
