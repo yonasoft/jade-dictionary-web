@@ -70,13 +70,15 @@ const FlipCard = ({ word, practiceTypes }: Props) => {
           className="absolute w-full h-full p-4 flex items-center justify-center text-2xl font-bold"
           style={{ backfaceVisibility: "hidden", transform: "rotateX(0)" }}
         >
-          <Text>{frontText}</Text>
+          <Text size="xl" fw={700}>
+            {frontText}
+          </Text>
         </div>
         <div
           className="absolute w-full h-full p-4 flex items-center justify-center text-xl"
           style={{ backfaceVisibility: "hidden", transform: "rotateX(180deg)" }}
         >
-          <Text>{backText}</Text>
+          <Text size="xl">{backText}</Text>
         </div>
       </div>
     </Card>

@@ -11,10 +11,13 @@ import {
   IconCircle,
   IconX,
 } from "@tabler/icons-react";
+import FlashCardResults from "./results/FlashCardResults";
 
 type Props = {};
 
 const FlashCards = (props: Props) => {
+  let finalTime = 0;
+
   const [selectedPracticeTypes, setSelectedPracticeTypes] = useState([]);
   const [words, setWords] = useState<Word[]>([]);
   const [timerValue, setTimerValue] = useState("none");
@@ -105,10 +108,8 @@ const FlashCards = (props: Props) => {
   const handleAnswer = (answer: string) => {
     setSelectedAnswer(answer);
 
-    // Add answer to the array of all answers
     setAllAnswers((prev) => [...prev, answer]);
 
-    // Increment the count for the given answer type
     if (answer === "wrong" || answer === "neutral" || answer === "correct") {
       setAnswerCounts((prev) => ({
         ...prev,
@@ -118,15 +119,25 @@ const FlashCards = (props: Props) => {
   };
 
   const handleNext = () => {
-    if (currentWordIndex < words.length - 1) {
+    //Reason for checking if currentWordIndex >= words.length - 1 instead of checking if icurrentWordIndex >= words.length:
+    //Set State is asynchronous, so the currentWordIndex will not be updated immediately.
+    //So the code relating to the timer/stopwatch will not work properly if we set state first.
+    if (currentWordIndex >= words.length - 1) {
+      finalTime = stopwatch.seconds;
+      stopwatch.pause();
+      setIsPaused(true);
+      setCurrentWordIndex((prev) => prev + 1);
+    } else {
       setCurrentWordIndex((prev) => prev + 1);
       if (timerValue !== "none") {
         setSecondsLeft(parseInt(timerValue));
       }
       setSelectedAnswer(null);
-    }
-    if (!stopwatch.isRunning) {
-      stopwatch.start();
+
+      if (currentWordIndex < words.length - 1 && !stopwatch.isRunning) {
+        stopwatch.start();
+      }
+      setIsPaused(false);
     }
   };
 
@@ -148,7 +159,14 @@ const FlashCards = (props: Props) => {
     return `${minutes}m ${remainingSeconds}s`;
   };
 
-  return (
+  return currentWordIndex >= words.length ? (
+    <FlashCardResults
+      words={words}
+      answerCounts={answerCounts}
+      allAnswers={allAnswers}
+      totalTime={stopwatch.seconds}
+    />
+  ) : (
     <div className="flex flex-col h-screen">
       <Group justify="space-between" className="p-4">
         {stopwatchEnabled && (

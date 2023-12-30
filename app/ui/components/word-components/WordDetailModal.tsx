@@ -11,12 +11,17 @@ type Props = {
 
 const WordDetailModal = ({ word, opened, onClose }: Props) => {
   return (
-    <Modal opened={opened} onClose={onClose} title={word.simplified} centered>
-      <Text size="sm">{word.pinyin}</Text>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={word && word.simplified}
+      centered
+    >
+      <Text size="sm">{word && word.pinyin}</Text>
       <Text fw={600} size="sm">
-        {word.simplified} ({word.traditional})
+        {word && word.simplified} ({word && word.traditional})
       </Text>
-      <Text size="sm">{word.definition}</Text>
+      <Text size="sm">{word && word.definition}</Text>
     </Modal>
   );
 };

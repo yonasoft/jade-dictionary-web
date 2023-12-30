@@ -20,7 +20,7 @@ import WordDetailModal from "../WordDetailModal";
 
 type Props = {
   word: Word;
-  onWordRemove: () => void;
+  onWordRemove?: () => void;
   query?: string;
 };
 
@@ -43,20 +43,22 @@ const WordRow = ({ word, onWordRemove, query }: Props) => {
         }}
         onClick={() => setModalOpened(true)}
       >
-        <Flex justify="flex-end" align="flex-start">
-          <Menu position="bottom-end" withinPortal>
-            <Menu.Target>
-              <Button variant="subtle" size="xs">
-                <IconDotsVertical />
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item leftSection={<IconTrash />} onClick={onWordRemove}>
-                Remove
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        </Flex>
+        {onWordRemove && (
+          <Flex justify="flex-end" align="flex-start">
+            <Menu position="bottom-end" withinPortal>
+              <Menu.Target>
+                <Button variant="subtle" size="xs">
+                  <IconDotsVertical />
+                </Button>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item leftSection={<IconTrash />} onClick={onWordRemove}>
+                  Remove
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Flex>
+        )}
 
         <Flex direction="column">
           <Group justify="space-between">

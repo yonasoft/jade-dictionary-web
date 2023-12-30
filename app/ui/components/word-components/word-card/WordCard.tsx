@@ -19,7 +19,7 @@ import WordDetailModal from "../WordDetailModal";
 
 type Props = {
   word: Word;
-  onWordRemove: () => void;
+  onWordRemove?: () => void;
   query?: string;
 };
 
@@ -28,6 +28,11 @@ const WordCard = ({ word, onWordRemove, query }: Props) => {
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const [modalOpened, setModalOpened] = useState(false);
+
+  const traditional =
+    word && word.traditional && word.traditional !== word.simplified
+      ? `(${word.traditional})`
+      : "";
 
   return (
     <>
@@ -48,14 +53,14 @@ const WordCard = ({ word, onWordRemove, query }: Props) => {
             size="md"
             highlight={query || ""}
           >
-            {`${word.simplified}(${word.traditional})`}
+            {word && `${word.simplified}${traditional}`}
           </Highlight>
           <Highlight
             className="line-clamp-1 text-ellipsis my-1"
             size="sm"
             highlight={query}
           >
-            {word.pinyin}
+            {word && word.pinyin}
           </Highlight>
           <Highlight
             className="line-clamp-2 text-ellipsis my-1"
@@ -63,29 +68,31 @@ const WordCard = ({ word, onWordRemove, query }: Props) => {
             highlight={query}
             fs="italic"
           >
-            {word.definition}
+            {word && word.definition}
           </Highlight>
         </div>
 
         <div className="absolute top-0 right-0 m-0">
-          <Menu position="bottom-end" withinPortal>
-            <Menu.Target>
-              <Button variant="subtle" size="xs">
-                <IconDotsVertical />
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item
-                leftSection={<IconTrash />}
-                onClick={() => {
-                  console.log("Removing word", word._id);
-                  onWordRemove();
-                }}
-              >
-                Remove
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+          {onWordRemove && (
+            <Menu position="bottom-end" withinPortal>
+              <Menu.Target>
+                <Button variant="subtle" size="xs">
+                  <IconDotsVertical />
+                </Button>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item
+                  leftSection={<IconTrash />}
+                  onClick={() => {
+                    console.log("Removing word", word._id);
+                    onWordRemove();
+                  }}
+                >
+                  Remove
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          )}
         </div>
       </Card>
       <WordDetailModal
