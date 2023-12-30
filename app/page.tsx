@@ -45,6 +45,7 @@ const Home = () => {
   const [results, setResults] = useState<Word[]>([]);
   const [searched, setSearched] = useState(false);
   const [titleColor, setTitleColor] = useState("black"); // default color
+  
 
   useEffect(() => {
     setTitleColor(colorScheme === "dark" ? "black" : "white");

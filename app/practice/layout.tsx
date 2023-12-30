@@ -3,7 +3,7 @@ import React from "react";
 
 const PracticeLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Container size="lg">
+    <Container  size="lg">
       {children}
     </Container>
   );

@@ -17,7 +17,7 @@ import { IconArrowRight, IconCards, IconListCheck } from "@tabler/icons-react";
 import PracticeModeCard from "./practice-mode-card/PracticeModeCard";
 import WordRow from "../ui/components/word-components/word-row/WordRow";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { PracticeType, Word, WordList } from "../lib/definitions";
+import { PracticeType, Word, WordList, timerOptions } from "../lib/definitions";
 import WordCard from "../ui/components/word-components/word-card/WordCard";
 import AddWordToPracticeModal from "../ui/components/modals/add-word-to-practice-modal/AddWordToPracticeModal";
 import { on } from "events";
@@ -43,6 +43,8 @@ const PracticeSelections = () => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
+  
+
   const practiceModes = [
     {
       title: "Flash Cards",
@@ -58,14 +60,6 @@ const PracticeSelections = () => {
     },
   ];
 
-  const timerOptions = [
-    { value: "none", label: "None" },
-    { value: "3", label: "3 seconds" },
-    { value: "5", label: "5 seconds" },
-    { value: "15", label: "15 seconds" },
-    { value: "30", label: "30 seconds" },
-    { value: "60", label: "1 minute" },
-  ];
 
   useEffect(() => {
     console.log("wordids", wordIds, "words", words);
@@ -148,6 +142,8 @@ const PracticeSelections = () => {
     console.log("Saving words to session storage");
     sessionStorage.setItem("practiceWords", JSON.stringify(words));
   }, [words]);
+
+  
 
   const onRemove = (word: Word) => {
     const newWordIds = new Set(wordIds);
