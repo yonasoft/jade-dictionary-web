@@ -67,7 +67,7 @@ const Navbar = () => {
         <Group h="56" justify="space-between">
           <Group justify="flex-start">
             <Link href="\" replace={true} passHref>
-              <JadeLogo h={52} />
+              <JadeLogo h={48} />
             </Link>
             <nav>
               <Group visibleFrom="md">{renderMenuItems()}</Group>

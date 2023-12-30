@@ -52,7 +52,8 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
-        <meta name="description" content={metadata.description as string} />\
+        <meta charSet="UTF-8" />
+        <meta name="description" content={metadata.description as string} />
         <title>{metadata.title as string}</title>
       </head>
       <body
