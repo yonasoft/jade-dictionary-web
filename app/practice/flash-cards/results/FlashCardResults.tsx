@@ -117,7 +117,7 @@ const FlashCardResults = ({
       </Accordion>
       <Group justify="center" className="mt-4">
         <Link href="/practice" passHref>
-          <Button>Return to Practice</Button>
+          <Button variant="filled">Return to Practice</Button>
         </Link>
       </Group>
     </div>
