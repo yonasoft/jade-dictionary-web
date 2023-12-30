@@ -57,8 +57,9 @@ const links: Array<LinkData> = [
 const Navbar = () => {
   const [drawerOpened, { open, close, toggle }] = useDisclosure(false);
 
-  const renderMenuItems = () =>
-    links.map((link) => <MenuItem link={link} key={link.label} />);
+  const renderMenuItems = () => {
+    return links.map((link) => <MenuItem link={link} key={link.label} />);
+  };
 
   return (
     <header className={classes.header}>
@@ -68,8 +69,9 @@ const Navbar = () => {
             <Link href="\" replace={true} passHref>
               <JadeLogo h={52} />
             </Link>
-
-            <Group visibleFrom="md">{renderMenuItems()}</Group>
+            <nav>
+              <Group visibleFrom="md">{renderMenuItems()}</Group>
+            </nav>
           </Group>
 
           <Group

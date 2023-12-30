@@ -9,7 +9,7 @@ const JadeLogo = ({ h = 48 }: Props) => {
   const isSmallScreen = useMediaQuery("(max-width: 639px)");
   const logoSrc = isSmallScreen ? "/image/jadeicon.png" : "/image/jadelogo.png";
 
-  return <Image src={logoSrc} h={h} w="auto" />;
+  return <Image id="logo" src={logoSrc} h={h} w="auto" />;
 };
 
 export default JadeLogo;

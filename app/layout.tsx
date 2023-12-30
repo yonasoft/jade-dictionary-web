@@ -50,10 +50,10 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
         />
         <meta
           name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
         />
+        <meta name="description" content={metadata.description as string} />\
         <title>{metadata.title as string}</title>
-        <meta name="description" content={metadata.description as string} />
       </head>
       <body
         className={`${roboto.className} antialiased`}

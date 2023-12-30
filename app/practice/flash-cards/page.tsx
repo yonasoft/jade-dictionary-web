@@ -87,6 +87,7 @@ const FlashCards = (props: Props) => {
         setSecondsLeft((prev) => prev - 1);
       }, 1000);
     } else if (secondsLeft === 0 && timerValue !== "none" && !selectedAnswer) {
+      setTimeUp(true);
       handleAnswer("wrong");
       stopwatch.pause();
     }
@@ -128,6 +129,7 @@ const FlashCards = (props: Props) => {
       setIsPaused(true);
       setCurrentWordIndex((prev) => prev + 1);
     } else {
+      setTimeUp(false);
       setCurrentWordIndex((prev) => prev + 1);
       if (timerValue !== "none") {
         setSecondsLeft(parseInt(timerValue));
@@ -179,7 +181,7 @@ const FlashCards = (props: Props) => {
         </Link>
       </Group>
       <Divider my="sm" />
-      <Group className="px-4 mb-4" justify="space-between">
+      <Group className="px-1 mb-1" justify="space-between">
         {timerValue && (
           <span>
             <strong>Timer:</strong> {formatTime(secondsLeft)}
@@ -206,14 +208,9 @@ const FlashCards = (props: Props) => {
           Next <IconArrowRight />
         </Button>
       </Group>
-      <div className="px-4 mb-4">
+      <div className="px-1 mb-1">
         <strong>Word:</strong> {currentWordIndex + 1}/{words.length}
       </div>
-      {timeUp && (
-        <div className="text-red-500 text-center">
-          Time is up for this word! Moving to the next word...
-        </div>
-      )}
       <Flex className="flex-grow" direction="column" align="center">
         {words.length > 0 && (
           <div className="w-full h-3/4 md:w-3/4 md:h-1/2">
@@ -229,7 +226,7 @@ const FlashCards = (props: Props) => {
             onClick={() => {
               handleAnswer("wrong");
             }}
-            disabled={selectedAnswer !== null}
+            disabled={isPaused}
           >
             <IconX color={isAnswerSelected("wrong") ? "white" : "red"} />
           </Button>
@@ -238,7 +235,7 @@ const FlashCards = (props: Props) => {
             onClick={() => {
               handleAnswer("neutral");
             }}
-            disabled={selectedAnswer !== null}
+            disabled={timeUp || isPaused}
           >
             <IconCircle
               color={isAnswerSelected("neutral") ? "white" : "yellow"}
@@ -249,7 +246,7 @@ const FlashCards = (props: Props) => {
             onClick={() => {
               handleAnswer("correct");
             }}
-            disabled={selectedAnswer !== null}
+            disabled={timeUp || isPaused}
           >
             <IconCheck
               color={isAnswerSelected("correct") ? "white" : "green"}
