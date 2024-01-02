@@ -9,7 +9,6 @@ import {
   SegmentedControlItem,
   Group,
 } from "@mantine/core";
-import { ScriptType } from "@/app/lib/definitions";
 import classes from "./ScriptTypeSelector.module.css";
 
 type Props = {};
