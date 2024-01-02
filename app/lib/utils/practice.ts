@@ -1,4 +1,7 @@
-import { PracticeType, Word, WordAspect } from "../definitions";
+
+import { PracticeType } from "../types/practice";
+import { Word, WordAspect } from "../types/word";
+
 
 export const randomizePracticeType = (practiceTypes: PracticeType[]) => {
     return practiceTypes[Math.floor(Math.random() * practiceTypes.length)];

@@ -1,5 +1,7 @@
 import { Firestore, arrayUnion, doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { Word, WordList } from "../definitions";
+import { Word } from "../types/word";
+import { WordList } from "../types/word-list";
+
 
 export const performAddWordToList = async (firestore:Firestore, wordList: WordList, word: Word, ) => {
 

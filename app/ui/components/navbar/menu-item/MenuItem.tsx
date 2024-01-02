@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { Menu, Center, AccordionChevron, Text } from "@mantine/core";
-import { LinkData } from "@/app/lib/definitions";
 import classes from "./MenuItem.module.css";
+import { LinkData } from "@/app/lib/types/nav";
 
 type Props = {
   link: LinkData;

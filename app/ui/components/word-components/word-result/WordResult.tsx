@@ -1,4 +1,5 @@
-import { ScriptType, Word, WordList } from "@/app/lib/definitions";
+import { Word } from "@/app/lib/types/word";
+import { WordList } from "@/app/lib/types/word-list";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import {
   Accordion,

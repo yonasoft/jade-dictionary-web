@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
-import { Word, WordList } from "@/app/lib/definitions";
 import {
   editWordList,
   getWordListByDocId,
@@ -23,6 +22,8 @@ import { IconSearch, IconX } from "@tabler/icons-react";
 import { doc } from "firebase/firestore";
 import { notifications } from "@mantine/notifications";
 import classes from "./page.module.css";
+import { Word } from "@/app/lib/types/word";
+import { WordList } from "@/app/lib/types/word-list";
 
 type Props = {
   params: { id: string };

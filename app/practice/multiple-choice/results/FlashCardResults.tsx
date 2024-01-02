@@ -1,3 +1,4 @@
+import { CategorizedWords, CategoryToIcon } from "@/app/lib/types/practice";
 import { Word } from "@/app/lib/types/word";
 import WordCard from "@/app/ui/components/word-components/word-card/WordCard";
 import WordRow from "@/app/ui/components/word-components/word-row/WordRow";
@@ -14,15 +15,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { IconX, IconCircle, IconCheck } from "@tabler/icons-react";
 import Link from "next/link";
 
-type CategorizedWords = {
-  wrong: Word[];
-  neutral: Word[];
-  correct: Word[];
-};
 
-type CategoryToIcon = {
-  [key in keyof CategorizedWords]: React.ReactNode;
-};
 
 type Props = {
   words: Word[];
@@ -31,12 +24,13 @@ type Props = {
   totalTime: number;
 };
 
-const FlashCardResults = ({
+const MultipleChoiceResults = ({
   words,
   answerCounts,
   allAnswers,
   totalTime,
 }: Props) => {
+  
   const categorizedWords: CategorizedWords = {
     wrong: [],
     neutral: [],
@@ -54,7 +48,7 @@ const FlashCardResults = ({
       categorizedWords[answer as keyof CategorizedWords].push(words[index]);
     }
   });
-
+  
   const averageTimePerWord = totalTime / words.length;
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -125,4 +119,4 @@ const FlashCardResults = ({
   );
 };
 
-export default FlashCardResults;
+export default MultipleChoiceResults;

@@ -6,9 +6,10 @@ import { IconSearch } from "@tabler/icons-react";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 
 import { handleKeyPress } from "@/app/lib/utils/events";
-import { Word, WordList } from "@/app/lib/definitions";
 import WordListRow from "../../../word-list-components/word-list-row/WordListRow";
 import { getWordsByIds } from "@/app/lib/firebase/storage/words";
+import { Word } from "@/app/lib/types/word";
+import { WordList } from "@/app/lib/types/word-list";
 
 type Props = {
   addWords: (Words: Word[]) => Promise<void>;

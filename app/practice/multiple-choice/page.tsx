@@ -1,5 +1,4 @@
 "use client";
-import { Word } from "@/app/lib/definitions";
 import { Button, Divider, Flex, Group } from "@mantine/core";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -12,7 +11,11 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import MultipleChoiceCard from "./multiple-choice-card/MultipleChoiceCard";
-import { handleMultipleChoiceAnswer, shuffleArray } from "@/app/lib/utils/practice";
+import {
+  handleMultipleChoiceAnswer,
+  shuffleArray,
+} from "@/app/lib/utils/practice";
+import { Word } from "@/app/lib/types/word";
 
 type Props = {};
 
@@ -65,7 +68,6 @@ const MultipleChoicePage = (props: Props) => {
 
     if (stopwatchEnabled !== savedStopwatchEnabled)
       setStopwatchEnabled(savedStopwatchEnabled);
-
   }, []);
 
   useEffect(() => {
@@ -166,7 +168,7 @@ const MultipleChoicePage = (props: Props) => {
             onClick={togglePause}
             variant="filled"
             color="gray"
-            size="md"
+            size="sm"
           >
             {isPaused ? "Unpause" : "Pause"}
           </Button>
@@ -174,7 +176,7 @@ const MultipleChoicePage = (props: Props) => {
         <Button
           onClick={handleNext}
           variant="filled"
-          size="md"
+          size="sm"
           className="my-4"
           disabled={!selectedAnswer && secondsLeft > 0}
         >

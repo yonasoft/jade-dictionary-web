@@ -1,0 +1,1 @@
+export type LinkData = { link: string, label: string, sublinks?: LinkData[], icon?: React.ReactNode };

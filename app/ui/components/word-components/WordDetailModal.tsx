@@ -1,7 +1,7 @@
 // WordDetailModal.tsx
 import React from "react";
 import { Modal, Text } from "@mantine/core";
-import { Word } from "@/app/lib/definitions";
+import { Word } from "@/app/lib/types/word";
 
 type Props = {
   word: Word;

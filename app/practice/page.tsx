@@ -17,12 +17,14 @@ import { IconArrowRight, IconCards, IconListCheck } from "@tabler/icons-react";
 import PracticeModeCard from "./practice-mode-card/PracticeModeCard";
 import WordRow from "../ui/components/word-components/word-row/WordRow";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { PracticeType, Word, WordList, timerOptions } from "../lib/definitions";
+
 import WordCard from "../ui/components/word-components/word-card/WordCard";
 import AddWordToPracticeModal from "../ui/components/modals/add-word-to-practice-modal/AddWordToPracticeModal";
 import { on } from "events";
 import router from "next/router";
 import Link from "next/link";
+import { PracticeType, timerOptions } from "../lib/types/practice";
+import { Word } from "../lib/types/word";
 
 const PracticeSelections = () => {
   const [selectedMode, setSelectedMode] = useState("flash-cards");
@@ -143,7 +145,6 @@ const PracticeSelections = () => {
     sessionStorage.setItem("practiceWords", JSON.stringify(words));
   }, [words]);
 
-  
 
   const onRemove = (word: Word) => {
     const newWordIds = new Set(wordIds);

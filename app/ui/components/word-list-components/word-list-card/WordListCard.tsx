@@ -11,7 +11,6 @@ import {
   Highlight,
   Flex,
 } from "@mantine/core";
-import { Word, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { getWordsByIds } from "@/app/lib/firebase/storage/words";
 import {
@@ -24,6 +23,7 @@ import { deleteWordList } from "@/app/lib/firebase/storage/wordLists";
 import { doc, query } from "firebase/firestore";
 import classes from "./WordListCard.module.css";
 import Link from "next/link";
+import { WordList } from "@/app/lib/types/word-list";
 
 type Props = {
   wordList: WordList;

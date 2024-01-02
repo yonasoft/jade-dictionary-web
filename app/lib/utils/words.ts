@@ -1,6 +1,7 @@
 import { Firestore, arrayUnion, doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { WordList, Word, WordAspect } from "../definitions";
+
 import { searchWords } from "../firebase/storage/words";
+import { Word, WordAspect } from "../types/word";
 
 export const textifyHanzi = (word: Word) => {
     return `${word.simplified}${

@@ -1,7 +1,7 @@
 import { Firestore, collection, query, where, getDocs, Query, DocumentData, DocumentSnapshot, startAfter, limit, addDoc, getDoc, doc } from "firebase/firestore";
 import { Console } from "console";
 import { Auth } from "@firebase/auth";
-import { Word, WordAspect } from "../../definitions";
+import { Word, WordAspect } from "../../types/word";
 
 const PAGE_SIZE = 30;
 

@@ -16,7 +16,8 @@ import {
 } from "firebase/storage";
 import { Database, getDatabase } from "firebase/database";
 import { getUserWordLists } from "../lib/firebase/storage/wordLists";
-import { SortOption, WordList } from "../lib/definitions";
+import { WordList } from "../lib/types/word-list";
+import { SortOption } from "../lib/types/dictionary";
 
 type Props = {
   children: React.ReactNode;

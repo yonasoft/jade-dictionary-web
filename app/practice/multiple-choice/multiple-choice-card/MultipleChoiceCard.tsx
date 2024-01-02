@@ -1,5 +1,6 @@
 "use client";
-import { PracticeType, Word, WordAspect } from "@/app/lib/definitions";
+import { PracticeType } from "@/app/lib/types/practice";
+import { Word, WordAspect } from "@/app/lib/types/word";
 import {
   generateMultipleChoice,
   randomizePracticeType,

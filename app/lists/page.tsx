@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, useCallback, memo } from "react";
-import { SortOption, WordList } from "@/app/lib/definitions";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import WordListCard from "../ui/components/word-list-components/word-list-card/WordListCard";
 import AddNewListCard from "./add-new-list-card/AddNewListCard";
@@ -17,6 +16,8 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
 import { getUserWordLists } from "../lib/firebase/storage/wordLists";
+import { WordList } from "../lib/types/word-list";
+import { SortOption } from "../lib/types/dictionary";
 
 const applyFilter = (wordLists: WordList[], query: string): WordList[] => {
   const queryLower = query.toLowerCase();

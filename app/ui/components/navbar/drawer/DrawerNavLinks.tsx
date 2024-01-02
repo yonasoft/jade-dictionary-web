@@ -1,10 +1,9 @@
 import React from "react";
 import Link from "next/link";
-
-import { LinkData } from "@/app/lib/definitions";
 import { ActionIcon, NavLink } from "@mantine/core";
 
 import classes from "./NavDrawer.module.css";
+import { LinkData } from "@/app/lib/types/nav";
 
 type Props = {
   links: Array<LinkData>;

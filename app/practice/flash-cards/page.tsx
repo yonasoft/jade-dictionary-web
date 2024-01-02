@@ -4,7 +4,6 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
 import FlipCard from "./flip-card/FlipCard";
-import { Word } from "@/app/lib/definitions";
 import {
   IconArrowRight,
   IconCheck,
@@ -13,6 +12,7 @@ import {
 } from "@tabler/icons-react";
 import FlashCardResults from "./results/FlashCardResults";
 import { shuffleArray } from "@/app/lib/utils/practice";
+import { Word } from "@/app/lib/types/word";
 
 type Props = {};
 
@@ -186,7 +186,7 @@ const FlashCardsPage = (props: Props) => {
             onClick={togglePause}
             variant="filled"
             color="gray"
-            size="md"
+            size="sm"
           >
             {isPaused ? "Unpause" : "Pause"}
           </Button>
@@ -194,7 +194,7 @@ const FlashCardsPage = (props: Props) => {
         <Button
           onClick={handleNext}
           variant="filled"
-          size="md"
+          size="sm"
           className="my-4"
           disabled={!selectedAnswer && secondsLeft > 0}
         >

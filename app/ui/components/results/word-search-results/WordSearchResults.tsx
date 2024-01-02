@@ -1,9 +1,10 @@
 import React, { RefAttributes, Suspense, lazy } from "react";
 import { Grid, Center, Text, GridProps, StyleProp } from "@mantine/core";
 import Loading from "../loading/Loading";
-import { Word, WordList } from "@/app/lib/definitions";
 import { ColSpan } from "@mantine/core/lib/components/Grid/GridCol/GridCol";
 import { Firestore } from "firebase/firestore";
+import { Word } from "@/app/lib/types/word";
+import { WordList } from "@/app/lib/types/word-list";
 
 const WordResult = lazy(
   () => import("@/app/ui/components/word-components/word-result/WordResult")

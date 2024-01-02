@@ -1,9 +1,9 @@
-import { Word, WordList } from "@/app/lib/definitions";
 import { Modal, Tabs, rem } from "@mantine/core";
 import { IconList, IconSearch } from "@tabler/icons-react";
 import React from "react";
 import AddFromSearchTab from "./tabs/AddFromSearchTab";
 import AddFromListsTab from "./tabs/AddFromListsTab";
+import { Word } from "@/app/lib/types/word";
 
 type Props = {
   opened: boolean;

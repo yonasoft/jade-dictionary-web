@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Card, Text } from "@mantine/core";
-import { PracticeType, Word } from "@/app/lib/definitions";
+import { Word } from "@/app/lib/types/word";
+import { PracticeType } from "@/app/lib/types/practice";
 
 type Props = {
   word: Word;

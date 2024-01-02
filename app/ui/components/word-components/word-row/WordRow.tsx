@@ -1,7 +1,6 @@
 // WordRow.tsx
 "use client";
 import React, { useState } from "react";
-import { Word, WordList } from "@/app/lib/definitions";
 import {
   Button,
   Group,
@@ -17,6 +16,7 @@ import { IconDotsVertical, IconTrash } from "@tabler/icons-react";
 import { removeWordFromList } from "@/app/lib/firebase/storage/wordLists";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordDetailModal from "../WordDetailModal";
+import { Word } from "@/app/lib/types/word";
 
 type Props = {
   word: Word;

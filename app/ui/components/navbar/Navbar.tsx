@@ -11,10 +11,7 @@ import {
   IconHome,
   IconList,
 } from "@tabler/icons-react";
-import { LinkData } from "@/app/lib/definitions";
-
 import classes from "./Navbar.module.css";
-
 import MenuItem from "./menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
 import UserMenu from "../auth-items/UserMenu";
@@ -27,6 +24,7 @@ import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import AuthItems from "../auth-items/AuthItems";
 import { spotlight } from "@mantine/spotlight";
 import NavSearchBar from "./search-bar/NavSearchBar";
+import { LinkData } from "@/app/lib/types/nav";
 
 const links: Array<LinkData> = [
   {
