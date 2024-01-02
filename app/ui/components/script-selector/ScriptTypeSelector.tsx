@@ -10,6 +10,7 @@ import {
   Group,
 } from "@mantine/core";
 import classes from "./ScriptTypeSelector.module.css";
+import { ScriptType } from "@/app/lib/types/word";
 
 type Props = {};
 
