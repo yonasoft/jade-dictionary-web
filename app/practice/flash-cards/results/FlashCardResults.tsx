@@ -68,19 +68,6 @@ const FlashCardResults = ({
       <Text className="text-center mb-4">
         Average Time per Word: {averageTimePerWord.toFixed(2)} seconds
       </Text>
-
-      <Group justify="center" className="mb-4">
-        <Text color="red">
-          Wrong: {answerCounts.wrong} <IconX />
-        </Text>
-        <Text color="yellow">
-          Neutral: {answerCounts.neutral} <IconCircle />
-        </Text>
-        <Text color="green">
-          Correct: {answerCounts.correct} <IconCheck />
-        </Text>
-      </Group>
-
       <Accordion>
         {Object.entries(categorizedWords).map(([key, wordsList]) => {
           const icon = key as keyof CategoryToIcon;

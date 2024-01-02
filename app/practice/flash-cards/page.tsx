@@ -147,7 +147,6 @@ const FlashCardsPage = (props: Props) => {
     return selectedAnswer === answer;
   };
 
-
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -174,7 +173,7 @@ const FlashCardsPage = (props: Props) => {
         </Link>
       </Group>
       <Divider my="sm" />
-      <Group className="px-1 mb-1" justify="space-between">
+      <Group className="px-1 mb-1" justify="space-between" wrap="nowrap">
         {timerValue && (
           <span>
             <strong>Timer:</strong> {formatTime(secondsLeft)}
