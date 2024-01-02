@@ -84,12 +84,12 @@ const FAQ = (props: Props) => {
     {
       question: "How do I create a list?",
       answer:
-        "Go to the lists page and press 'Add New List' card. Add a title and an optional description and press 'Create'. Note that you must be logged in to create word lists",
+        "Go to the lists page and press the 'Add New List' card. Add a title and an optional description and press 'Create'. Note that you must be logged in to create word lists.",
     },
     {
       question: "How do I add words to a list?",
       answer:
-        "Search for words in the search bar or home page, and press the '+' button to add it to a list of your choice. You must be logged in and ahve actice word lists to add words to a list.",
+        "Search for words in the search bar or home page, and press the '+' button to add them to a list of your choice. You must be logged in and have active word lists to add words to a list.",
     },
     {
       question: "How do I remove a word list?",
@@ -103,7 +103,37 @@ const FAQ = (props: Props) => {
     },
   ];
 
-  const practice = [{ question: "How do I practice?", answer: "" }];
+  const practice = [
+    {
+      question: "What are the quiz modes?",
+      answer:
+        "Currently, there are only flashcards and multiple-choice. More quiz modes will be added in the future.",
+    },
+    {
+      question: "What are the quiz types?",
+      answer:
+        "Hanzi <-> Definition will test the connection between the Hanzi and the definition. Hanzi <-> Pinyin will test between the Hanzi and the Pinyin.",
+    },
+    {
+      question: "Can you add from lists?",
+      answer:
+        "Yes, you can add from your lists if you have any in your account. You must be logged in to an account with lists to add from lists.",
+    },
+    {
+      question: "Can I add duplicate words?",
+      answer: "No, you can only have one of each word.",
+    },
+    {
+      question: "Are there stats for my practice sections?",
+      answer:
+        "There are basic stats for practice sessions. However none are saved permanently",
+    },
+    {
+      question: "Is there a spaced repetition system?",
+      answer:
+        "Currently, there is no spaced repetition system. This may be added in the future.",
+    },
+  ];
 
   return (
     <div aria-labelledby="FAQ">
