@@ -1,7 +1,7 @@
 import { FieldValue } from "firebase/firestore";
 
-export enum QueryType {
-	English = 'English',
+export enum WordAspect {
+	Definition = 'Definition',
 	Hanzi = 'Hanzi',
 	Pinyin = 'Pinyin',
 }

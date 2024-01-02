@@ -20,7 +20,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="mt-10">
+    <div className="mt-10" aria-labelledby="contact-form">
       <Title order={2}>Contact Us</Title>
       <Text size="md">Questions, comments, need help? Contact Us!</Text>
       <form

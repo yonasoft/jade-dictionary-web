@@ -106,35 +106,40 @@ const FAQ = (props: Props) => {
   const practice = [{ question: "How do I practice?", answer: "" }];
 
   return (
-    <>
+    <div aria-labelledby="FAQ">
       <Center>
         <Title order={2}>FAQ</Title>
       </Center>
       <Divider my="lg" />
-      <Center>
-        <Title order={2}>Account</Title>
-      </Center>
-      {buildAccordion(account)}
+      <section aria-labelledby="account-FAQ">
+        <Center>
+          <Title order={2}>Account</Title>
+        </Center>
+        {buildAccordion(account)}
+      </section>
       <Space my="sm" />
-      <Center>
-        <Title order={2}>Dictionary</Title>
-      </Center>
-
-      {buildAccordion(dictionary)}
+      <section aria-labelledby="dictionary-FAQ">
+        <Center>
+          <Title order={2}>Dictionary</Title>
+        </Center>
+        {buildAccordion(dictionary)}
+      </section>
       <Space my="sm" />
+      <section aria-labelledby="lists-FAQ">
+        <Center>
+          <Title order={2}>Lists</Title>
+        </Center>
 
-      <Center>
-        <Title order={2}>Lists</Title>
-      </Center>
-
-      {buildAccordion(lists)}
+        {buildAccordion(lists)}
+      </section>
       <Space my="sm" />
-
-      <Center>
-        <Title order={2}>Practice</Title>
-      </Center>
-      {buildAccordion(practice)}
-    </>
+      <section aria-labelledby="practice-FAQ">
+        <Center>
+          <Title order={2}>Practice</Title>
+        </Center>
+        {buildAccordion(practice)}
+      </section>
+    </div>
   );
 };
 

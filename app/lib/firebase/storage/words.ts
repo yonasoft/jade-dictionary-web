@@ -1,7 +1,7 @@
 import { Firestore, collection, query, where, getDocs, Query, DocumentData, DocumentSnapshot, startAfter, limit, addDoc, getDoc, doc } from "firebase/firestore";
-import { QueryType, Word, WordList } from "../../definitions";
 import { Console } from "console";
 import { Auth } from "@firebase/auth";
+import { Word, WordAspect } from "../../definitions";
 
 const PAGE_SIZE = 30;
 
@@ -21,13 +21,13 @@ export const searchWords = async (db: Firestore, input: string): Promise<Word[]>
   let searchResults: Word[] = [];
 
   switch (inputType) {
-    case QueryType.Hanzi:
+    case WordAspect.Hanzi:
       searchResults = await searchHanzi(db, input);
       break;
-    case QueryType.Pinyin:
+    case WordAspect.Pinyin:
       searchResults = await searchPinyin(db, input);
       break;
-    case QueryType.English:
+    case WordAspect.Definition:
       searchResults = await searchEnglish(db, input);
       break;
   }
@@ -123,25 +123,25 @@ const normalizePinyinInput = (input: string): string => {
   return input.trim();
 };
 
-const determineInputType = (input: string): QueryType => {
+const determineInputType = (input: string): WordAspect => {
   const hanziPattern = /[\u3400-\u9FBF]/;
   const pinyinPatternWithNumbers = /[a-zA-ZüÜ]+[1-5]/; 
   const pinyinPatternWithTones = /(\b[a-zA-ZüÜ]*(?:ā|á|ǎ|à|ē|é|ě|è|ī|í|ǐ|ì|ō|ó|ǒ|ò|ū|ú|ǔ|ù|ǖ|ǘ|ǚ|ǜ|ü)\b)/;
 
   if (hanziPattern.test(input)) {
-    return QueryType.Hanzi;
+    return WordAspect.Hanzi;
   }
   if (pinyinPatternWithNumbers.test(input) || pinyinPatternWithTones.test(input)) {
-    return QueryType.Pinyin;
+    return WordAspect.Pinyin;
   }
-  return QueryType.English; // Default to English
+  return WordAspect.Definition; // Default to English
 };
 
-const calculateMatchScore = (word: Word, input: string, queryType: QueryType): number => {
+const calculateMatchScore = (word: Word, input: string, queryType: WordAspect): number => {
   switch (queryType) {
-    case QueryType.Hanzi:
+    case WordAspect.Hanzi:
       return calculateHanziMatchScore(word, input);
-    case QueryType.English:
+    case WordAspect.Definition:
       return calculateEnglishMatchScore(word, input);
     default:
       return 0;
@@ -191,7 +191,7 @@ const calculateEnglishMatchScore = (word: Word, query: string): number => {
   return score;
 };
 
-const sortWordsByClosestMatch = (words: Word[], input: string, inputType: QueryType): Word[] => {
+const sortWordsByClosestMatch = (words: Word[], input: string, inputType: WordAspect): Word[] => {
   return words.sort((a, b) => {
     const scoreA = calculateMatchScore(a, input, inputType);
     const scoreB = calculateMatchScore(b, input, inputType);
@@ -203,14 +203,14 @@ const sortWordsByClosestMatch = (words: Word[], input: string, inputType: QueryT
   });
 };
 
-const filterAndSortWords = (words: Word[], input: string, inputType: QueryType): Word[] => {
+const filterAndSortWords = (words: Word[], input: string, inputType: WordAspect): Word[] => {
   let filteredWords = words.filter(word => {
     switch(inputType) {
-      case QueryType.English:
+      case WordAspect.Definition:
         return word.definition.toLowerCase().includes(input.toLowerCase());
-      case QueryType.Hanzi:
+      case WordAspect.Hanzi:
         return word.simplified.includes(input) || word.traditional.includes(input);
-      case QueryType.Pinyin:
+      case WordAspect.Pinyin:
         // Assuming Pinyin search is already handled; no extra filtering needed
         return true;
       default:
@@ -218,7 +218,7 @@ const filterAndSortWords = (words: Word[], input: string, inputType: QueryType):
     }
   });
 
-  if (inputType === QueryType.Hanzi || inputType === QueryType.English) {
+  if (inputType === WordAspect.Hanzi || inputType === WordAspect.Definition) {
     return sortWordsByClosestMatch(filteredWords, input, inputType);
   }
 

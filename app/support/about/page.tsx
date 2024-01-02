@@ -21,89 +21,113 @@ const About = (props: Props) => {
         <Title>About</Title>
       </Center>
       <Divider my="lg" />
-      <Flex
-        justify="center"
-        align="center"
-        direction="column"
-        wrap="wrap"
-        gap="md"
-      >
-        <Title order={2}>Story</Title>
 
-        <Text>
-          &emsp;&emsp;Hello, I am Yonasoft. My passion lies in merging Software
-          Engineering with my varied interests and hobbies. While learning
-          Mandarin to connect with my family in China for future visits, I was
-          inspired to develop a Chinese-English dictionary application. This app
-          features a comprehensive dictionary, lists for word storage and
-          organization, and practice modules to aid memorization. It's crucial
-          to use these words in real-life contexts as well to retain them and
-          achieve fluency in speaking. My goal was to create an easy-to-use,
-          user-friendly interface. I hope you find it helpful and enjoyable!
-        </Text>
+      <section aria-labelledby="article">
+        <Flex
+          justify="center"
+          align="center"
+          direction="column"
+          wrap="wrap"
+          gap="md"
+        >
+          <Title order={2}>Story</Title>
 
-        <Space h="md" />
+          <Text>
+            &emsp;&emsp;Hello, I am Yonasoft. My passion lies in merging
+            Software Engineering with my varied interests and hobbies. While
+            learning Mandarin to connect with my family in China for future
+            visits, I was inspired to develop a Chinese-English dictionary
+            application. This app features a comprehensive dictionary, lists for
+            word storage and organization, and practice modules to aid
+            memorization. It's crucial to use these words in real-life contexts
+            as well to retain them and achieve fluency in speaking. My goal was
+            to create an easy-to-use, user-friendly interface. I hope you find
+            it helpful and enjoyable!
+          </Text>
+        </Flex>
+      </section>
 
-        <Title order={2}>Technologies & Resources Used</Title>
-        <Text>
-          <Anchor
-            href="https://www.mdbg.net/chinese/dictionary?page=cedict"
-            target="_blank"
-          >
-            CC-CEDICT
-          </Anchor>
-          &nbsp;- For Chinese word data and parser to convert the file.
-        </Text>
-        <Text>
-          <Anchor href="https://firebase.google.com/" target="_blank">
-            Firebase
-          </Anchor>
-          &nbsp;- For authentication and storage.
-        </Text>
-        <Text>
-          <Anchor href="https://nextjs.org/" target="_blank">
-            NextJS
-          </Anchor>
-          /
-          <Anchor href="https://react.dev/" target="_blank">
-            ReactJS
-          </Anchor>
-          &nbsp;
-          <Anchor href="https://tailwindcss.com/" target="_blank">
-            Tailwind CSS
-          </Anchor>
-          &nbsp;
-          <Anchor href="https://mantine.dev/" target="_blank">
-            Mantine
-          </Anchor>
-          &nbsp;- for frontend UI.
-        </Text>
-        <Text>
-          <Anchor href="https://www.emailjs.com/" target="_blank">
-            EmailJS
-          </Anchor>
-          &nbsp;- for email contact form.
-        </Text>
+      <Space h="md" />
 
-        <Space h="md" />
+      <section aria-labelledby="technologies-used">
+        <Flex
+          justify="center"
+          align="center"
+          direction="column"
+          wrap="wrap"
+          gap="md"
+        >
+          <Title order={2}>Technologies & Resources Used</Title>
+          <Text>
+            <Anchor
+              href="https://www.mdbg.net/chinese/dictionary?page=cedict"
+              target="_blank"
+            >
+              CC-CEDICT
+            </Anchor>
+            &nbsp;- For Chinese word data and parser to convert the file.
+          </Text>
+          <Text>
+            <Anchor href="https://firebase.google.com/" target="_blank">
+              Firebase
+            </Anchor>
+            &nbsp;- For authentication and storage.
+          </Text>
+          <Text>
+            <Anchor href="https://nextjs.org/" target="_blank">
+              NextJS
+            </Anchor>
+            /
+            <Anchor href="https://react.dev/" target="_blank">
+              ReactJS
+            </Anchor>
+            &nbsp;
+            <Anchor href="https://tailwindcss.com/" target="_blank">
+              Tailwind CSS
+            </Anchor>
+            &nbsp;
+            <Anchor href="https://mantine.dev/" target="_blank">
+              Mantine
+            </Anchor>
+            &nbsp;- for frontend UI.
+          </Text>
+          <Text>
+            <Anchor href="https://www.emailjs.com/" target="_blank">
+              EmailJS
+            </Anchor>
+            &nbsp;- for email contact form.
+          </Text>
+        </Flex>
+      </section>
 
-        <Title order={2}>Other Projects</Title>
-        <Text>
-          <Anchor href="https://www.anitier.com/" target="_blank">
-            AniTier
-          </Anchor>
-          &nbsp; - Anime tier list maker.
-        </Text>
-        <Text>
-          <Anchor
-            href="https://play.google.com/store/apps/details?id=com.yonasoft.handballcourtmanager"
-            target="_blank"
-          >
-            Handball Court Manager
-          </Anchor>
-          &nbsp; - Handball court score and queue tracker.
-        </Text>
-      </Flex>
+      <Space h="md" />
+
+      <section aria-labelledby="other-projects">
+        <Flex
+          justify="center"
+          align="center"
+          direction="column"
+          wrap="wrap"
+          gap="md"
+        >
+          <Title order={2}>Other Projects</Title>
+          <Text>
+            <Anchor href="https://www.anitier.com/" target="_blank">
+              AniTier
+            </Anchor>
+            &nbsp; - Anime tier list maker.
+          </Text>
+          <Text>
+            <Anchor
+              href="https://play.google.com/store/apps/details?id=com.yonasoft.handballcourtmanager"
+              target="_blank"
+            >
+              Handball Court Manager
+            </Anchor>
+            &nbsp; - Handball court score and queue tracker.
+          </Text>
+        </Flex>
+      </section>
     </>
   );
 };

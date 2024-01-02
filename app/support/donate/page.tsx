@@ -3,7 +3,7 @@ import { Text, Button, Container, Anchor, Title, Center } from "@mantine/core";
 
 const Donate = () => {
   return (
-    <>
+    <div aria-labelledby="donation-page">
       <Center>
         <Title>谢谢！</Title>
       </Center>
@@ -31,7 +31,7 @@ const Donate = () => {
           Ko-Fi
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

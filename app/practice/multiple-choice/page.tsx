@@ -1,22 +1,22 @@
 "use client";
-import { Divider, Button, Card, Group, Center, Flex } from "@mantine/core";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import { useStopwatch } from "react-timer-hook";
-import FlipCard from "./flip-card/FlipCard";
 import { Word } from "@/app/lib/definitions";
+import { Button, Divider, Flex, Group } from "@mantine/core";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { useStopwatch } from "react-timer-hook";
+import FlipCard from "../flash-cards/flip-card/FlipCard";
 import {
   IconArrowRight,
   IconCheck,
   IconCircle,
   IconX,
 } from "@tabler/icons-react";
-import FlashCardResults from "./results/FlashCardResults";
-import { shuffleArray } from "@/app/lib/utils/practice";
+import MultipleChoiceCard from "./multiple-choice-card/MultipleChoiceCard";
+import { handleMultipleChoiceAnswer, shuffleArray } from "@/app/lib/utils/practice";
 
 type Props = {};
 
-const FlashCardsPage = (props: Props) => {
+const MultipleChoicePage = (props: Props) => {
   let finalTime = 0;
 
   const [selectedPracticeTypes, setSelectedPracticeTypes] = useState([]);
@@ -24,17 +24,17 @@ const FlashCardsPage = (props: Props) => {
   const [timerValue, setTimerValue] = useState("none");
   const [stopwatchEnabled, setStopwatchEnabled] = useState(false);
   const stopwatch = useStopwatch({ autoStart: true });
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<Word | null>(null);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [timeUp, setTimeUp] = useState(false);
   const [answerCounts, setAnswerCounts] = useState({
     wrong: 0,
-    neutral: 0,
     correct: 0,
   });
-  const [allAnswers, setAllAnswers] = useState<string[]>([]);
+  const [allAnswers, setAllAnswers] = useState<boolean[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+  const [selectedWord, setSelectedWord] = useState<Word | null>(null);
 
   useEffect(() => {
     const savedPracticeMode = JSON.parse(
@@ -65,6 +65,7 @@ const FlashCardsPage = (props: Props) => {
 
     if (stopwatchEnabled !== savedStopwatchEnabled)
       setStopwatchEnabled(savedStopwatchEnabled);
+
   }, []);
 
   useEffect(() => {
@@ -88,7 +89,7 @@ const FlashCardsPage = (props: Props) => {
       }, 1000);
     } else if (secondsLeft === 0 && timerValue !== "none" && !selectedAnswer) {
       setTimeUp(true);
-      handleAnswer("wrong");
+      //   handleAnswer(false);
       stopwatch.pause();
     }
 
@@ -97,32 +98,14 @@ const FlashCardsPage = (props: Props) => {
     };
   }, [secondsLeft, isPaused]);
 
-  const togglePause = () => {
-    setIsPaused(!isPaused);
-    if (isPaused) {
-      stopwatch.start();
-    } else {
-      stopwatch.pause();
-    }
-  };
-
-  const handleAnswer = (answer: string) => {
-    setSelectedAnswer(answer);
-
-    setAllAnswers((prev) => [...prev, answer]);
-
-    if (answer === "wrong" || answer === "neutral" || answer === "correct") {
-      setAnswerCounts((prev) => ({
-        ...prev,
-        [answer]: prev[answer] + 1,
-      }));
-    }
-  };
-
   const handleNext = () => {
-    //Reason for checking if currentWordIndex >= words.length - 1 instead of checking if icurrentWordIndex >= words.length:
-    //Set State is asynchronous, so the currentWordIndex will not be updated immediately.
-    //So the code relating to the timer/stopwatch will not work properly if we set state first.
+    handleMultipleChoiceAnswer(
+      selectedWord,
+      words[currentWordIndex],
+      setAnswerCounts,
+      setAllAnswers
+    );
+
     if (currentWordIndex >= words.length - 1) {
       finalTime = stopwatch.seconds;
       stopwatch.pause();
@@ -143,10 +126,14 @@ const FlashCardsPage = (props: Props) => {
     }
   };
 
-  const isAnswerSelected = (answer: string) => {
-    return selectedAnswer === answer;
+  const togglePause = () => {
+    setIsPaused(!isPaused);
+    if (isPaused) {
+      stopwatch.start();
+    } else {
+      stopwatch.pause();
+    }
   };
-
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -154,14 +141,7 @@ const FlashCardsPage = (props: Props) => {
     return `${minutes}m ${remainingSeconds}s`;
   };
 
-  return currentWordIndex >= words.length ? (
-    <FlashCardResults
-      words={words}
-      answerCounts={answerCounts}
-      allAnswers={allAnswers}
-      totalTime={stopwatch.seconds}
-    />
-  ) : (
+  return (
     <div className="flex flex-col h-screen">
       <Group justify="space-between" className="p-4">
         {stopwatchEnabled && (
@@ -206,49 +186,17 @@ const FlashCardsPage = (props: Props) => {
       </div>
       <Flex className="flex-grow" direction="column" align="center">
         {words.length > 0 && (
-          <div className="w-full h-3/4 md:w-3/4 md:h-1/2">
-            <FlipCard
-              word={words[currentWordIndex]}
-              practiceTypes={selectedPracticeTypes}
-            />
-          </div>
+          <MultipleChoiceCard
+            words={words}
+            currentWord={words[currentWordIndex]}
+            practiceTypes={selectedPracticeTypes}
+            selectedWord={selectedAnswer}
+            setSelectedWord={setSelectedAnswer}
+          />
         )}
-        <Group align="center" mt="md">
-          <Button
-            variant={isAnswerSelected("wrong") ? "filled" : "default"}
-            onClick={() => {
-              handleAnswer("wrong");
-            }}
-            disabled={isPaused}
-          >
-            <IconX color={isAnswerSelected("wrong") ? "white" : "red"} />
-          </Button>
-          <Button
-            variant={isAnswerSelected("neutral") ? "filled" : "default"}
-            onClick={() => {
-              handleAnswer("neutral");
-            }}
-            disabled={timeUp || isPaused}
-          >
-            <IconCircle
-              color={isAnswerSelected("neutral") ? "white" : "yellow"}
-            />
-          </Button>
-          <Button
-            variant={isAnswerSelected("correct") ? "filled" : "default"}
-            onClick={() => {
-              handleAnswer("correct");
-            }}
-            disabled={timeUp || isPaused}
-          >
-            <IconCheck
-              color={isAnswerSelected("correct") ? "white" : "green"}
-            />
-          </Button>
-        </Group>
       </Flex>
     </div>
   );
 };
 
-export default FlashCardsPage;
+export default MultipleChoicePage;

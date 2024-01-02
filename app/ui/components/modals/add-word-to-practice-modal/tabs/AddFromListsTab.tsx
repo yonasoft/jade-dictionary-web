@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import WordSearchResults from "../../../results/word-search-results/WordSearchResults";
 import { IconSearch } from "@tabler/icons-react";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import { performSearch } from "@/app/lib/utils/words";
+
 import { handleKeyPress } from "@/app/lib/utils/events";
 import { Word, WordList } from "@/app/lib/definitions";
 import WordListRow from "../../../word-list-components/word-list-row/WordListRow";

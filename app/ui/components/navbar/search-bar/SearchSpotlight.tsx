@@ -25,9 +25,9 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { performAddWordToList } from "@/app/lib/utils/words";
 import { handleKeyPress } from "@/app/lib/utils/events";
 import NothingFound from "../../results/nothing-found/NothingFound";
+import { performAddWordToList } from "@/app/lib/utils/lists";
 
 const WordSearchResults = lazy(
   () => import("../../results/word-search-results/WordSearchResults")

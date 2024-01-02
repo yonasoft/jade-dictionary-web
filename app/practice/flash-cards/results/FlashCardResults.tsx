@@ -54,6 +54,7 @@ const FlashCardResults = ({
       categorizedWords[answer as keyof CategorizedWords].push(words[index]);
     }
   });
+  
   const averageTimePerWord = totalTime / words.length;
   const isMobile = useMediaQuery("(max-width: 768px)");
 

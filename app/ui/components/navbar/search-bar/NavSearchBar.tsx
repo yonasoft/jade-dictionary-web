@@ -14,9 +14,9 @@ import SearchSpotlight from "./SearchSpotlight";
 import { searchWords } from "@/app/lib/firebase/storage/words";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Word } from "@/app/lib/definitions";
-import { performSearch } from "@/app/lib/utils/words";
 import { on } from "events";
 import { handleKeyPress } from "@/app/lib/utils/events";
+import { performSearch } from "@/app/lib/utils/dictionary";
 
 const SearchInput = ({
   query,

@@ -3,10 +3,11 @@ import { Word } from "@/app/lib/definitions";
 import { Button, Input } from "@mantine/core";
 import React, { useState } from "react";
 import WordSearchResults from "../../../results/word-search-results/WordSearchResults";
-import { performSearch } from "@/app/lib/utils/words";
+
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { IconSearch } from "@tabler/icons-react";
 import { handleKeyPress } from "@/app/lib/utils/events";
+import { performSearch } from "@/app/lib/utils/dictionary";
 
 type Props = {
   isWordInPractice: (word: Word) => boolean;
