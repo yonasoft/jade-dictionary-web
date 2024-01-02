@@ -33,7 +33,6 @@ type Props = {
 
 const FlashCardResults = ({
   words,
-  answerCounts,
   allAnswers,
   totalTime,
 }: Props) => {

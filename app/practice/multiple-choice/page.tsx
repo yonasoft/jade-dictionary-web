@@ -12,10 +12,11 @@ import {
 } from "@tabler/icons-react";
 import MultipleChoiceCard from "./multiple-choice-card/MultipleChoiceCard";
 import {
-  handleMultipleChoiceAnswer,
+  isMultipleChoiceAnswerCorrect,
   shuffleArray,
 } from "@/app/lib/utils/practice";
 import { Word } from "@/app/lib/types/word";
+import MultipleChoiceResults from "./results/MultipleChoiceResults";
 
 type Props = {};
 
@@ -37,7 +38,6 @@ const MultipleChoicePage = (props: Props) => {
   });
   const [allAnswers, setAllAnswers] = useState<boolean[]>([]);
   const [isPaused, setIsPaused] = useState(false);
-  const [selectedWord, setSelectedWord] = useState<Word | null>(null);
 
   useEffect(() => {
     const savedPracticeMode = JSON.parse(
@@ -85,13 +85,13 @@ const MultipleChoicePage = (props: Props) => {
   useEffect(() => {
     let countdownInterval: NodeJS.Timeout | null = null;
 
-    if (secondsLeft > 0 && !isPaused) {
+    if (timerValue !== "none" && secondsLeft > 0 && !isPaused) {
       countdownInterval = setInterval(() => {
         setSecondsLeft((prev) => prev - 1);
       }, 1000);
-    } else if (secondsLeft === 0 && timerValue !== "none" && !selectedAnswer) {
+    } else if (timerValue !== "none" && secondsLeft === 0 && !selectedAnswer) {
       setTimeUp(true);
-      //   handleAnswer(false);
+      isMultipleChoiceAnswerCorrect(words[currentWordIndex], selectedAnswer);
       stopwatch.pause();
     }
 
@@ -101,19 +101,22 @@ const MultipleChoicePage = (props: Props) => {
   }, [secondsLeft, isPaused]);
 
   const handleNext = () => {
-    handleMultipleChoiceAnswer(
-      selectedWord,
-      words[currentWordIndex],
-      setAnswerCounts,
-      setAllAnswers
-    );
-
     if (currentWordIndex >= words.length - 1) {
       finalTime = stopwatch.seconds;
       stopwatch.pause();
       setIsPaused(true);
+      const isAnswerCorrect = isMultipleChoiceAnswerCorrect(
+        words[currentWordIndex],
+        selectedAnswer
+      );
+      setAllAnswers((prev) => [...prev, isAnswerCorrect]);
       setCurrentWordIndex((prev) => prev + 1);
     } else {
+      const isAnswerCorrect = isMultipleChoiceAnswerCorrect(
+        words[currentWordIndex],
+        selectedAnswer
+      );
+      setAllAnswers((prev) => [...prev, isAnswerCorrect]);
       setTimeUp(false);
       setCurrentWordIndex((prev) => prev + 1);
       if (timerValue !== "none") {
@@ -143,7 +146,13 @@ const MultipleChoicePage = (props: Props) => {
     return `${minutes}m ${remainingSeconds}s`;
   };
 
-  return (
+  return currentWordIndex >= words.length ? (
+    <MultipleChoiceResults
+      words={words}
+      rightWrongAnswers={allAnswers}
+      totalTime={stopwatch.seconds}
+    />
+  ) : (
     <div className="flex flex-col h-screen">
       <Group justify="space-between" className="p-4">
         {stopwatchEnabled && (
@@ -156,7 +165,7 @@ const MultipleChoicePage = (props: Props) => {
         </Link>
       </Group>
       <Divider my="sm" />
-      <Group className="px-1 mb-1" justify="space-between">
+      <Group className="px-1 mb-1" justify="space-between" wrap="nowrap">
         {timerValue && (
           <span>
             <strong>Timer:</strong> {formatTime(secondsLeft)}
@@ -194,6 +203,8 @@ const MultipleChoicePage = (props: Props) => {
             practiceTypes={selectedPracticeTypes}
             selectedWord={selectedAnswer}
             setSelectedWord={setSelectedAnswer}
+            timeUp={timeUp}
+            isPaused={isPaused}
           />
         )}
       </Flex>
@@ -202,3 +213,4 @@ const MultipleChoicePage = (props: Props) => {
 };
 
 export default MultipleChoicePage;
+

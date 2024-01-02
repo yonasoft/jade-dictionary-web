@@ -1,5 +1,5 @@
 
-import { PracticeType } from "../types/practice";
+import { CategoryToIcon, PracticeType } from "../types/practice";
 import { Word, WordAspect } from "../types/word";
 
 
@@ -55,19 +55,11 @@ export const randomizeQAWordAspects = (
     }
   };
 
-export const handleMultipleChoiceAnswer = (
-    selectedAnswer: Word|null,
-	correctAnswer: Word,
-	setAnswerCounts: React.Dispatch<React.SetStateAction<{correct:number, wrong:number}>>,
-	setAllAnswers: React.Dispatch<React.SetStateAction<boolean[]>>,
-  ) => {
-    if (selectedAnswer === correctAnswer) {
-      setAnswerCounts((prev) => ({ ...prev, correct: prev.correct + 1 }));
-      setAllAnswers((prev) => [...prev, true]);
-    } else {
-      setAnswerCounts((prev) => ({ ...prev, wrong: prev.wrong + 1 }));
-      setAllAnswers((prev) => [...prev, false]);
-    }
+export const isMultipleChoiceAnswerCorrect = (
+  correctAnswer: Word,
+  selectedAnswer: Word|null,
+  ):boolean => {
+    return selectedAnswer!=null && selectedAnswer === correctAnswer;
 };
   
 export const shuffleArray = (array: Array<any>) => {
@@ -81,3 +73,4 @@ export const shuffleArray = (array: Array<any>) => {
 export const initPracticeSessionStorage = () => { 
 	
 }
+

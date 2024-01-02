@@ -16,7 +16,6 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import SearchBar from "./ui/components/navbar/search-bar/NavSearchBar";
-import { Word, WordList } from "./lib/definitions";
 import { spotlight } from "@mantine/spotlight";
 import HomeSearchBar from "./ui/components/home-search-bar/HomeSearchBar";
 import { useFirebaseContext } from "./providers/FirebaseProvider";
@@ -28,10 +27,12 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { performAddWordToList, performSearch } from "./lib/utils/words";
 import { handleKeyPress } from "./lib/utils/events";
 import Loading from "./ui/components/results/loading/Loading";
 import WordSearchResults from "./ui/components/results/word-search-results/WordSearchResults";
+import { Word } from "./lib/types/word";
+import { performSearch } from "./lib/utils/dictionary";
+import { performAddWordToList } from "./lib/utils/lists";
 
 //Only import the components that are needed
 const WordSearchResultS = lazy(

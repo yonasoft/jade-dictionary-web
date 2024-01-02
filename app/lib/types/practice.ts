@@ -26,3 +26,4 @@ export type CategorizedWords = {
 export type CategoryToIcon = {
   [key in keyof CategorizedWords]: React.ReactNode;
 };
+

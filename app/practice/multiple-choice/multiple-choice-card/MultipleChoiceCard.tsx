@@ -16,6 +16,8 @@ type Props = {
   practiceTypes: PracticeType[];
   selectedWord: Word | null;
   setSelectedWord: React.Dispatch<React.SetStateAction<Word | null>>;
+  timeUp: boolean;
+  isPaused: boolean;
 };
 
 const MultipleChoiceCard = ({
@@ -24,6 +26,8 @@ const MultipleChoiceCard = ({
   practiceTypes,
   selectedWord,
   setSelectedWord,
+  timeUp,
+  isPaused,
 }: Props) => {
   const [qaWordAspects, setQAWordAspects] = useState<{
     question: WordAspect | null;
@@ -39,8 +43,6 @@ const MultipleChoiceCard = ({
     const practiceType = randomizePracticeType(practiceTypes);
     randomizeQAWordAspects(practiceType, setQAWordAspects);
 	  setChoices(generateMultipleChoice(words, currentWord));
-	  
-	  
   }, [currentWord, practiceTypes]);
 
   return (
@@ -61,6 +63,7 @@ const MultipleChoiceCard = ({
             variant="outline"
             checked={selectedWord === choice}
             onChange={(event) => setSelectedWord(choice)}
+            disabled={timeUp || isPaused}
           />
         );
       })}

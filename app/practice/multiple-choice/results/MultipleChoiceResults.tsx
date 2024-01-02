@@ -15,22 +15,17 @@ import { useMediaQuery } from "@mantine/hooks";
 import { IconX, IconCircle, IconCheck } from "@tabler/icons-react";
 import Link from "next/link";
 
-
-
 type Props = {
   words: Word[];
-  answerCounts: { wrong: number; neutral: number; correct: number };
-  allAnswers: string[];
+  rightWrongAnswers: boolean[];
   totalTime: number;
 };
 
 const MultipleChoiceResults = ({
   words,
-  answerCounts,
-  allAnswers,
+  rightWrongAnswers,
   totalTime,
 }: Props) => {
-  
   const categorizedWords: CategorizedWords = {
     wrong: [],
     neutral: [],
@@ -43,14 +38,14 @@ const MultipleChoiceResults = ({
     correct: <IconCheck color="green" />,
   };
 
-  allAnswers.forEach((answer: string, index: number) => {
-    if (answer in categorizedWords) {
-      categorizedWords[answer as keyof CategorizedWords].push(words[index]);
-    }
-  });
-  
   const averageTimePerWord = totalTime / words.length;
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  rightWrongAnswers.forEach((answer: boolean, index: number) => {
+    answer
+      ? categorizedWords.correct.push(words[index])
+      : categorizedWords.wrong.push(words[index]);
+  });
 
   return (
     <div className="p-4">
@@ -63,20 +58,9 @@ const MultipleChoiceResults = ({
         Average Time per Word: {averageTimePerWord.toFixed(2)} seconds
       </Text>
 
-      <Group justify="center" className="mb-4">
-        <Text color="red">
-          Wrong: {answerCounts.wrong} <IconX />
-        </Text>
-        <Text color="yellow">
-          Neutral: {answerCounts.neutral} <IconCircle />
-        </Text>
-        <Text color="green">
-          Correct: {answerCounts.correct} <IconCheck />
-        </Text>
-      </Group>
-
       <Accordion>
         {Object.entries(categorizedWords).map(([key, wordsList]) => {
+          if (key === "neutral") return null;
           const icon = key as keyof CategoryToIcon;
 
           return (
@@ -110,7 +94,7 @@ const MultipleChoiceResults = ({
           );
         })}
       </Accordion>
-      <Group justify="center" className="mt-4">
+      <Group justify="center" className="mt-5">
         <Link href="/practice" passHref>
           <Button variant="filled">Return to Practice</Button>
         </Link>
