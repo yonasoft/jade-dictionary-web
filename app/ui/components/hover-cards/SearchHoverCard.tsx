@@ -7,7 +7,7 @@ export const SearchHoverCard = ({
 }): React.ReactNode => {
   return (
     <HoverCard width={280} shadow="md">
-      <HoverCard.Target>{searchBar}</HoverCard.Target>
+      <HoverCard.Target >{searchBar}</HoverCard.Target>
       <HoverCard.Dropdown>
         <Text size="md" fw={700}>
           Search Dictionary

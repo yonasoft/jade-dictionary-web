@@ -40,7 +40,7 @@ export const SearchInput = ({
         </ActionIcon>
       }
       onKeyDown={handleKeyPress}
-      className={`text-black ${inputText} bg-transparent border-none`}
+      className={`text-black bg-transparent border-none`}
     />
   );
 };
