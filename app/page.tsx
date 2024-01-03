@@ -98,6 +98,7 @@ const Home = () => {
       </Paper>
 
       {results.length > 0 && (
+      
         <WordSearchResults
           gridSpan={{ base: 12, sm: 6, lg: 4 }}
           searched={searched}

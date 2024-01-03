@@ -3,7 +3,7 @@ import { Roboto } from "next/font/google";
 import Head from "next/head";
 import { ReactNode, FC } from "react";
 
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, Space } from "@mantine/core";
 import { ContextModalProps, ModalsProvider } from "@mantine/modals";
 
 import Navbar from "./ui/components/navbar/Navbar";
@@ -63,7 +63,8 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <FirebaseContextProvider>
             <ModalsProvider modals={modals}>
-              <Navbar  />
+              <Navbar />
+              <Space h={64} />
               <main>{children}</main>
             </ModalsProvider>
           </FirebaseContextProvider>
