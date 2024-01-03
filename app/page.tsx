@@ -55,7 +55,7 @@ const Home = () => {
   } = useHome();
 
   useEffect(() => {
-    setTitleColor(colorScheme === "dark" ? "white" : "black");
+    setTitleColor(colorScheme === "dark" ? "black" : "white");
   }, [colorScheme]);
 
   useEffect(() => {
