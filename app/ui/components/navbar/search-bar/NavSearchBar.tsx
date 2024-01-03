@@ -37,7 +37,7 @@ const NavSearchBar = () => {
 
   return (
     <>
-      <div className="flex-1 max-w-[20rem] w-full">
+      <div className="flex-1 max-w-[20rem] w-full bg-transparent border-none">
         {
           <SearchHoverCard
             searchBar={
