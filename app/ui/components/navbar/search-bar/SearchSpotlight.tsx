@@ -76,7 +76,7 @@ const SearchSpotlight = ({
       fullScreen={isFullScreen} // Apply conditional fullScreen
       centered
     >
-      <Group className="top-0 px-4 py-2" wrap="nowrap">
+      <Group className="top-0 px-4 py-2 " wrap="nowrap">
         <Input
           className="flex-grow ms-3"
           value={query}
@@ -101,12 +101,14 @@ const SearchSpotlight = ({
       </Group>
 
       {results.length > 0 && (
-        <WordSearchResults
-          results={results}
-          query={query}
-          searched={searched}
-          onAddToWordList={performAddWordToList}
-        />
+        <Spotlight.ActionsList>
+          <WordSearchResults
+            results={results}
+            query={query}
+            searched={searched}
+            onAddToWordList={performAddWordToList}
+          />
+        </Spotlight.ActionsList>
       )}
 
       {results.length === 0 && searched && (
