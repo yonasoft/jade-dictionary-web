@@ -25,42 +25,17 @@ import AuthItems from "../auth-items/AuthItems";
 import { spotlight } from "@mantine/spotlight";
 import NavSearchBar from "./search-bar/NavSearchBar";
 import { LinkData } from "@/app/lib/types/nav";
-
-const links: Array<LinkData> = [
-  {
-    link: "/",
-    label: "Home",
-    icon: <IconHome />,
-  },
-
-  {
-    link: "/lists",
-    label: "Lists",
-    icon: <IconList />,
-  },
-  { link: "/practice", label: "Practice", icon: <IconDeviceGamepad /> },
-  {
-    link: "#1",
-    label: "Support",
-    icon: <IconHelp />,
-    sublinks: [
-      { link: "/support/donate", label: "Donate" },
-      { link: "/support/contact", label: "Contact Us" },
-      { link: "/support/faq", label: "FAQ" },
-      { link: "/support/about", label: "About" },
-    ],
-  },
-];
+import { navLinks } from "@/app/lib/constants/navLinks";
 
 const Navbar = () => {
   const [drawerOpened, { open, close, toggle }] = useDisclosure(false);
 
   const renderMenuItems = () => {
-    return links.map((link) => <MenuItem link={link} key={link.label} />);
+    return navLinks.map((link) => <MenuItem link={link} key={link.label} />);
   };
 
   return (
-    <header className={classes.header}>
+    <header className="h-14 mb-7 bg-white border-b border-gray-300 fixed top-0 z-50 w-full ">
       <Container className="align-middle" size="lg">
         <Group h="56" justify="space-between">
           <Group justify="flex-start">
@@ -92,7 +67,7 @@ const Navbar = () => {
           />
         </Group>
       </Container>
-      <NavDrawer links={links} opened={drawerOpened} onClose={close} />
+      <NavDrawer links={navLinks} opened={drawerOpened} onClose={close} />
     </header>
   );
 };

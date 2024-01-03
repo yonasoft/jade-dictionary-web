@@ -1,11 +1,1 @@
-.header {
-  height: rem(56px);
-  margin-bottom: rem(30px);
-  background-color: var(--mantine-color-body);
-  border-bottom: rem(1px) solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  width: 100%;
-}
+

@@ -29,56 +29,46 @@ import {
 } from "firebase/firestore";
 import { handleKeyPress } from "./lib/utils/events";
 import Loading from "./ui/components/results/loading/Loading";
-import WordSearchResults from "./ui/components/results/word-search-results/WordSearchResults";
 import { Word } from "./lib/types/word";
 import { performSearch } from "./lib/utils/dictionary";
 import { performAddWordToList } from "./lib/utils/lists";
+import useHomeSessions from "./hooks/useHomeSessions";
+import useHome from "./hooks/useHomeSessions";
 
 //Only import the components that are needed
-const WordSearchResultS = lazy(
-  () => import("./ui/components/word-components/word-result/WordResult")
+const WordSearchResults = lazy(
+  () => import("./ui/components/results/word-search-results/WordSearchResults")
 );
 
 const Home = () => {
-  const { firestore } = useFirebaseContext();
   const { colorScheme } = useMantineColorScheme();
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Word[]>([]);
-  const [searched, setSearched] = useState(false);
-  const [titleColor, setTitleColor] = useState("black"); // default color
-  
+  const [titleColor, setTitleColor] = useState("black");
+  const {
+    query,
+    setQuery,
+    results,
+    onSearch,
+    searched,
+    loadSessions,
+    saveQuerySession,
+    saveResultSession,
+  } = useHome();
 
   useEffect(() => {
-    setTitleColor(colorScheme === "dark" ? "black" : "white");
+    setTitleColor(colorScheme === "dark" ? "white" : "black");
   }, [colorScheme]);
 
   useEffect(() => {
-    // Load state from localStorage when the component mounts
-    const loadedQuery = JSON.parse(sessionStorage.getItem("homeQuery") || '""');
-
-    const loadedResults = JSON.parse(
-      sessionStorage.getItem("homeResults") || "[]"
-    );
-
-    if (loadedQuery.length > 0) setQuery(loadedQuery);
-
-    if (loadedResults.length > 0) setResults(loadedResults);
+    loadSessions();
   }, []);
 
   useEffect(() => {
-    sessionStorage.setItem("homeQuery", JSON.stringify(query));
+    saveQuerySession();
   }, [query]);
 
   useEffect(() => {
-    sessionStorage.setItem("homeResults", JSON.stringify(results));
+    saveResultSession();
   }, [results]);
-
-  const onSearch = () => {
-    performSearch(firestore, query).then((results) => {
-      setSearched(true);
-      setResults(results);
-    });
-  };
 
   return (
     <Container size="lg" className="my-8 mx-auto">
@@ -90,7 +80,7 @@ const Home = () => {
               <HomeSearchBar
                 query={query}
                 setQuery={setQuery}
-                onSearch={onSearch}
+                onSearch={() => onSearch(query)}
               />
             </Center>
           </Flex>
@@ -98,7 +88,6 @@ const Home = () => {
       </Paper>
 
       {results.length > 0 && (
-      
         <WordSearchResults
           gridSpan={{ base: 12, sm: 6, lg: 4 }}
           searched={searched}

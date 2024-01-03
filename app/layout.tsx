@@ -15,7 +15,6 @@ import ReauthenticateModal from "./ui/components/modals/reauth-modal/Reauthentic
 import AddWordListModal from "./ui/components/modals/add-word-list-modal/AddWordListModal";
 import "@mantine/core/styles.css";
 import "./globals.css";
-import Link from "next/link";
 
 const roboto = Roboto({
   subsets: ["latin"],
