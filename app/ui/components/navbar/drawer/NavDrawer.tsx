@@ -12,7 +12,6 @@ const DrawerHeader = () => (
   <Drawer.Header>
     <Group className="grow" justify="space-between">
       <JadeLogo h={48} />
-
       <Box hiddenFrom="sm">
         <ThemeToggler />
       </Box>

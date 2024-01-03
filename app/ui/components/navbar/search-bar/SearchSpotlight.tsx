@@ -49,10 +49,10 @@ const SearchSpotlight = ({
   searched,
 }: Props) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const { firestore, updateWordLists } = useFirebaseContext();
+
   useEffect(() => {
     const handleResize = () => {
-      setIsFullScreen(window.innerHeight <= 640);
+      setIsFullScreen(window.innerHeight <= 520);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -76,7 +76,7 @@ const SearchSpotlight = ({
       fullScreen={isFullScreen} // Apply conditional fullScreen
       centered
     >
-      <Group className="top-0 px-4 py-2">
+      <Group className="top-0 px-4 py-2" wrap="nowrap">
         <Input
           className="flex-grow ms-3"
           value={query}
