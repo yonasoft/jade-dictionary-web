@@ -3,155 +3,39 @@ import { Divider, Button, Card, Group, Center, Flex } from "@mantine/core";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
-import FlipCard from "./flip-card/FlipCard";
+import FlipCard from "../components/flash-card/flip-card/FlipCard";
 import {
   IconArrowRight,
   IconCheck,
   IconCircle,
   IconX,
 } from "@tabler/icons-react";
-import FlashCardResults from "./results/FlashCardResults";
-import { shuffleArray } from "@/app/lib/utils/practice";
+import FlashCardResults from "../components/flash-card/flash-card-results/FlashCardResults";
+import { formatTime, shuffleArray } from "@/app/lib/utils/practice";
 import { Word } from "@/app/lib/types/word";
+import useFlashCards from "@/app/hooks/useFlashCards";
 
 type Props = {};
 
 const FlashCardsPage = (props: Props) => {
-  let finalTime = 0;
-
-  const [selectedPracticeTypes, setSelectedPracticeTypes] = useState([]);
-  const [words, setWords] = useState<Word[]>([]);
-  const [timerValue, setTimerValue] = useState("none");
-  const [stopwatchEnabled, setStopwatchEnabled] = useState(false);
-  const stopwatch = useStopwatch({ autoStart: true });
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [secondsLeft, setSecondsLeft] = useState(0);
-  const [timeUp, setTimeUp] = useState(false);
-  const [answerCounts, setAnswerCounts] = useState({
-    wrong: 0,
-    neutral: 0,
-    correct: 0,
-  });
-  const [allAnswers, setAllAnswers] = useState<string[]>([]);
-  const [isPaused, setIsPaused] = useState(false);
-
-  useEffect(() => {
-    const savedPracticeMode = JSON.parse(
-      sessionStorage.getItem("practiceMode") || '"flash-cards"'
-    );
-    const savedPracticeTypes = JSON.parse(
-      sessionStorage.getItem("practiceTypes") || "[]"
-    );
-    const savedTimer = JSON.parse(
-      sessionStorage.getItem("practiceTimer") || '"none"'
-    );
-    const savedStopwatchEnabled = JSON.parse(
-      sessionStorage.getItem("practiceStopwatch") || "false"
-    );
-
-    const savedWords = JSON.parse(
-      sessionStorage.getItem("practiceWords") || "[]"
-    );
-    if (savedWords.length > 0) {
-      setWords(shuffleArray(savedWords));
-    }
-
-    if (savedPracticeTypes.length > 0) {
-      setSelectedPracticeTypes(savedPracticeTypes);
-    }
-
-    if (savedTimer !== "none") setTimerValue(savedTimer);
-
-    if (stopwatchEnabled !== savedStopwatchEnabled)
-      setStopwatchEnabled(savedStopwatchEnabled);
-  }, []);
-
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
-    }
-  }, [timerValue]);
-
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
-    }
-  }, [timerValue]);
-
-  useEffect(() => {
-    let countdownInterval: NodeJS.Timeout | null = null;
-
-    if (secondsLeft > 0 && !isPaused) {
-      countdownInterval = setInterval(() => {
-        setSecondsLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (secondsLeft === 0 && timerValue !== "none" && !selectedAnswer) {
-      setTimeUp(true);
-      handleAnswer("wrong");
-      stopwatch.pause();
-    }
-
-    return () => {
-      if (countdownInterval) clearInterval(countdownInterval);
-    };
-  }, [secondsLeft, isPaused]);
-
-  const togglePause = () => {
-    setIsPaused(!isPaused);
-    if (isPaused) {
-      stopwatch.start();
-    } else {
-      stopwatch.pause();
-    }
-  };
-
-  const handleAnswer = (answer: string) => {
-    setSelectedAnswer(answer);
-
-    setAllAnswers((prev) => [...prev, answer]);
-
-    if (answer === "wrong" || answer === "neutral" || answer === "correct") {
-      setAnswerCounts((prev) => ({
-        ...prev,
-        [answer]: prev[answer] + 1,
-      }));
-    }
-  };
-
-  const handleNext = () => {
-    //Reason for checking if currentWordIndex >= words.length - 1 instead of checking if icurrentWordIndex >= words.length:
-    //Set State is asynchronous, so the currentWordIndex will not be updated immediately.
-    //So the code relating to the timer/stopwatch will not work properly if we set state first.
-    if (currentWordIndex >= words.length - 1) {
-      finalTime = stopwatch.seconds;
-      stopwatch.pause();
-      setIsPaused(true);
-      setCurrentWordIndex((prev) => prev + 1);
-    } else {
-      setTimeUp(false);
-      setCurrentWordIndex((prev) => prev + 1);
-      if (timerValue !== "none") {
-        setSecondsLeft(parseInt(timerValue));
-      }
-      setSelectedAnswer(null);
-
-      if (currentWordIndex < words.length - 1 && !stopwatch.isRunning) {
-        stopwatch.start();
-      }
-      setIsPaused(false);
-    }
-  };
-
-  const isAnswerSelected = (answer: string) => {
-    return selectedAnswer === answer;
-  };
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds}s`;
-  };
+  const {
+    selectedPracticeTypes,
+    words,
+    timerValue,
+    stopwatchEnabled,
+    stopwatch,
+    selectedAnswer,
+    currentWordIndex,
+    secondsLeft,
+    timeUp,
+    answerCounts,
+    allAnswers,
+    isPaused,
+    togglePause,
+    handleAnswer,
+    isAnswerSelected,
+    handleNext,
+  } = useFlashCards();
 
   return currentWordIndex >= words.length ? (
     <FlashCardResults

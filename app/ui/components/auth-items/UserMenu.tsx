@@ -22,7 +22,6 @@ const UserMenu = (props: Props) => {
   const { currentUser, auth } = useFirebaseContext();
 
   useEffect(() => {
-    console.log("currentUser updated:", currentUser);
   }, [currentUser]);
 
   const trimStringWithEllipsis = (str: string, maxLength: number) => {

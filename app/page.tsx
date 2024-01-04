@@ -15,9 +15,9 @@ import {
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
-import SearchBar from "./ui/components/navbar/nav-search-bar/NavSearchBar";
+import SearchBar from "./ui/components/navbar/components/nav-search-bar/NavSearchBar";
 import { spotlight } from "@mantine/spotlight";
-import HomeSearchBar from "./ui/components/home-search-bar/HomeSearchBar";
+import HomeSearchBar from "./components/home-search-bar/HomeSearchBar";
 import { useFirebaseContext } from "./providers/FirebaseProvider";
 import { searchWords } from "./lib/firebase/storage/words";
 import {

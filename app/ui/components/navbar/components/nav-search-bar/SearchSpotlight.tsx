@@ -16,7 +16,7 @@ import { IconSearch, IconX } from "@tabler/icons-react";
 import React, { Suspense, lazy, memo, useEffect, useState } from "react";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { searchWords } from "@/app/lib/firebase/storage/words";
-import WordResult from "../../word-components/word-result/WordResult";
+import WordResult from "../../../word-components/word-result/WordResult";
 import {
   Firestore,
   arrayUnion,
@@ -25,12 +25,12 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { handleKeyPress } from "@/app/lib/utils/events";
-import NothingFound from "../../results/nothing-found/NothingFound";
+import NothingFound from "../../../results/nothing-found/NothingFound";
 import { performAddWordToList } from "@/app/lib/utils/lists";
 import { Word } from "@/app/lib/types/word";
 
 const WordSearchResults = lazy(
-  () => import("../../results/word-search-results/WordSearchResults")
+  () => import("../../../results/word-search-results/WordSearchResults")
 );
 
 type Props = {

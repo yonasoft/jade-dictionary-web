@@ -17,9 +17,9 @@ import { on } from "events";
 import { handleKeyPress } from "@/app/lib/utils/events";
 import { performSearch } from "@/app/lib/utils/dictionary";
 import { Word } from "@/app/lib/types/word";
-import { SearchInput } from "../../search-input/SearchInput";
+import { SearchInput } from "../../../search-input/SearchInput";
 import useSearch from "@/app/hooks/useSearchBar";
-import { SearchHoverCard } from "../../hover-cards/SearchHoverCard";
+import { SearchHoverCard } from "../../../hover-cards/SearchHoverCard";
 
 const NavSearchBar = () => {
   const { query, setQuery, results, onSearch, searched } = useSearch();

@@ -14,7 +14,7 @@ import {
   Switch,
 } from "@mantine/core";
 import { IconArrowRight, IconCards, IconListCheck } from "@tabler/icons-react";
-import PracticeModeCard from "./components/practice-mode-card/PracticeModeCard";
+import PracticeModeCard from "./components/practice-settings/practice-mode-card/PracticeModeCard";
 import WordRow from "../ui/components/word-components/word-row/WordRow";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
@@ -27,11 +27,11 @@ import { PracticeType, timerOptions } from "../lib/types/practice";
 import { Word } from "../lib/types/word";
 import { usePracticeSettings } from "../hooks/usePracticeSettings";
 import { practiceModes } from "../lib/constants/practiceModes";
-import PracticeModeSelector from "./components/practice-mode-selector/PracticeModeSelector";
-import WordsAddedDisplay from "./components/words-added-display/WordsAddedDisplay";
-import PracticeTypeSelector from "./components/practice-type-selector/PracticeTypeSelector";
-import TimerSelection from "./components/timer-selection/TimerSelection";
-import StopwatchToggle from "./components/stopwatch-toggle/StopwatchToggle";
+import PracticeModeSelector from "./components/practice-settings/practice-mode-selector/PracticeModeSelector";
+import WordsAddedDisplay from "./components/practice-settings/words-added-display/WordsAddedDisplay";
+import PracticeTypeSelector from "./components/practice-settings/practice-type-selector/PracticeTypeSelector";
+import TimerSelection from "./components/practice-settings/timer-selection/TimerSelection";
+import StopwatchToggle from "./components/practice-settings/stopwatch-toggle/StopwatchToggle";
 
 const PracticeSettings = () => {
   const {

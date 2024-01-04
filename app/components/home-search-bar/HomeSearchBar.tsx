@@ -21,8 +21,8 @@ import { update } from "firebase/database";
 import { Firestore } from "firebase/firestore";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { handleKeyPress } from "@/app/lib/utils/events";
-import { SearchHoverCard } from "../hover-cards/SearchHoverCard";
-import { SearchInput } from "../search-input/SearchInput";
+import { SearchHoverCard } from "../../ui/components/hover-cards/SearchHoverCard";
+import { SearchInput } from "../../ui/components/search-input/SearchInput";
 
 type Props = {
   query: string;

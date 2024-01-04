@@ -1,3 +1,4 @@
+import { CategorizedWords, CategoryToIcon } from "@/app/lib/types/practice";
 import { Word } from "@/app/lib/types/word";
 import WordCard from "@/app/ui/components/word-components/word-card/WordCard";
 import WordRow from "@/app/ui/components/word-components/word-row/WordRow";
@@ -13,27 +14,17 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { IconX, IconCircle, IconCheck } from "@tabler/icons-react";
 import Link from "next/link";
-
-type CategorizedWords = {
-  wrong: Word[];
-  neutral: Word[];
-  correct: Word[];
-};
-
-type CategoryToIcon = {
-  [key in keyof CategorizedWords]: React.ReactNode;
-};
+import React from "react";
 
 type Props = {
   words: Word[];
-  answerCounts: { wrong: number; neutral: number; correct: number };
-  allAnswers: string[];
+  rightWrongAnswers: boolean[];
   totalTime: number;
 };
 
-const FlashCardResults = ({
+const MultipleChoiceResults = ({
   words,
-  allAnswers,
+  rightWrongAnswers,
   totalTime,
 }: Props) => {
   const categorizedWords: CategorizedWords = {
@@ -48,14 +39,14 @@ const FlashCardResults = ({
     correct: <IconCheck color="green" />,
   };
 
-  allAnswers.forEach((answer: string, index: number) => {
-    if (answer in categorizedWords) {
-      categorizedWords[answer as keyof CategorizedWords].push(words[index]);
-    }
-  });
-
   const averageTimePerWord = totalTime / words.length;
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  rightWrongAnswers.forEach((answer: boolean, index: number) => {
+    answer
+      ? categorizedWords.correct.push(words[index])
+      : categorizedWords.wrong.push(words[index]);
+  });
 
   return (
     <div className="p-4">
@@ -67,8 +58,10 @@ const FlashCardResults = ({
       <Text className="text-center mb-4">
         Average Time per Word: {averageTimePerWord.toFixed(2)} seconds
       </Text>
+
       <Accordion>
         {Object.entries(categorizedWords).map(([key, wordsList]) => {
+          if (key === "neutral") return null;
           const icon = key as keyof CategoryToIcon;
 
           return (
@@ -102,7 +95,7 @@ const FlashCardResults = ({
           );
         })}
       </Accordion>
-      <Group justify="center" className="mt-4">
+      <Group justify="center" className="mt-5">
         <Link href="/practice" passHref>
           <Button variant="filled">Return to Practice</Button>
         </Link>
@@ -111,4 +104,4 @@ const FlashCardResults = ({
   );
 };
 
-export default FlashCardResults;
+export default MultipleChoiceResults;

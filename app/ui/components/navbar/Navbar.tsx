@@ -12,18 +12,18 @@ import {
   IconList,
 } from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
-import MenuItem from "./menu-item/MenuItem";
+import MenuItem from "./components/menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
 import UserMenu from "../auth-items/UserMenu";
-import ThemeToggler from "../theme-toggler/ThemeToggler";
-import SearchBar from "./nav-search-bar/NavSearchBar";
-import ResultTypeSelector from "../script-selector/ScriptTypeSelector";
-import NavDrawer from "./drawer/NavDrawer";
+import ThemeToggler from "./components/theme-toggler/ThemeToggler";
+import SearchBar from "./components/nav-search-bar/NavSearchBar";
+import ResultTypeSelector from "./components/script-selector/ScriptTypeSelector";
+import NavDrawer from "./components/drawer/NavDrawer";
 import AuthButtons from "../auth-items/AuthButtons";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import AuthItems from "../auth-items/AuthItems";
 import { spotlight } from "@mantine/spotlight";
-import NavSearchBar from "./nav-search-bar/NavSearchBar";
+import NavSearchBar from "./components/nav-search-bar/NavSearchBar";
 import { LinkData } from "@/app/lib/types/nav";
 import { navLinks } from "@/app/lib/constants/navLinks";
 
