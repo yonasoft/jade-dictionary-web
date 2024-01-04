@@ -1,41 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
-  Box,
   Card,
   Flex,
   rem,
   Text,
   FileInput,
-  Input,
   Button,
   Avatar,
 } from "@mantine/core";
 import { useFirebaseContext } from "../../../../providers/FirebaseProvider";
-import {
-  IconCheck,
-  IconClearAll,
-  IconDeviceFloppy,
-  IconPencil,
-  IconRefresh,
-  IconUpload,
-  IconUserCircle,
-  IconX,
-} from "@tabler/icons-react";
-import { updateUserProfile } from "../../../../lib/firebase/authentication";
-import { doc, getDoc } from "firebase/firestore/lite";
-import {
-  deleteOldProfilePicture,
-  updateUserToDB,
-  uploadNewProfilePicture,
-} from "../../../../lib/firebase/storage/user";
-import { Auth, User, updateProfile } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import {
-  checkDisplayNameExists,
-  deleteAndUploadNewPhoto,
-  isNewDisplayName,
-} from "@/app/lib/utils/profile";
+import { IconUpload } from "@tabler/icons-react";
 import { useDisplayInformation } from "@/app/hooks/useDisplayInformation";
 import { DisplayNameInput } from "./DisplayNameInput";
 
@@ -55,6 +30,7 @@ const DisplayInformation = (props: Props) => {
     errorMessage,
     hideSuccess,
     onSave,
+
   } = useDisplayInformation();
 
   useEffect(() => {}, [currentUser]);

@@ -11,7 +11,6 @@ type Props = {};
 const AccountSection = (props: Props) => {
   const firebase = useFirebaseContext();
 
-
   const openDeleteConfirmationModal = () => {
     openContextModal({
       modal: "deleteUser",

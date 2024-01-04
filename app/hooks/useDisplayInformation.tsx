@@ -4,11 +4,8 @@ import { useFirebaseContext } from "../providers/FirebaseProvider";
 import { User } from "firebase/auth";
 import { updateUserProfile } from "../lib/firebase/authentication";
 import { updateUserToDB } from "../lib/firebase/storage/user";
-import {
-  isNewDisplayName,
-  checkDisplayNameExists,
-  deleteAndUploadNewPhoto,
-} from "../lib/utils/profile";
+import { checkDisplayNameExists, deleteAndUploadNewPhoto, isNewDisplayName } from "../lib/utils/profile";
+
 
 export const useDisplayInformation = () => {
   const { currentUser, firestore, storage, auth, setCurrentUser } =
@@ -21,15 +18,6 @@ export const useDisplayInformation = () => {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [hideSuccess, setHideSuccess] = useState(true);
-
-  useEffect(() => {
-    // Effect for revoking object URL
-    return () => {
-      if (displayPhoto && displayPhoto.startsWith("blob:")) {
-        URL.revokeObjectURL(displayPhoto);
-      }
-    };
-  }, [displayPhoto]);
 
   const handleFileChange = (file: File | null) => {
     setPhotoFile(file);
