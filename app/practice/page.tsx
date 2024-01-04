@@ -61,31 +61,46 @@ const PracticeSettings = () => {
 
   return (
     <div className="p-4 h-full">
-      <PracticeModeSelector
-        selectedMode={selectedMode}
-        setSelectedMode={setSelectedMode}
-        isMobile={isMobile as boolean}
-        wordIds={wordIds}
-        isPracticeTypeSelected={isPracticeTypeSelected}
-      />
+      <div className="flex justify-between items-center mb-4">
+        <Title order={2}>Select Practice Mode</Title>
+        <Link href={`practice/${selectedMode}`}>
+          {isMobile ? (
+            <Button
+              variant="filled"
+              disabled={!isPracticeTypeSelected || wordIds.size < 4}
+              style={{
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+                borderRadius: "50%", // Make it circular
+                width: "60px",
+                height: "60px",
+                padding: "0px",
+                zIndex: 4000,
+              }}
+            >
+              Start
+            </Button>
+          ) : (
+            <Button
+              variant="filled"
+              disabled={!isPracticeTypeSelected || wordIds.size < 4}
+            >
+              Next
+            </Button>
+          )}
+        </Link>
+      </div>
 
       <Text color="dimmed" size="sm" className="mb-6">
         Please select at least 4 words and choose a practice mode.
       </Text>
 
-      <SimpleGrid cols={2} spacing="lg" className="mb-6">
-        {practiceModes.map((mode) => (
-          <PracticeModeCard
-            key={mode.mode}
-            title={mode.title}
-            description={mode.description}
-            icon={mode.icon}
-            selected={selectedMode === mode.mode}
-            onClick={() => setSelectedMode(mode.mode)}
-            selectedColor={theme.colors.jadeGreen[6]}
-          />
-        ))}
-      </SimpleGrid>
+      <PracticeModeSelector
+        selectedMode={selectedMode}
+        setSelectedMode={setSelectedMode}
+        theme={theme}
+      />
 
       <div>
         <Title order={2}>Select Quiz Types</Title>

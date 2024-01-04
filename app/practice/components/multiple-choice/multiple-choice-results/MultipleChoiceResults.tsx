@@ -14,6 +14,7 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { IconX, IconCircle, IconCheck } from "@tabler/icons-react";
 import Link from "next/link";
+import React from "react";
 
 type Props = {
   words: Word[];

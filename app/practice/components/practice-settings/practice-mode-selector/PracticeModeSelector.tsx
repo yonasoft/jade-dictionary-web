@@ -1,53 +1,36 @@
-import { Title, Button } from "@mantine/core";
-import Link from "next/link";
+import { practiceModes } from "@/app/lib/constants/practiceModes";
+import {
+  SimpleGrid,
+  MantineTheme,
+} from "@mantine/core";
 import React from "react";
+import PracticeModeCard from "../practice-mode-card/PracticeModeCard";
 
 type Props = {
   selectedMode: string;
   setSelectedMode: (mode: string) => void;
-  isMobile: boolean;
-  wordIds: Set<number>;
-  isPracticeTypeSelected: boolean;
+  theme: MantineTheme;
 };
 
 const PracticeModeSelector = ({
   selectedMode,
   setSelectedMode,
-  isMobile,
-  wordIds,
-  isPracticeTypeSelected,
+  theme,
 }: Props) => {
   return (
-    <div className="flex justify-between items-center mb-4">
-      <Title order={2}>Select Practice Mode</Title>
-      <Link href={`practice/${selectedMode}`}>
-        {isMobile ? (
-          <Button
-            variant="filled"
-            disabled={!isPracticeTypeSelected || wordIds.size < 4}
-            style={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-              borderRadius: "50%", // Make it circular
-              width: "60px",
-              height: "60px",
-              padding: "0px",
-              zIndex: 4000,
-            }}
-          >
-            Start
-          </Button>
-        ) : (
-          <Button
-            variant="filled"
-            disabled={!isPracticeTypeSelected || wordIds.size < 4}
-          >
-            Next
-          </Button>
-        )}
-      </Link>
-    </div>
+    <SimpleGrid cols={2} spacing="lg" className="mb-6">
+      {practiceModes.map((mode) => (
+        <PracticeModeCard
+          key={mode.mode}
+          title={mode.title}
+          description={mode.description}
+          icon={mode.icon}
+          selected={selectedMode === mode.mode}
+          onClick={() => setSelectedMode(mode.mode)}
+          selectedColor={theme.colors.jadeGreen[6]}
+        />
+      ))}
+    </SimpleGrid>
   );
 };
 
