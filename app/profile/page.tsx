@@ -14,6 +14,7 @@ import {
   Input,
   Button,
   Space,
+  Title,
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
@@ -22,49 +23,29 @@ import classes from "./page.module.css";
 import Account from "./account-section/AccountSection";
 import ProfileSection from "./profile-section/ProfileSection";
 import AccountSection from "./account-section/AccountSection";
+import UserNotVerified from "../ui/components/user-not-verified/UserNotVerified";
 
 type Props = {};
 
 const ProfilePage = (props: Props) => {
-  const firebase = useFirebaseContext();
-  const [verificationMessage, setVerificationMessage] = useState("");
+  const { auth, currentUser } = useFirebaseContext();
 
-  useEffect(() => {}, [firebase.auth]);
+  useEffect(() => {}, [auth]);
 
-  if (!firebase.currentUser) {
-    return <div></div>;
-  }
-
-  if (!firebase.currentUser.emailVerified) {
+  if (!currentUser) {
     return (
       <Container size="lg">
-        <Flex
-          className="mt-15"
-          direction="column"
-          justify="center"
-          align="center"
-        >
-          <Text size="lg">
-            Please verify your email before accessing your profile.
-          </Text>
-          <Button
-            className={`${classes.jadeButtons} my-2 mt-7`}
-            onClick={() => {
-              setVerificationMessage("");
-              sendVerificationEmail(firebase.auth)
-                .then(() => {
-                  setVerificationMessage("Verification Sent Successfully!");
-                })
-                .catch((e) => {
-                  console.log(e);
-                  setVerificationMessage("Error sending verification");
-                });
-            }}
-          >
-            Resend Verification Link
-          </Button>
-          <Text color="green">{verificationMessage}</Text>
-        </Flex>
+        <Center>
+          <Title order={1}>No User Logged in</Title>
+        </Center>
+      </Container>
+    );
+  }
+
+  if (!currentUser.emailVerified) {
+    return (
+      <Container size="lg">
+        <UserNotVerified />
       </Container>
     );
   }

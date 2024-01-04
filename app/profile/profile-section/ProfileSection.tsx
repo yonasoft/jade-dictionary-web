@@ -1,7 +1,7 @@
 import { Card, Grid, Group, Text, rem } from "@mantine/core";
 import React from "react";
-import DisplayInformation from "./DisplayInformation";
-import ProfileSettings from "./ProfileSettings";
+import DisplayInformation from "./parts/display-information/DisplayInformation";
+import ProfileSettings from "./parts/profile-settings/ProfileSettings";
 import { IconUserCircle } from "@tabler/icons-react";
 
 type Props = {};
@@ -17,7 +17,7 @@ const ProfileSection = (props: Props) => {
         />
         <Text size="md">Profile</Text>
       </Group>
-      <Grid >
+      <Grid>
         <Grid.Col span={{ base: 12, sm: 4, md: 3 }}>
           <DisplayInformation />
         </Grid.Col>

@@ -13,11 +13,11 @@ import React, { useEffect, useState } from "react";
 import {
   updateUserEmail,
   updateUserPassword,
-} from "../../lib/firebase/authentication";
-import { useFirebaseContext } from "../../providers/FirebaseProvider";
-import { checkEmailExists } from "../../lib/firebase/storage/user";
+} from "../../../../lib/firebase/authentication";
+import { useFirebaseContext } from "../../../../providers/FirebaseProvider";
+import { checkEmailExists } from "../../../../lib/firebase/storage/user";
 import { modals, openContextModal } from "@mantine/modals";
-import VerifyEmailModal from "../../ui/components/modals/verify-email-modal/VerifyEmailModal";
+import VerifyEmailModal from "../../../../ui/components/modals/verify-email-modal/VerifyEmailModal";
 
 type Props = {};
 
