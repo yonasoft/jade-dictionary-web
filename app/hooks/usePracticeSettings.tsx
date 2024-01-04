@@ -139,5 +139,22 @@ export const usePracticeSettings = () => {
     );
   };
 
-  return {wordIds, words, onRemove, onClear, addWord, addWords, handlePracticeTypeChange, selectedPracticeTypes, setSelectedPracticeTypes, selectedMode, setSelectedMode, timer, setTimer, stopwatchEnabled, setStopwatchEnabled, isPracticeTypeSelected};
+  return {
+    wordIds,
+    words,
+    onRemove,
+    onClear,
+    addWord,
+    addWords,
+    handlePracticeTypeChange,
+    selectedPracticeTypes,
+    setSelectedPracticeTypes,
+    selectedMode,
+    setSelectedMode,
+    timer,
+    setTimer,
+    stopwatchEnabled,
+    setStopwatchEnabled,
+    isPracticeTypeSelected,
+  };
 };

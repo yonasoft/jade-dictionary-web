@@ -14,7 +14,7 @@ import {
   Switch,
 } from "@mantine/core";
 import { IconArrowRight, IconCards, IconListCheck } from "@tabler/icons-react";
-import PracticeModeCard from "./practice-mode-card/PracticeModeCard";
+import PracticeModeCard from "./components/practice-mode-card/PracticeModeCard";
 import WordRow from "../ui/components/word-components/word-row/WordRow";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
@@ -27,6 +27,11 @@ import { PracticeType, timerOptions } from "../lib/types/practice";
 import { Word } from "../lib/types/word";
 import { usePracticeSettings } from "../hooks/usePracticeSettings";
 import { practiceModes } from "../lib/constants/practiceModes";
+import PracticeModeSelector from "./components/practice-mode-selector/PracticeModeSelector";
+import WordsAddedDisplay from "./components/words-added-display/WordsAddedDisplay";
+import PracticeTypeSelector from "./components/practice-type-selector/PracticeTypeSelector";
+import TimerSelection from "./components/timer-selection/TimerSelection";
+import StopwatchToggle from "./components/stopwatch-toggle/StopwatchToggle";
 
 const PracticeSettings = () => {
   const {
@@ -56,36 +61,13 @@ const PracticeSettings = () => {
 
   return (
     <div className="p-4 h-full">
-      <div className="flex justify-between items-center mb-4">
-        <Title order={2}>Select Practice Mode</Title>
-        <Link href={`practice/${selectedMode}`}>
-          {isMobile ? (
-            <Button
-              variant="filled"
-              disabled={!isPracticeTypeSelected || wordIds.size < 4}
-              style={{
-                position: "fixed",
-                bottom: "20px",
-                right: "20px",
-                borderRadius: "50%", // Make it circular
-                width: "60px",
-                height: "60px",
-                padding: "0px",
-                zIndex: 4000,
-              }}
-            >
-              Start
-            </Button>
-          ) : (
-            <Button
-              variant="filled"
-              disabled={!isPracticeTypeSelected || wordIds.size < 4}
-            >
-              Next
-            </Button>
-          )}
-        </Link>
-      </div>
+      <PracticeModeSelector
+        selectedMode={selectedMode}
+        setSelectedMode={setSelectedMode}
+        isMobile={isMobile as boolean}
+        wordIds={wordIds}
+        isPracticeTypeSelected={isPracticeTypeSelected}
+      />
 
       <Text color="dimmed" size="sm" className="mb-6">
         Please select at least 4 words and choose a practice mode.
@@ -112,42 +94,16 @@ const PracticeSettings = () => {
             Please select at least one quiz type
           </Text>
         )}
-        <Group align="center" className="mb-4">
-          <Chip
-            checked={selectedPracticeTypes.includes(
-              PracticeType.HanziToDefinition
-            )}
-            onClick={() =>
-              handlePracticeTypeChange(PracticeType.HanziToDefinition)
-            }
-          >
-            {"Hanzi <-> Definition"}
-          </Chip>
-          <Chip
-            checked={selectedPracticeTypes.includes(PracticeType.HanziToPinyin)}
-            onClick={() => handlePracticeTypeChange(PracticeType.HanziToPinyin)}
-          >
-            {"Hanzi <-> Pinyin"}
-          </Chip>
-        </Group>
 
-        <NativeSelect
-          className="mb-4"
-          style={{ maxWidth: "400px" }} // Set max width using inline style
-          data={timerOptions}
-          value={timer}
-          onChange={(event) => setTimer(event.currentTarget.value)}
-          label="Select Timer"
-          radius="md"
-          size="sm"
-          aria-label="Timer Length Select"
+        <PracticeTypeSelector
+          selectedPracticeTypes={selectedPracticeTypes}
+          handlePracticeTypeChange={handlePracticeTypeChange}
         />
+        <TimerSelection timer={timer} setTimer={setTimer} />
 
-        <Switch
-          checked={stopwatchEnabled}
-          onChange={(event) => setStopwatchEnabled(event.currentTarget.checked)}
-          label="Stopwatch"
-          className="mb-4"
+        <StopwatchToggle
+          stopwatchEnabled={stopwatchEnabled}
+          setStopwatchEnabled={setStopwatchEnabled}
         />
       </div>
       <div>
@@ -169,33 +125,11 @@ const PracticeSettings = () => {
         </Button>
       </div>
       <div className="mt-3">
-        {isMobile ? (
-          <Grid className="w-full " gutter={{ base: 2 }}>
-            {words.map((word, index) => (
-              <Grid.Col key={index} span={{ base: 12, xs: 12, md: 12 }}>
-                <WordRow
-                  word={word}
-                  onWordRemove={() => {
-                    onRemove(word);
-                  }}
-                />
-              </Grid.Col>
-            ))}
-          </Grid>
-        ) : (
-          <Grid className="w-full mt-3" gutter={{ base: 4, lg: 8 }}>
-            {words.map((word, index) => (
-              <Grid.Col key={index} span={{ base: 4, xs: 3, md: 2 }}>
-                <WordCard
-                  word={word}
-                  onWordRemove={() => {
-                    onRemove(word);
-                  }}
-                />
-              </Grid.Col>
-            ))}
-          </Grid>
-        )}
+        <WordsAddedDisplay
+          isMobile={isMobile as boolean}
+          onRemove={onRemove}
+          words={words}
+        />
       </div>
 
       <AddWordToPracticeModal
