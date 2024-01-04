@@ -39,7 +39,7 @@ const About = (props: Props) => {
 
       <Space h="md" />
 
-      <Section title="Contact">
+      <Section title="Technologies & Resources Used">
         <Flex
           justify="center"
           align="center"
@@ -47,7 +47,6 @@ const About = (props: Props) => {
           wrap="wrap"
           gap="md"
         >
-          <Title order={2}>Technologies & Resources Used</Title>
           <Text>
             <Anchor
               href="https://www.mdbg.net/chinese/dictionary?page=cedict"
@@ -100,7 +99,6 @@ const About = (props: Props) => {
           wrap="wrap"
           gap="md"
         >
-          <Title order={2}>Other Projects</Title>
           <Text>
             <Anchor href="https://www.anitier.com/" target="_blank">
               AniTier
