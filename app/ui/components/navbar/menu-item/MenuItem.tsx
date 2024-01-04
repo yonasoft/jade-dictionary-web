@@ -19,6 +19,7 @@ const MenuItem = ({ link }: Props) => {
     ));
 
   if (link.sublinks && link.sublinks.length > 0) {
+    // If there are sublinks, render a dropdown menu
     return (
       <Menu trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
         <Menu.Target>
@@ -31,6 +32,7 @@ const MenuItem = ({ link }: Props) => {
       </Menu>
     );
   } else {
+    // Otherwise, render a regular link
     return (
       <Menu trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
         <Link className={classes.link} href={link.link} passHref>

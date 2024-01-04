@@ -16,14 +16,14 @@ import MenuItem from "./menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
 import UserMenu from "../auth-items/UserMenu";
 import ThemeToggler from "../theme-toggler/ThemeToggler";
-import SearchBar from "./search-bar/NavSearchBar";
+import SearchBar from "./nav-search-bar/NavSearchBar";
 import ResultTypeSelector from "../script-selector/ScriptTypeSelector";
 import NavDrawer from "./drawer/NavDrawer";
 import AuthButtons from "../auth-items/AuthButtons";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import AuthItems from "../auth-items/AuthItems";
 import { spotlight } from "@mantine/spotlight";
-import NavSearchBar from "./search-bar/NavSearchBar";
+import NavSearchBar from "./nav-search-bar/NavSearchBar";
 import { LinkData } from "@/app/lib/types/nav";
 import { navLinks } from "@/app/lib/constants/navLinks";
 

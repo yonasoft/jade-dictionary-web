@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import React from "react";
+import { Section } from "./section/section";
 
 type Props = {};
 
@@ -18,38 +19,27 @@ const About = (props: Props) => {
   return (
     <>
       <Center>
-        <Title>About</Title>
+        <Title order={1}>About</Title>
       </Center>
       <Divider my="lg" />
 
-      <section aria-labelledby="article">
-        <Flex
-          justify="center"
-          align="center"
-          direction="column"
-          wrap="wrap"
-          gap="md"
-        >
-          <Title order={2}>Story</Title>
-
-          <Text>
-            &emsp;&emsp;Hello, I am Yonasoft. My passion lies in merging
-            Software Engineering with my varied interests and hobbies. While
-            learning Mandarin to connect with my family in China for future
-            visits, I was inspired to develop a Chinese-English dictionary
-            application. This app features a comprehensive dictionary, lists for
-            word storage and organization, and practice modules to aid
-            memorization. It's crucial to use these words in real-life contexts
-            as well to retain them and achieve fluency in speaking. My goal was
-            to create an easy-to-use, user-friendly interface. I hope you find
-            it helpful and enjoyable!
-          </Text>
-        </Flex>
-      </section>
+      <Section title="Story">
+        <Text>
+          &emsp;&emsp;Hello, I am Yonasoft. My passion lies in merging Software
+          Engineering with my varied interests and hobbies. While learning
+          Mandarin to connect with my family in China for future visits, I was
+          inspired to develop a Chinese-English dictionary application. This app
+          features a comprehensive dictionary, lists for word storage and
+          organization, and practice modules to aid memorization. It's crucial
+          to use these words in real-life contexts as well to retain them and
+          achieve fluency in speaking. My goal was to create an easy-to-use,
+          user-friendly interface. I hope you find it helpful and enjoyable!
+        </Text>
+      </Section>
 
       <Space h="md" />
 
-      <section aria-labelledby="technologies-used">
+      <Section title="Contact">
         <Flex
           justify="center"
           align="center"
@@ -98,11 +88,11 @@ const About = (props: Props) => {
             &nbsp;- for email contact form.
           </Text>
         </Flex>
-      </section>
+      </Section>
 
       <Space h="md" />
 
-      <section aria-labelledby="other-projects">
+      <Section title="Other Projects">
         <Flex
           justify="center"
           align="center"
@@ -127,7 +117,7 @@ const About = (props: Props) => {
             &nbsp; - Handball court score and queue tracker.
           </Text>
         </Flex>
-      </section>
+      </Section>
     </>
   );
 };
