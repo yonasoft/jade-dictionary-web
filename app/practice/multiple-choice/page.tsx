@@ -39,48 +39,7 @@ const MultipleChoicePage = (props: Props) => {
   const [allAnswers, setAllAnswers] = useState<boolean[]>([]);
   const [isPaused, setIsPaused] = useState(false);
 
-  useEffect(() => {
-    const savedPracticeMode = JSON.parse(
-      sessionStorage.getItem("practiceMode") || '"flash-cards"'
-    );
-    const savedPracticeTypes = JSON.parse(
-      sessionStorage.getItem("practiceTypes") || "[]"
-    );
-    const savedTimer = JSON.parse(
-      sessionStorage.getItem("practiceTimer") || '"none"'
-    );
-    const savedStopwatchEnabled = JSON.parse(
-      sessionStorage.getItem("practiceStopwatch") || "false"
-    );
-
-    const savedWords = JSON.parse(
-      sessionStorage.getItem("practiceWords") || "[]"
-    );
-    if (savedWords.length > 0) {
-      setWords(shuffleArray(savedWords));
-    }
-
-    if (savedPracticeTypes.length > 0) {
-      setSelectedPracticeTypes(savedPracticeTypes);
-    }
-
-    if (savedTimer !== "none") setTimerValue(savedTimer);
-
-    if (stopwatchEnabled !== savedStopwatchEnabled)
-      setStopwatchEnabled(savedStopwatchEnabled);
-  }, []);
-
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
-    }
-  }, [timerValue]);
-
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
-    }
-  }, [timerValue]);
+ 
 
   useEffect(() => {
     let countdownInterval: NodeJS.Timeout | null = null;

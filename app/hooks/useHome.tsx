@@ -1,8 +1,8 @@
-"use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import { performSearch } from "../lib/utils/dictionary";
 import { Word } from "../lib/types/word";
+import { useMantineColorScheme } from "@mantine/core";
 
 const useHome = () => {
   const { firestore } = useFirebaseContext();
@@ -12,22 +12,29 @@ const useHome = () => {
   const [searched, setSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { colorScheme } = useMantineColorScheme();
+  const [titleColor, setTitleColor] = useState("black");
 
-  const loadSessions = async () => {
+  const loadHomeSessionStorage = async () => {
     const loadedQuery = JSON.parse(sessionStorage.getItem("homeQuery") || '""');
     const loadedResults = JSON.parse(
       sessionStorage.getItem("homeResults") || "[]"
     );
-    setQuery(loadedQuery);
-    setResults(loadedResults);
+    console.log("loadedQuery", loadedQuery);
+    console.log("loadedResults", loadedResults);
+    if (loadedQuery !== "") setQuery(loadedQuery);
+    if (loadedResults.length > 0) setResults(loadedResults);
     if (loadedQuery) setSearched(true);
   };
 
-  const saveQuerySession = async () => {
+  const saveQuery = async () => {
     sessionStorage.setItem("homeQuery", JSON.stringify(query));
+    console.log("saved query", query);
   };
-  const saveResultSession = async () => {
+
+  const saveResults = async () => {
     sessionStorage.setItem("homeResults", JSON.stringify(results));
+    console.log("saved results", results);
   };
 
   const onSearch = async (query: string) => {
@@ -49,9 +56,14 @@ const useHome = () => {
     results,
     onSearch,
     searched,
-    loadSessions,
-    saveQuerySession,
-    saveResultSession,
+    titleColor,
+    colorScheme,
+    setTitleColor,
+    setResults,
+    setSearched,
+    saveQuery,
+    saveResults,
+    loadHomeSessionStorage,
   };
 };
 

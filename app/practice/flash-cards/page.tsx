@@ -18,7 +18,7 @@ import AnswerButtons from "../components/flash-card/answer-buttons/AnswerButtons
 
 type Props = {};
 
-const FlashCardsPage = (props: Props) => {
+const FlashCardsPage = () => {
   const {
     selectedPracticeTypes,
     words,
@@ -28,15 +28,52 @@ const FlashCardsPage = (props: Props) => {
     selectedAnswer,
     currentWordIndex,
     secondsLeft,
+    setSecondsLeft,
     timeUp,
+    setTimeUp,
     answerCounts,
     allAnswers,
     isPaused,
-    togglePause,
     handleAnswer,
     isAnswerSelected,
     handleNext,
+    loadPracticeWords,
+    togglePause,
   } = useFlashCards();
+
+  useEffect(() => {
+    loadPracticeWords();
+  }, []);
+
+  useEffect(() => {
+    if (timerValue !== "none") {
+      setSecondsLeft(parseInt(timerValue));
+    }
+  }, [timerValue]);
+
+  useEffect(() => {
+    if (timerValue !== "none") {
+      setSecondsLeft(parseInt(timerValue));
+    }
+  }, [timerValue]);
+
+  useEffect(() => {
+    let countdownInterval: NodeJS.Timeout | null = null;
+
+    if (secondsLeft > 0 && !isPaused) {
+      countdownInterval = setInterval(() => {
+        setSecondsLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (secondsLeft === 0 && timerValue !== "none" && !selectedAnswer) {
+      setTimeUp(true);
+      handleAnswer("wrong");
+      stopwatch.pause();
+    }
+
+    return () => {
+      if (countdownInterval) clearInterval(countdownInterval);
+    };
+  }, [secondsLeft, isPaused]);
 
   return currentWordIndex >= words.length ? (
     <FlashCardResults

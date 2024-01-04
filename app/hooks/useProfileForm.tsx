@@ -1,4 +1,3 @@
-"use client";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import { checkEmailExists } from "../lib/firebase/storage/user";

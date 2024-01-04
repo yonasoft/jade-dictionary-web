@@ -1,39 +1,17 @@
 "use client";
-import { Suspense, lazy, memo, useEffect, useMemo, useState } from "react";
+import { lazy, useEffect } from "react";
 import {
   BackgroundImage,
-  Box,
-  Card,
   Center,
   Container,
   Flex,
-  Grid,
-  Loader,
   Paper,
   Text,
   Title,
-  useMantineColorScheme,
-  useMantineTheme,
 } from "@mantine/core";
-import SearchBar from "./ui/components/navbar/components/nav-search-bar/NavSearchBar";
-import { spotlight } from "@mantine/spotlight";
 import HomeSearchBar from "./components/home-search-bar/HomeSearchBar";
-import { useFirebaseContext } from "./providers/FirebaseProvider";
-import { searchWords } from "./lib/firebase/storage/words";
-import {
-  Firestore,
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
-import { handleKeyPress } from "./lib/utils/events";
-import Loading from "./ui/components/results/loading/Loading";
-import { Word } from "./lib/types/word";
-import { performSearch } from "./lib/utils/dictionary";
 import { performAddWordToList } from "./lib/utils/lists";
-import useHomeSessions from "./hooks/useHomeSessions";
-import useHome from "./hooks/useHomeSessions";
+import useHome from "./hooks/useHome";
 
 //Only import the components that are needed
 const WordSearchResults = lazy(
@@ -41,17 +19,19 @@ const WordSearchResults = lazy(
 );
 
 const Home = () => {
-  const { colorScheme } = useMantineColorScheme();
-  const [titleColor, setTitleColor] = useState("black");
   const {
     query,
     setQuery,
     results,
+    setResults,
     onSearch,
     searched,
-    loadSessions,
-    saveQuerySession,
-    saveResultSession,
+    titleColor,
+    setTitleColor,
+    colorScheme,
+    loadHomeSessionStorage,
+    saveQuery,
+    saveResults,
   } = useHome();
 
   useEffect(() => {
@@ -59,15 +39,15 @@ const Home = () => {
   }, [colorScheme]);
 
   useEffect(() => {
-    loadSessions();
+    loadHomeSessionStorage();
   }, []);
 
   useEffect(() => {
-    saveQuerySession();
+    saveQuery();
   }, [query]);
 
   useEffect(() => {
-    saveResultSession();
+    saveResults();
   }, [results]);
 
   return (

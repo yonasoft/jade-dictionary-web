@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect } from "react";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import { User } from "firebase/auth";

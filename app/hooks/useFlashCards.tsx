@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Word } from "../lib/types/word";
 import { useStopwatch } from "react-timer-hook";
 import { shuffleArray } from "../lib/utils/practice";
@@ -23,7 +23,47 @@ export const useFlashCards = () => {
   const [allAnswers, setAllAnswers] = useState<string[]>([]);
   const [isPaused, setIsPaused] = useState(false);
 
-  useEffect(() => {
+  const handleAnswer = (answer: string) => {
+    setSelectedAnswer(answer);
+
+    setAllAnswers((prev) => [...prev, answer]);
+
+    if (answer === "wrong" || answer === "neutral" || answer === "correct") {
+      setAnswerCounts((prev) => ({
+        ...prev,
+        [answer]: prev[answer] + 1,
+      }));
+    }
+  };
+
+  const isAnswerSelected = (answer: string) => {
+    return selectedAnswer === answer;
+  };
+
+  const handleNext = () => {
+    //Reason for checking if currentWordIndex >= words.length - 1 instead of checking if icurrentWordIndex >= words.length:
+    //Set State is asynchronous, so the currentWordIndex will not be updated immediately.
+    //So the code relating to the timer/stopwatch will not work properly if we set state first.
+    if (currentWordIndex >= words.length - 1) {
+      stopwatch.pause();
+      setIsPaused(true);
+      setCurrentWordIndex((prev) => prev + 1);
+    } else {
+      setTimeUp(false);
+      setCurrentWordIndex((prev) => prev + 1);
+      if (timerValue !== "none") {
+        setSecondsLeft(parseInt(timerValue));
+      }
+      setSelectedAnswer(null);
+
+      if (currentWordIndex < words.length - 1 && !stopwatch.isRunning) {
+        stopwatch.start();
+      }
+      setIsPaused(false);
+    }
+  };
+
+  const loadPracticeWords = () => {
     const savedPracticeTypes = JSON.parse(
       sessionStorage.getItem("practiceTypes") || "[]"
     );
@@ -49,19 +89,7 @@ export const useFlashCards = () => {
 
     if (stopwatchEnabled !== savedStopwatchEnabled)
       setStopwatchEnabled(savedStopwatchEnabled);
-  }, []);
-
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
-    }
-  }, [timerValue]);
-
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
-    }
-  }, [timerValue]);
+  };
 
   const togglePause = () => {
     setIsPaused(!isPaused);
@@ -69,65 +97,6 @@ export const useFlashCards = () => {
       stopwatch.start();
     } else {
       stopwatch.pause();
-    }
-  };
-
-  useEffect(() => {
-    let countdownInterval: NodeJS.Timeout | null = null;
-
-    if (secondsLeft > 0 && !isPaused) {
-      countdownInterval = setInterval(() => {
-        setSecondsLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (secondsLeft === 0 && timerValue !== "none" && !selectedAnswer) {
-      setTimeUp(true);
-      handleAnswer("wrong");
-      stopwatch.pause();
-    }
-
-    return () => {
-      if (countdownInterval) clearInterval(countdownInterval);
-    };
-  }, [secondsLeft, isPaused]);
-
-  const handleAnswer = (answer: string) => {
-    setSelectedAnswer(answer);
-
-    setAllAnswers((prev) => [...prev, answer]);
-
-    if (answer === "wrong" || answer === "neutral" || answer === "correct") {
-      setAnswerCounts((prev) => ({
-        ...prev,
-        [answer]: prev[answer] + 1,
-      }));
-    }
-  };
-
-  const isAnswerSelected = (answer: string) => {
-    return selectedAnswer === answer;
-  };
-
-  const handleNext = () => {
-    //Reason for checking if currentWordIndex >= words.length - 1 instead of checking if icurrentWordIndex >= words.length:
-    //Set State is asynchronous, so the currentWordIndex will not be updated immediately.
-    //So the code relating to the timer/stopwatch will not work properly if we set state first.
-    if (currentWordIndex >= words.length - 1) {
-      
-      stopwatch.pause();
-      setIsPaused(true);
-      setCurrentWordIndex((prev) => prev + 1);
-    } else {
-      setTimeUp(false);
-      setCurrentWordIndex((prev) => prev + 1);
-      if (timerValue !== "none") {
-        setSecondsLeft(parseInt(timerValue));
-      }
-      setSelectedAnswer(null);
-
-      if (currentWordIndex < words.length - 1 && !stopwatch.isRunning) {
-        stopwatch.start();
-      }
-      setIsPaused(false);
     }
   };
 
@@ -155,10 +124,11 @@ export const useFlashCards = () => {
     setAllAnswers,
     isPaused,
     setIsPaused,
-    togglePause,
     handleAnswer,
     isAnswerSelected,
     handleNext,
+    loadPracticeWords,
+    togglePause,
   };
 };
 

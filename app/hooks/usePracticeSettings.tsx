@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { PracticeType } from "../lib/types/practice";
 import { Word } from "../lib/types/word";
