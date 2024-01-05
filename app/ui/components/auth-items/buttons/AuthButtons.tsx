@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@mantine/core";
-import classes from "./AuthItems.module.css";
 import { modals } from "@mantine/modals";
-import AuthModal from "../modals/auth-modal/AuthModal";
+import AuthModal from "../../modals/auth-modal/AuthModal";
 
 type Props = {
   additionalOnClick?: () => void;

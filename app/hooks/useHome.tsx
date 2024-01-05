@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFirebaseContext } from "../providers/FirebaseProvider";
 import { performSearch } from "../lib/utils/dictionary";
 import { Word } from "../lib/types/word";

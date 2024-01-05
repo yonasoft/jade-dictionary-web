@@ -14,13 +14,6 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import {
-  Firestore,
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
 import React, { lazy, useEffect } from "react";
 
 type Props = {

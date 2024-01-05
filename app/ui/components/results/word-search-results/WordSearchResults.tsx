@@ -1,7 +1,6 @@
-import React, { RefAttributes, Suspense, lazy } from "react";
-import { Grid, Center, Text, GridProps, StyleProp } from "@mantine/core";
+import React, { Suspense, lazy } from "react";
+import { Grid, Center, Text } from "@mantine/core";
 import Loading from "../loading/Loading";
-import { ColSpan } from "@mantine/core/lib/components/Grid/GridCol/GridCol";
 import { Firestore } from "firebase/firestore";
 import { Word } from "@/app/lib/types/word";
 import { WordList } from "@/app/lib/types/word-list";

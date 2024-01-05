@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, {  } from "react";
 import {
   Card,
-  Text,
   Menu,
-  Button,
   Group,
-  Divider,
-  useMantineTheme,
   useMantineColorScheme,
   Highlight,
   Flex,
 } from "@mantine/core";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import { getWordsByIds } from "@/app/lib/firebase/storage/words";
 import {
-  IconDeviceGamepad,
   IconDotsVertical,
-  IconRun,
   IconTrash,
 } from "@tabler/icons-react";
 import { deleteWordList } from "@/app/lib/firebase/storage/wordLists";
-import { doc, query } from "firebase/firestore";
-import classes from "./WordListCard.module.css";
 import Link from "next/link";
 import { WordList } from "@/app/lib/types/word-list";
 

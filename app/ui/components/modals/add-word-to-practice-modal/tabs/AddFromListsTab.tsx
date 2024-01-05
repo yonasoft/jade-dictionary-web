@@ -1,7 +1,6 @@
 "use client";
-import { Button, Input, ScrollArea, Title } from "@mantine/core";
+import { Button, Input, Title } from "@mantine/core";
 import React, { useState } from "react";
-import WordSearchResults from "../../../results/word-search-results/WordSearchResults";
 import { IconSearch } from "@tabler/icons-react";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 

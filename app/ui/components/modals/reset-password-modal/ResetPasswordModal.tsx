@@ -1,5 +1,5 @@
 "use client";
-import { ContextModalProps, closeModal, modals } from "@mantine/modals";
+import { ContextModalProps } from "@mantine/modals";
 import { Text, Button, Input, Group } from "@mantine/core";
 import React, { useState } from "react";
 import { sendResetPassword } from "@/app/lib/firebase/authentication";

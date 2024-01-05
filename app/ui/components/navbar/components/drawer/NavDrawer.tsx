@@ -2,9 +2,7 @@ import React from "react";
 import { Box, Divider, Drawer, Group, RemoveScroll } from "@mantine/core";
 import JadeLogo from "../../../JadeLogo";
 import DrawerNavLinks from "./DrawerNavLinks";
-import ResultTypeSelector from "../script-selector/ScriptTypeSelector";
 import ThemeToggler from "../theme-toggler/ThemeToggler";
-import AuthButtons from "../../../auth-items/AuthButtons";
 import AuthItems from "../../../auth-items/AuthItems";
 import { LinkData } from "@/app/lib/types/nav";
 

@@ -1,15 +1,12 @@
 import {
   Anchor,
-  Avatar,
   Center,
   Divider,
   Flex,
-  Group,
   Space,
   Text,
   Title,
 } from "@mantine/core";
-import Link from "next/link";
 import React from "react";
 import { Section } from "./section/section";
 

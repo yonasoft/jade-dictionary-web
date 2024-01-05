@@ -1,8 +1,4 @@
 "use client";
-import {
-  signInWithFacebook,
-  signInWithGoogle,
-} from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { Button, Center, PasswordInput, Text, TextInput } from "@mantine/core";
 import { ContextModalProps } from "@mantine/modals";
@@ -15,8 +11,8 @@ import {
   reauthenticateWithPopup,
 } from "firebase/auth";
 import React, { useState } from "react";
-import { GoogleButton } from "../../auth-items/GoogleButton";
-import { FacebookButton } from "../../auth-items/FacebookButton";
+import { GoogleButton } from "../../auth-items/buttons/GoogleButton";
+import { FacebookButton } from "../../auth-items/buttons/FacebookButton";
 
 const ReauthenticateModal = ({
   context,
@@ -114,7 +110,7 @@ const ReauthenticateModal = ({
       </form>
     );
   };
-  
+
   const showGoogleLogin = () => {
     return (
       <>

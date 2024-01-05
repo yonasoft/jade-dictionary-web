@@ -1,18 +1,15 @@
 "use client";
 import React, { useState, useContext, createContext, useEffect } from "react";
 import { initializeFirebase } from "../lib/firebase/init";
-import { getFirestore, doc, updateDoc, Firestore } from "firebase/firestore";
+import { getFirestore, Firestore } from "firebase/firestore";
 import { User } from "@firebase/auth";
 import { Auth, getAuth } from "firebase/auth";
 import {
-  loginEmailAndPassword,
   monitorAuthState,
 } from "../lib/firebase/authentication";
 import {
   FirebaseStorage,
-  StorageReference,
   getStorage,
-  ref,
 } from "firebase/storage";
 import { Database, getDatabase } from "firebase/database";
 import { getUserWordLists } from "../lib/firebase/storage/wordLists";

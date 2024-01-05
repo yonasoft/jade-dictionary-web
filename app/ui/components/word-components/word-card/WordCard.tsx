@@ -4,16 +4,12 @@ import React, { useState } from "react";
 import {
   Button,
   Card,
-  MantineThemeContext,
   Menu,
   useMantineColorScheme,
   useMantineTheme,
-  Text,
   Highlight,
 } from "@mantine/core";
 import { IconDotsVertical, IconTrash } from "@tabler/icons-react";
-import { removeWordFromList } from "@/app/lib/firebase/storage/wordLists";
-import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordDetailModal from "../WordDetailModal";
 import { Word } from "@/app/lib/types/word";
 

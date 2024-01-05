@@ -6,14 +6,12 @@ import {
   Group,
   useMantineColorScheme,
   useMantineTheme,
-  Text,
   Highlight,
   Menu,
   Card,
   Flex,
 } from "@mantine/core";
 import { IconDotsVertical, IconTrash } from "@tabler/icons-react";
-import { removeWordFromList } from "@/app/lib/firebase/storage/wordLists";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import WordDetailModal from "../WordDetailModal";
 import { Word } from "@/app/lib/types/word";

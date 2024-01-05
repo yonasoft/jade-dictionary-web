@@ -1,13 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Divider, Tabs, Text } from "@mantine/core";
+import { Divider, Tabs, Text } from "@mantine/core";
 import SignUpTab from "./SignUpTab";
 import LoginTab from "./LoginTab";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
-import { GoogleButton } from "../../auth-items/GoogleButton";
-import { FacebookButton } from "../../auth-items/FacebookButton";
+import { GoogleButton } from "../../auth-items/buttons/GoogleButton";
 import {
-  signInWithFacebook,
   signInWithGoogle,
 } from "@/app/lib/firebase/authentication";
 import { modals } from "@mantine/modals";

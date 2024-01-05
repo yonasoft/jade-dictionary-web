@@ -1,32 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Text,
-  Card,
-  Group,
   Button,
-  SimpleGrid,
   Title,
   useMantineTheme,
-  Grid,
-  Chip,
-  NativeSelect,
-  Switch,
 } from "@mantine/core";
-import { IconArrowRight, IconCards, IconListCheck } from "@tabler/icons-react";
-import PracticeModeCard from "./components/practice-settings/practice-mode-card/PracticeModeCard";
-import WordRow from "../ui/components/word-components/word-row/WordRow";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
-import WordCard from "../ui/components/word-components/word-card/WordCard";
 import AddWordToPracticeModal from "../ui/components/modals/add-word-to-practice-modal/AddWordToPracticeModal";
-import { on } from "events";
-import router from "next/router";
 import Link from "next/link";
-import { PracticeType, timerOptions } from "../lib/types/practice";
 import { Word } from "../lib/types/word";
 import { usePracticeSettings } from "../hooks/usePracticeSettings";
-import { practiceModes } from "../lib/constants/practiceModes";
 import PracticeModeSelector from "./components/practice-settings/practice-mode-selector/PracticeModeSelector";
 import WordsAddedDisplay from "./components/practice-settings/words-added-display/WordsAddedDisplay";
 import PracticeTypeSelector from "./components/practice-settings/practice-type-selector/PracticeTypeSelector";

@@ -8,7 +8,7 @@ import {
   PasswordInput,
   Text,
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useProfileForm } from "@/app/hooks/useProfileForm";
 
 type Props = {};

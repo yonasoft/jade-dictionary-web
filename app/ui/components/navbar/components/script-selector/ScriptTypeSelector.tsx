@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Text,
   HoverCard,
   HoverCardDropdown,
   HoverCardTarget,
   SegmentedControl,
-  SegmentedControlItem,
   Group,
 } from "@mantine/core";
 import classes from "./ScriptTypeSelector.module.css";

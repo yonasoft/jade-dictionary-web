@@ -1,8 +1,7 @@
 "use client";
-import { Button, Input, Textarea, Title, Text, Center } from "@mantine/core";
-import { ContextModalProps, modals } from "@mantine/modals";
-import classes from "./VerifyEmailModal.module.css";
-import React, { useEffect, useState } from "react";
+import { Button, Input, Textarea, Center } from "@mantine/core";
+import { ContextModalProps } from "@mantine/modals";
+import React, { useState } from "react";
 import { createWordList } from "@/app/lib/firebase/storage/wordLists";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 

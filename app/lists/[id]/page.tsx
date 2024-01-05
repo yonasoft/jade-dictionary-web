@@ -18,10 +18,9 @@ import {
   Grid,
   ActionIcon,
 } from "@mantine/core";
-import { IconSearch, IconX } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 import { doc } from "firebase/firestore";
 import { notifications } from "@mantine/notifications";
-import classes from "./page.module.css";
 import { Word } from "@/app/lib/types/word";
 import { WordList } from "@/app/lib/types/word-list";
 

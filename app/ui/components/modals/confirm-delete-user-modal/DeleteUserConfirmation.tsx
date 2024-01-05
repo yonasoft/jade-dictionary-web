@@ -1,22 +1,18 @@
 "use client";
 import {
   ContextModalProps,
-  closeModal,
-  modals,
   openContextModal,
 } from "@mantine/modals";
 import { Text, Button, Group, Input } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { deleteAUser } from "@/app/lib/firebase/authentication";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import classes from "./DeleteUserConfirmation.module.css";
 
-type Props = {};
 
 const DeleteUserConfirmation = ({
   context,
   id,
-  innerProps,
 }: ContextModalProps<{ setRequireReauth: () => void }>) => {
   const firebase = useFirebaseContext();
   const [confirmInput, setConfirmInput] = useState("");

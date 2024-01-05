@@ -6,9 +6,9 @@ import {
   randomizePracticeType,
   randomizeQAWordAspects,
 } from "@/app/lib/utils/practice";
-import { extractWordAspect, textifyHanzi } from "@/app/lib/utils/words";
+import { extractWordAspect } from "@/app/lib/utils/words";
 import { Center, Radio, Title } from "@mantine/core";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {
   words: Word[];

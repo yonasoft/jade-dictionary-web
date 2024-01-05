@@ -2,7 +2,7 @@
 import { Button, Card, Group, Text, rem } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
 import classes from "./AccountSection.module.css";
-import React, { useState } from "react";
+import React from "react";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { openContextModal } from "@mantine/modals";
 

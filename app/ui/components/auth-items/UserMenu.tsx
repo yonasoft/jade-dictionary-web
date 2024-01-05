@@ -1,20 +1,16 @@
 "use client";
 import { signOutUser } from "@/app/lib/firebase/authentication";
 import {
-  FirebaseContext,
   useFirebaseContext,
 } from "@/app/providers/FirebaseProvider";
-import { ActionIcon, Avatar, Group, Menu, Text, rem } from "@mantine/core";
+import { Avatar, Group, Menu, Text, rem } from "@mantine/core";
 import {
   IconChevronDown,
   IconChevronRight,
-  IconDots,
   IconLogout,
-  IconUser,
-  IconUserCircle,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 
 type Props = {};
 

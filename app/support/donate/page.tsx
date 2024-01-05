@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Button, Container, Anchor, Title, Center } from "@mantine/core";
+import { Text, Button, Title, Center } from "@mantine/core";
 
 const Donate = () => {
   return (

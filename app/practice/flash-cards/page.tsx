@@ -1,18 +1,13 @@
 "use client";
-import { Divider, Button, Card, Group, Center, Flex } from "@mantine/core";
+import { Divider, Button, Group, Flex } from "@mantine/core";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import { useStopwatch } from "react-timer-hook";
+import React, { useEffect } from "react";
 import FlipCard from "../components/flash-card/flip-card/FlipCard";
 import {
   IconArrowRight,
-  IconCheck,
-  IconCircle,
-  IconX,
 } from "@tabler/icons-react";
 import FlashCardResults from "../components/flash-card/flash-card-results/FlashCardResults";
-import { formatTime, shuffleArray } from "@/app/lib/utils/practice";
-import { Word } from "@/app/lib/types/word";
+import { formatTime } from "@/app/lib/utils/practice";
 import useFlashCards from "@/app/hooks/useFlashCards";
 import AnswerButtons from "../components/flash-card/answer-buttons/AnswerButtons";
 

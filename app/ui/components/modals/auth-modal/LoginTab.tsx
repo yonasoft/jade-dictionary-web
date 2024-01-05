@@ -3,28 +3,22 @@ import {
   Button,
   Center,
   Checkbox,
-  Group,
   PasswordInput,
   TextInput,
   Text,
-  Input,
 } from "@mantine/core";
-import React, { ServerContextJSONValue, useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "@mantine/form";
 import {
-  FirebaseContext,
   useFirebaseContext,
 } from "@/app/providers/FirebaseProvider";
 import { modals, openContextModal } from "@mantine/modals";
-import classes from "./AuthModal.module.css";
 import {
   browserLocalPersistence,
   browserSessionPersistence,
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { send } from "process";
-import { sendResetPassword } from "@/app/lib/firebase/authentication";
 
 type Props = {};
 

@@ -1,29 +1,14 @@
 "use client";
-import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import {
-  Accordion,
   ActionIcon,
   Button,
   Center,
-  Grid,
   Group,
   Input,
-  Loader,
-  ScrollArea,
-  Text,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
-import React, { Suspense, lazy, memo, useEffect, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import { Spotlight, spotlight } from "@mantine/spotlight";
-import { searchWords } from "@/app/lib/firebase/storage/words";
-import WordResult from "../../../word-components/word-result/WordResult";
-import {
-  Firestore,
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
 import { handleKeyPress } from "@/app/lib/utils/events";
 import NothingFound from "../../../results/nothing-found/NothingFound";
 import { performAddWordToList } from "@/app/lib/utils/lists";

@@ -1,6 +1,6 @@
 "use client";
 import { account, dictionary, lists, practice } from "@/app/lib/constants/faq";
-import { Accordion, Center, Divider, Title, Text, Space } from "@mantine/core";
+import { Center, Divider, Title, Space } from "@mantine/core";
 import React from "react";
 import { FAQAccordion } from "./FAQAccordian";
 
@@ -28,7 +28,7 @@ const FAQ = (props: Props) => {
         <Center>
           <Title order={2}>Dictionary</Title>
         </Center>
-        <FAQAccordion items={account} />
+        <FAQAccordion items={dictionary} />
       </section>
 
       <Space my="sm" />
@@ -38,7 +38,7 @@ const FAQ = (props: Props) => {
           <Title order={2}>Lists</Title>
         </Center>
 
-        <FAQAccordion items={account} />
+        <FAQAccordion items={lists} />
       </section>
 
       <Space my="sm" />
@@ -47,7 +47,7 @@ const FAQ = (props: Props) => {
         <Center>
           <Title order={2}>Practice</Title>
         </Center>
-        <FAQAccordion items={account} />
+        <FAQAccordion items={practice} />
       </section>
     </div>
   );

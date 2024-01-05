@@ -1,30 +1,15 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 
-import { Group, Burger, Container, Box } from "@mantine/core";
+import { Group, Burger, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconDeviceGamepad,
-  IconGoGame,
-  IconHelp,
-  IconHome,
-  IconList,
-} from "@tabler/icons-react";
-import classes from "./Navbar.module.css";
 import MenuItem from "./components/menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
-import UserMenu from "../auth-items/UserMenu";
 import ThemeToggler from "./components/theme-toggler/ThemeToggler";
-import SearchBar from "./components/nav-search-bar/NavSearchBar";
-import ResultTypeSelector from "./components/script-selector/ScriptTypeSelector";
 import NavDrawer from "./components/drawer/NavDrawer";
-import AuthButtons from "../auth-items/AuthButtons";
-import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import AuthItems from "../auth-items/AuthItems";
-import { spotlight } from "@mantine/spotlight";
 import NavSearchBar from "./components/nav-search-bar/NavSearchBar";
-import { LinkData } from "@/app/lib/types/nav";
 import { navLinks } from "@/app/lib/constants/navLinks";
 
 const Navbar = () => {

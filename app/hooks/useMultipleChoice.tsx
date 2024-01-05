@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Word } from "../lib/types/word";
 import {
   isMultipleChoiceAnswerCorrect,

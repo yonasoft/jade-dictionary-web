@@ -2,27 +2,20 @@ import { Word } from "@/app/lib/types/word";
 import { WordList } from "@/app/lib/types/word-list";
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import {
-  Accordion,
   Button,
   Card,
   Flex,
   Group,
   Highlight,
-  MantineThemeProvider,
   Menu,
-  Text,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import {
   Firestore,
-  arrayUnion,
-  doc,
-  serverTimestamp,
-  updateDoc,
 } from "firebase/firestore";
-import React, { lazy, useEffect } from "react";
+import React, {  } from "react";
 
 type Props = {
   query: string;

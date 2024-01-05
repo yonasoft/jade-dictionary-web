@@ -2,7 +2,7 @@
 import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import React, { useEffect } from "react";
 import UserMenu from "./UserMenu";
-import AuthButtons from "./AuthButtons";
+import AuthButtons from "./buttons/AuthButtons";
 
 type Props = {
   additionalOnClick?: () => void;

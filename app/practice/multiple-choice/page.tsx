@@ -1,22 +1,15 @@
 "use client";
 import { Button, Divider, Flex, Group } from "@mantine/core";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { useStopwatch } from "react-timer-hook";
-import FlipCard from "../components/flash-card/flip-card/FlipCard";
+import React, { useEffect } from "react";
 import {
   IconArrowRight,
-  IconCheck,
-  IconCircle,
-  IconX,
 } from "@tabler/icons-react";
 import MultipleChoiceCard from "../components/multiple-choice/multiple-choice-card/MultipleChoiceCard";
 import {
   formatTime,
   isMultipleChoiceAnswerCorrect,
-  shuffleArray,
 } from "@/app/lib/utils/practice";
-import { Word } from "@/app/lib/types/word";
 import MultipleChoiceResults from "../components/multiple-choice/multiple-choice-results/MultipleChoiceResults";
 import useMultipleChoice from "@/app/hooks/useMultipleChoice";
 

@@ -1,25 +1,6 @@
-import React, { memo, useState } from "react";
+import React, {  } from "react";
 
-import {
-  ActionIcon,
-  HoverCard,
-  TextInput,
-  Text,
-  rem,
-  List,
-} from "@mantine/core";
-import {
-  Spotlight,
-  SpotlightAction,
-  SpotlightActionData,
-  spotlight,
-} from "@mantine/spotlight";
-import { IconArrowRight, IconHome, IconSearch } from "@tabler/icons-react";
 
-import classes from "./HomeSearchBar.module.css";
-import { update } from "firebase/database";
-import { Firestore } from "firebase/firestore";
-import { useFirebaseContext } from "@/app/providers/FirebaseProvider";
 import { handleKeyPress } from "@/app/lib/utils/events";
 import { SearchHoverCard } from "../../ui/components/hover-cards/SearchHoverCard";
 import { SearchInput } from "../../ui/components/search-input/SearchInput";

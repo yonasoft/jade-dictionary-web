@@ -4,7 +4,6 @@ import WordCard from "@/app/ui/components/word-components/word-card/WordCard";
 import WordRow from "@/app/ui/components/word-components/word-row/WordRow";
 import {
   Accordion,
-  AccordionPanel,
   Button,
   Grid,
   Group,
