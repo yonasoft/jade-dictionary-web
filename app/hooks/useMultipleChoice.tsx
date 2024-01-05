@@ -1,15 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Word } from "../lib/types/word";
-import { shuffleArray } from "../lib/utils/practice";
+import {
+  isMultipleChoiceAnswerCorrect,
+  shuffleArray,
+} from "../lib/utils/practice";
+import { useStopwatch } from "react-timer-hook";
 
-type Props = {};
-
-const useMultipleChoice= (props: Props) => {
+const useMultipleChoice = () => {
   const [selectedPracticeTypes, setSelectedPracticeTypes] = useState([]);
   const [words, setWords] = useState<Word[]>([]);
   const [timerValue, setTimerValue] = useState("none");
   const [stopwatchEnabled, setStopwatchEnabled] = useState(false);
+  const stopwatch = useStopwatch({ autoStart: true });
   const [selectedAnswer, setSelectedAnswer] = useState<Word | null>(null);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(0);
@@ -18,7 +21,7 @@ const useMultipleChoice= (props: Props) => {
   const [allAnswers, setAllAnswers] = useState<boolean[]>([]);
   const [isPaused, setIsPaused] = useState(false);
 
-  useEffect(() => {
+  const loadPracticeSession = () => {
     const savedPracticeMode = JSON.parse(
       sessionStorage.getItem("practiceMode") || '"flash-cards"'
     );
@@ -47,21 +50,74 @@ const useMultipleChoice= (props: Props) => {
 
     if (stopwatchEnabled !== savedStopwatchEnabled)
       setStopwatchEnabled(savedStopwatchEnabled);
-  }, []);
+  };
 
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
+  const handleNext = () => {
+    if (currentWordIndex >= words.length - 1) {
+      stopwatch.pause();
+      setIsPaused(true);
+      const isAnswerCorrect = isMultipleChoiceAnswerCorrect(
+        words[currentWordIndex],
+        selectedAnswer
+      );
+      setAllAnswers((prev) => [...prev, isAnswerCorrect]);
+      setCurrentWordIndex((prev) => prev + 1);
+    } else {
+      const isAnswerCorrect = isMultipleChoiceAnswerCorrect(
+        words[currentWordIndex],
+        selectedAnswer
+      );
+      setAllAnswers((prev) => [...prev, isAnswerCorrect]);
+      setTimeUp(false);
+      setCurrentWordIndex((prev) => prev + 1);
+      if (timerValue !== "none") {
+        setSecondsLeft(parseInt(timerValue));
+      }
+      setSelectedAnswer(null);
+
+      if (currentWordIndex < words.length - 1 && !stopwatch.isRunning) {
+        stopwatch.start();
+      }
+      setIsPaused(false);
     }
-  }, [timerValue]);
+  };
 
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
+  const togglePause = () => {
+    setIsPaused(!isPaused);
+    if (isPaused) {
+      stopwatch.start();
+    } else {
+      stopwatch.pause();
     }
-  }, [timerValue]);
-
-  return {};
+  };
+  return {
+    selectedPracticeTypes,
+    setSelectedPracticeTypes,
+    words,
+    setWords,
+    timerValue,
+    setTimerValue,
+    stopwatchEnabled,
+    setStopwatchEnabled,
+    stopwatch,
+    selectedAnswer,
+    setSelectedAnswer,
+    currentWordIndex,
+    setCurrentWordIndex,
+    secondsLeft,
+    setSecondsLeft,
+    timeUp,
+    setTimeUp,
+    answerCounts,
+    setAnswerCounts,
+    allAnswers,
+    setAllAnswers,
+    isPaused,
+    setIsPaused,
+    handleNext,
+    togglePause,
+    loadPracticeSession,
+  };
 };
 
 export default useMultipleChoice;

@@ -37,19 +37,13 @@ const FlashCardsPage = () => {
     handleAnswer,
     isAnswerSelected,
     handleNext,
-    loadPracticeWords,
     togglePause,
+    loadPracticeSession,
   } = useFlashCards();
 
   useEffect(() => {
-    loadPracticeWords();
+    loadPracticeSession();
   }, []);
-
-  useEffect(() => {
-    if (timerValue !== "none") {
-      setSecondsLeft(parseInt(timerValue));
-    }
-  }, [timerValue]);
 
   useEffect(() => {
     if (timerValue !== "none") {

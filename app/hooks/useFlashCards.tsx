@@ -63,7 +63,7 @@ export const useFlashCards = () => {
     }
   };
 
-  const loadPracticeWords = () => {
+  const loadPracticeSession = () => {
     const savedPracticeTypes = JSON.parse(
       sessionStorage.getItem("practiceTypes") || "[]"
     );
@@ -127,7 +127,7 @@ export const useFlashCards = () => {
     handleAnswer,
     isAnswerSelected,
     handleNext,
-    loadPracticeWords,
+    loadPracticeSession,
     togglePause,
   };
 };

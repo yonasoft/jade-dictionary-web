@@ -12,35 +12,48 @@ import {
 } from "@tabler/icons-react";
 import MultipleChoiceCard from "../components/multiple-choice/multiple-choice-card/MultipleChoiceCard";
 import {
+  formatTime,
   isMultipleChoiceAnswerCorrect,
   shuffleArray,
 } from "@/app/lib/utils/practice";
 import { Word } from "@/app/lib/types/word";
 import MultipleChoiceResults from "../components/multiple-choice/multiple-choice-results/MultipleChoiceResults";
+import useMultipleChoice from "@/app/hooks/useMultipleChoice";
 
 type Props = {};
 
-const MultipleChoicePage = (props: Props) => {
-  let finalTime = 0;
+const MultipleChoicePage = () => {
+  const {
+    selectedPracticeTypes,
+    words,
+    timerValue,
+    stopwatchEnabled,
+    stopwatch,
+    selectedAnswer,
+    setSelectedAnswer,
+    currentWordIndex,
+    secondsLeft,
+    setSecondsLeft,
 
-  const [selectedPracticeTypes, setSelectedPracticeTypes] = useState([]);
-  const [words, setWords] = useState<Word[]>([]);
-  const [timerValue, setTimerValue] = useState("none");
-  const [stopwatchEnabled, setStopwatchEnabled] = useState(false);
-  const stopwatch = useStopwatch({ autoStart: true });
-  const [selectedAnswer, setSelectedAnswer] = useState<Word | null>(null);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [secondsLeft, setSecondsLeft] = useState(0);
-  const [timeUp, setTimeUp] = useState(false);
-  const [answerCounts, setAnswerCounts] = useState({
-    wrong: 0,
-    correct: 0,
-  });
-  const [allAnswers, setAllAnswers] = useState<boolean[]>([]);
-  const [isPaused, setIsPaused] = useState(false);
+    allAnswers,
+    isPaused,
+    handleNext,
+    togglePause,
+    loadPracticeSession,
+    timeUp,
+    setTimeUp,
+  } = useMultipleChoice();
 
- 
+  useEffect(() => {
+    loadPracticeSession();
+  }, []);
 
+  useEffect(() => {
+    if (timerValue !== "none") {
+      setSecondsLeft(parseInt(timerValue));
+    }
+  }, [timerValue]);
+  
   useEffect(() => {
     let countdownInterval: NodeJS.Timeout | null = null;
 
@@ -58,52 +71,6 @@ const MultipleChoicePage = (props: Props) => {
       if (countdownInterval) clearInterval(countdownInterval);
     };
   }, [secondsLeft, isPaused]);
-
-  const handleNext = () => {
-    if (currentWordIndex >= words.length - 1) {
-      finalTime = stopwatch.seconds;
-      stopwatch.pause();
-      setIsPaused(true);
-      const isAnswerCorrect = isMultipleChoiceAnswerCorrect(
-        words[currentWordIndex],
-        selectedAnswer
-      );
-      setAllAnswers((prev) => [...prev, isAnswerCorrect]);
-      setCurrentWordIndex((prev) => prev + 1);
-    } else {
-      const isAnswerCorrect = isMultipleChoiceAnswerCorrect(
-        words[currentWordIndex],
-        selectedAnswer
-      );
-      setAllAnswers((prev) => [...prev, isAnswerCorrect]);
-      setTimeUp(false);
-      setCurrentWordIndex((prev) => prev + 1);
-      if (timerValue !== "none") {
-        setSecondsLeft(parseInt(timerValue));
-      }
-      setSelectedAnswer(null);
-
-      if (currentWordIndex < words.length - 1 && !stopwatch.isRunning) {
-        stopwatch.start();
-      }
-      setIsPaused(false);
-    }
-  };
-
-  const togglePause = () => {
-    setIsPaused(!isPaused);
-    if (isPaused) {
-      stopwatch.start();
-    } else {
-      stopwatch.pause();
-    }
-  };
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds}s`;
-  };
 
   return currentWordIndex >= words.length ? (
     <MultipleChoiceResults
