@@ -13,7 +13,6 @@ import HomeSearchBar from "./components/home-search-bar/HomeSearchBar";
 import { performAddWordToList } from "./lib/utils/lists";
 import useHome from "./hooks/useHome";
 
-//Only import the components that are needed
 const WordSearchResults = lazy(
   () => import("./ui/components/results/word-search-results/WordSearchResults")
 );

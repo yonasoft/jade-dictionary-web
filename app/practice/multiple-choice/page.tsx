@@ -80,7 +80,7 @@ const MultipleChoicePage = () => {
           </div>
         )}
         <Link href="/practice" passHref>
-          <Button color="red">Exit</Button>
+          <Button color="red" variant="filled">Exit</Button>
         </Link>
       </Group>
       <Divider my="sm" />
