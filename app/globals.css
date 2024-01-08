@@ -18,12 +18,3 @@
 input[type="checkbox"]:checked {
   background-color: var(--jade-color) !important;
 }
-
-Button[data-variant="filled"] {
-  background-color: var(--jade-color) !important;
-}
-
-Button[data-variant="outline"] {
-  color: var(--jade-color) !important;
-  border-color: var(--jade-color) !important;
-}
