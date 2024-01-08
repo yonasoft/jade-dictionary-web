@@ -3,9 +3,7 @@ import { Divider, Button, Group, Flex } from "@mantine/core";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import FlipCard from "../components/flash-card/flip-card/FlipCard";
-import {
-  IconArrowRight,
-} from "@tabler/icons-react";
+import { IconArrowRight } from "@tabler/icons-react";
 import FlashCardResults from "../components/flash-card/flash-card-results/FlashCardResults";
 import { formatTime } from "@/app/lib/utils/practice";
 import useFlashCards from "@/app/hooks/useFlashCards";

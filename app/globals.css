@@ -23,6 +23,53 @@ Button[data-variant="filled"]:not([style*="background-color"]) {
   background-color: var(--jade-color) !important;
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --jade-color: #459d57;
+}
+
+/* globals.css or any other global CSS file */
+.card-hover-light:hover {
+  background-color: #f3f3f3; /* Lighter grey for light mode */
+}
+
+.card-hover-dark:hover {
+  background-color: #2c2e33; /* Darker grey for dark mode */
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--jade-color) !important;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --jade-color: #459d57;
+}
+
+/* globals.css or any other global CSS file */
+.card-hover-light:hover {
+  background-color: #f3f3f3; /* Lighter grey for light mode */
+}
+
+.card-hover-dark:hover {
+  background-color: #2c2e33; /* Darker grey for dark mode */
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--jade-color) !important;
+}
+
+Button[data-variant="filled"]:not([style*="color"]),
+Button[data-variant="filled"]:not([style*="border-color"]) {
+  background-color: var(--jade-color) !important;
+}
+
 Button[data-variant="outline"]:not([style*="color"]),
 Button[data-variant="outline"]:not([style*="border-color"]) {
   color: var(--jade-color) !important;
