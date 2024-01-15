@@ -9,10 +9,10 @@ import {
   Button,
   Avatar,
 } from "@mantine/core";
-import { useFirebaseContext } from "../../../../../src/providers/FirebaseProvider";
 import { IconUpload } from "@tabler/icons-react";
 import { useDisplayInformation } from "@/src/hooks/useDisplayInformation";
 import { DisplayNameInput } from "./DisplayNameInput";
+import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
 
 type Props = {};
 
