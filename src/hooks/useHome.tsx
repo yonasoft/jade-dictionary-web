@@ -38,6 +38,7 @@ const useHome = () => {
   };
 
   const onSearch = async (query: string) => {
+    if (query.trim() === "") return;
     setIsLoading(true);
     setError(null);
     try {
