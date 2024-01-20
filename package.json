@@ -34,6 +34,7 @@
     "next": "^14.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hanzi-lookup": "^1.0.7",
     "react-icons": "^4.11.0",
     "react-simple-keyboard": "^3.7.69",
     "react-timer-hook": "^3.0.7",

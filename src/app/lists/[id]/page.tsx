@@ -16,10 +16,15 @@ import { IconX } from "@tabler/icons-react";
 import { doc } from "firebase/firestore";
 import { notifications } from "@mantine/notifications";
 import WordCard from "@/src/components/word-components/word-card/WordCard";
-import { getWordListByDocId, removeWordFromList, editWordList } from "@/src/lib/firebase/storage/wordLists";
+import {
+  getWordListByDocId,
+  removeWordFromList,
+  editWordList,
+} from "@/src/lib/firebase/storage/wordLists";
 import { getWordsByIds } from "@/src/lib/firebase/storage/words";
 import { Word } from "@/src/lib/types/word";
 import { WordList } from "@/src/lib/types/word-list";
+import ChineseInput from "@/src/components/chinese-input/ChineseInput";
 
 type Props = {
   params: { id: string };
@@ -81,6 +86,7 @@ const ListDetailPage = ({ params }: Props) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [query, setQuery] = useState<string>("");
+  const [showChineseInput, setShowChineseInput] = useState<boolean>(false);
 
   const fetchWords = useCallback(
     async (wordIds: number[]) => {
@@ -190,12 +196,13 @@ const ListDetailPage = ({ params }: Props) => {
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search..."
+          onFocus={() => setShowChineseInput(true)}
+          onBlur={() => setShowChineseInput(false)}
         />
         <ActionIcon
           variant="outline"
           onClick={() => setQuery("")}
           title="Clear"
-          // Styling for ActionIcon
         >
           <IconX size={24} />
         </ActionIcon>
@@ -217,6 +224,7 @@ const ListDetailPage = ({ params }: Props) => {
           />
         </Grid>
       )}
+      {showChineseInput && <ChineseInput query={query} setQuery={setQuery} />}
     </div>
   );
 };
