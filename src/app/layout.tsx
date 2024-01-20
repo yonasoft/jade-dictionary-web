@@ -25,7 +25,7 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Jade Dictionary",
   description: "Chinese dictionary and language tools",
 };
