@@ -1,4 +1,5 @@
 "use client";
+
 import {
   ActionIcon,
   Container,
@@ -45,27 +46,29 @@ export const SearchInput = ({
 
   return (
     <>
-      <TextInput
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        radius="xl"
-        placeholder="Search..."
-        size="md"
-        leftSection={<IconSearch />}
-        rightSection={
-          <ActionIcon variant="filled" onClick={handleSearch} radius="lg">
-            <IconArrowRight />
-          </ActionIcon>
-        }
-        onKeyDown={handleKeyPress}
-        onFocus={() => {
-          setShowKeyboard(true);
-        }}
-        onBlur={() => {
-          setShowKeyboard(false);
-        }}
-        className={`text-black bg-transparent border-none`}
-      />
+      
+        <TextInput
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          radius="xl"
+          placeholder="Search..."
+          size="md"
+          leftSection={<IconSearch />}
+          rightSection={
+            <ActionIcon variant="filled" onClick={handleSearch} radius="lg">
+              <IconArrowRight />
+            </ActionIcon>
+          }
+          onKeyDown={handleKeyPress}
+          onFocus={() => {
+            setShowKeyboard(true);
+          }}
+          onBlur={() => {
+            setShowKeyboard(false);
+          }}
+          className={`text-black bg-transparent border-none`}
+        />
+     
       {showKeyboard && (
         <Container size="lg" className="fixed bottom-0 left-0 right-0 z-50">
           <Keyboard

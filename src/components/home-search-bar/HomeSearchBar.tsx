@@ -21,12 +21,14 @@ const HomeSearchBar = ({ query, setQuery, onSearch }: Props) => {
     <div className="flex-1 max-w-[20rem] w-full bg-transparent border-none">
       <SearchHoverCard
         searchBar={
-          <SearchInput
-            query={query}
-            setQuery={setQuery}
-            handleSearch={onSearch}
-            handleKeyPress={onKeyPressSearch}
-          />
+          <div className="flex w-full max-w-md mx-auto">
+            <SearchInput
+              query={query}
+              setQuery={setQuery}
+              handleSearch={onSearch}
+              handleKeyPress={onKeyPressSearch}
+            />
+          </div>
         }
       />
     </div>
