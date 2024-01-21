@@ -58,7 +58,6 @@ const ChineseInput = ({ query, setQuery, onClose }: Props) => {
         <ActionIcon
           className="m-2"
           variant="filled"
-          color="blue"
           size="xl"
           radius="xl"
           onClick={() => {

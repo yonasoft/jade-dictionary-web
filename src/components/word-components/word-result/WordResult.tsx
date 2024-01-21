@@ -2,6 +2,7 @@ import { Word } from "@/src/lib/types/word";
 import { WordList } from "@/src/lib/types/word-list";
 import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
 import {
+  ActionIcon,
   Button,
   Card,
   Flex,
@@ -94,14 +95,15 @@ const WordResult = ({
                 </Menu>
               )) ||
             (onAddToPracticeList && (
-              <Button
+              <ActionIcon
                 variant="outline"
+                size="lg"
                 onClick={() => {
                   onAddToPracticeList(word);
                 }}
               >
                 <IconPlus />
-              </Button>
+              </ActionIcon>
             ))}
       </div>
     </Card>
