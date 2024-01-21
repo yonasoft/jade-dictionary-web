@@ -102,7 +102,7 @@ const WordResult = ({
                   onAddToPracticeList(word);
                 }}
               >
-                <IconPlus />
+                <IconPlus size={24} />
               </ActionIcon>
             ))}
       </div>
