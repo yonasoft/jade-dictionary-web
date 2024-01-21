@@ -224,7 +224,15 @@ const ListDetailPage = ({ params }: Props) => {
           />
         </Grid>
       )}
-      {showChineseInput && <ChineseInput query={query} setQuery={setQuery} />}
+      {showChineseInput && (
+        <ChineseInput
+          query={query}
+          setQuery={setQuery}
+          onClose={() => {
+            setShowChineseInput(false);
+          }}
+        />
+      )}
     </div>
   );
 };
