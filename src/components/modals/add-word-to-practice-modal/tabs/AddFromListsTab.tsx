@@ -17,7 +17,6 @@ type Props = {
 const AddFromListsTab = ({ addWords }: Props) => {
   const { firestore, wordLists, auth } = useFirebaseContext();
   const [query, setQuery] = useState("");
-  const [showChineseInput, setShowChineseInput] = useState(false);
 
   const onSearch = () => {};
   const onAdd = async (wordList: WordList) => {
@@ -41,8 +40,6 @@ const AddFromListsTab = ({ addWords }: Props) => {
               className="flex-1"
               placeholder="Search Hanzi, English or Pinyin..."
               value={query}
-              onFocus={() => setShowChineseInput(true)}
-              onBlur={() => setShowChineseInput(false)}
               onChange={(e) => {
                 setQuery(e.currentTarget.value);
               }}
@@ -77,9 +74,6 @@ const AddFromListsTab = ({ addWords }: Props) => {
               }
             })}
           </div>
-          {showChineseInput && (
-            <ChineseInput query={query} setQuery={setQuery} />
-          )}
         </>
       ) : (
         <Title order={1}>Please login to add words from your lists</Title>

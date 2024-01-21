@@ -50,7 +50,9 @@ const ChineseInput = ({ query, setQuery, onClose }: Props) => {
       ref={containerRef}
       onMouseDown={handleMouseDown}
     >
-
+      {showHandwriting && (
+        <ChineseHandwriting query={query} setQuery={setQuery} />
+      )}
       <Center>
 
         <ActionIcon
