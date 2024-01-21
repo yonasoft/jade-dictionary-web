@@ -27,3 +27,8 @@ Button[data-variant="outline"] {
   color: var(--jade-color) !important;
   border-color: var(--jade-color) !important;
 }
+
+.chinese-input-container {
+  z-index: 9999; /* High z-index value to ensure it's on top */
+  position: relative; /* Position must be set for z-index to take effect */
+}

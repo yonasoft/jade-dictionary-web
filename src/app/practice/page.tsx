@@ -57,7 +57,7 @@ const PracticeSettings = () => {
                 width: "60px",
                 height: "60px",
                 padding: "0px",
-                zIndex: 4000,
+                zIndex: 40,
               }}
             >
               Start

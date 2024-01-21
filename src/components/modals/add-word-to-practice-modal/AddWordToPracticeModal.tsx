@@ -20,13 +20,13 @@ const AddWordToPracticeModal = ({
   addWords,
   hasWord,
 }: Props) => {
-
   return (
     <Modal
       size="xl"
       opened={opened}
       onClose={close}
       title="Add words to practice"
+      zIndex={40}
     >
       <Tabs defaultValue="search">
         <Tabs.List>

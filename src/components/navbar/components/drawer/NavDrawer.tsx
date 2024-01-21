@@ -46,7 +46,7 @@ const NavDrawer = ({ links, opened, onClose }: Props) => {
       className={RemoveScroll.classNames.zeroRight}
       opened={opened}
       onClose={onClose}
-      zIndex={2000}
+      zIndex={40}
       position="left"
       transitionProps={{
         transition: "rotate-left",

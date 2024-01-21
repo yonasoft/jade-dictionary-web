@@ -54,7 +54,7 @@ const SearchSpotlight = ({
 
   return (
     <Spotlight.Root
-      zIndex={2000}
+      zIndex={20}
       closeOnEscape
       withinPortal
       closeOnClickOutside

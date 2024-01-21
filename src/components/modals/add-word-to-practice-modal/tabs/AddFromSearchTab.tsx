@@ -1,6 +1,6 @@
 "use client";
 import { Button, Input } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WordSearchResults from "../../../results/word-search-results/WordSearchResults";
 
 import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
@@ -8,6 +8,8 @@ import { IconSearch } from "@tabler/icons-react";
 import { Word } from "@/src/lib/types/word";
 import { performSearch } from "@/src/lib/utils/dictionary";
 import { handleKeyPress } from "@/src/lib/utils/events";
+import ChineseInput from "@/src/components/chinese-input/ChineseInput";
+import { createPortal } from "react-dom";
 
 type Props = {
   isWordInPractice: (word: Word) => boolean;
@@ -20,6 +22,29 @@ const AddFromSearchTab = ({ isWordInPractice, addWordFromSearch }: Props) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Word[]>([]);
   const [searched, setSearched] = useState(false);
+  const [showKeyboard, setShowKeyboard] = useState(false);
+  const [container, setContainer] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    // Set the container state to the existing HTML element
+    const el = document.getElementById("chinese-input-root");
+    setContainer(el);
+  }, []); // Empty dependency array ensures this effect runs once after the initial render
+
+  // Portal for ChineseInput
+  const chineseInputPortal =
+    showKeyboard && container
+      ? createPortal(
+          <ChineseInput
+            query={query}
+            setQuery={setQuery}
+            onClose={() => {
+              setShowKeyboard(false);
+            }}
+          />,
+          container
+        )
+      : null;
 
   const onSearch = () => {
     performSearch(firestore, query).then((results) => {
@@ -41,6 +66,12 @@ const AddFromSearchTab = ({ isWordInPractice, addWordFromSearch }: Props) => {
           className="flex-1"
           placeholder="Search Hanzi, English or Pinyin..."
           value={query}
+          onFocus={() => {
+            setShowKeyboard(true);
+          }}
+          onBlur={() => {
+            setShowKeyboard(false);
+          }}
           onChange={(e) => {
             setQuery(e.currentTarget.value);
           }}
@@ -65,6 +96,7 @@ const AddFromSearchTab = ({ isWordInPractice, addWordFromSearch }: Props) => {
         isWordUsed={isWordInPractice}
         onAddToPracticeList={addWordFromSearch}
       />
+      {chineseInputPortal}
     </>
   );
 };

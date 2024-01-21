@@ -1,39 +1,71 @@
 "use client";
 import { ActionIcon, Center, Container } from "@mantine/core";
-import { IconWritingSign } from "@tabler/icons-react";
-import React, { useState } from "react";
+import { IconWritingSign, IconX } from "@tabler/icons-react";
+import React, { useEffect, useRef, useState } from "react";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import layout from "simple-keyboard-layouts/build/layouts/chinese";
 import { Hanzi } from "react-hanzi-lookup";
+import ChineseHandwriting from "../chinese-handwriting/ChineseHandwriting";
 
 type Props = {
   query: string;
   setQuery: (input: string) => void;
+  onClose: () => void;
 };
 
-const ChineseInput = ({ query, setQuery }: Props) => {
+const ChineseInput = ({ query, setQuery, onClose }: Props) => {
   const [showHandwriting, setShowHandwriting] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleFocusIn = (event: FocusEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setShowHandwriting(false);
+      }
+    };
+
+    document.addEventListener("focusin", handleFocusIn);
+    return () => {
+      document.removeEventListener("focusin", handleFocusIn);
+    };
+  }, []);
+
+  const handleMouseDown = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.preventDefault(); // Prevent the default behavior
+    event.stopPropagation(); // Stop the event from bubbling up
+  };
 
   return (
     <Container
       size="lg"
       className="fixed bottom-0 left-0 right-0 z-50"
       tabIndex={0}
+      ref={containerRef}
+      onMouseDown={handleMouseDown}
     >
-      {/* <Center className="flex flex-col">
+
+      <Center>
+
         <ActionIcon
-          className="my-2"
-          variant="outline"
-          size="lg"
-          onClick={(e) => {
-            e.preventDefault();
-            setShowHandwriting(!showHandwriting);
+          className="m-2"
+          variant="filled"
+          color="blue"
+          size="xl"
+          radius="xl"
+          onClick={() => {
+            onClose();
           }}
         >
-          <IconWritingSign />
+          <IconX />
         </ActionIcon>
-      </Center> */}
+      </Center>
       <Keyboard
         className="min-w-full"
         onChange={(button) => {

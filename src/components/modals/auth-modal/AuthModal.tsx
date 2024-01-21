@@ -21,7 +21,7 @@ const AuthModal = ({ needSignUp }: Props) => {
 
   return (
     <>
-      <Tabs value={activeTab} z-index={2000} onChange={setActiveTab}>
+      <Tabs value={activeTab} z-index={20} onChange={setActiveTab}>
         <Tabs.Panel value="login" pb="xs">
           <Text size="lg" fw={400}>
             Login

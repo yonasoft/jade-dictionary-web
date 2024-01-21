@@ -65,6 +65,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
               <Navbar />
               <Space h={64} />
               <main>{children}</main>
+              <div id="chinese-input-root"></div>
             </ModalsProvider>
           </FirebaseContextProvider>
         </MantineProvider>

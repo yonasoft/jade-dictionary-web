@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="h-14 mb-7 fixed top-0 z-50 w-full ">
+    <header className="h-14 mb-7 fixed top-0 z-30 w-full ">
       <Container className="align-middle" size="lg">
         <Group h="56" justify="space-between">
           <Group justify="flex-start">

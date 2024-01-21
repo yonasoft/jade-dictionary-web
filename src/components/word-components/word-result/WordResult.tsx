@@ -67,7 +67,7 @@ const WordResult = ({
           ? null
           : (currentUser &&
               onAddToWordList && ( // Only show if a user is logged in
-                <Menu zIndex={3000} disabled={wordUsed} withinPortal>
+                <Menu zIndex={30} disabled={wordUsed} withinPortal>
                   <Menu.Target>
                     <Button variant="outline">
                       <IconPlus />

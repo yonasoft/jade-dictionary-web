@@ -1,7 +1,7 @@
 "use client";
 import { ActionIcon, TextInput, useMantineColorScheme } from "@mantine/core";
 import { IconSearch, IconArrowRight } from "@tabler/icons-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChineseInput from "../chinese-input/ChineseInput";
 
 export const SearchInput = ({
@@ -18,6 +18,7 @@ export const SearchInput = ({
   const { colorScheme } = useMantineColorScheme();
   const [isMounted, setIsMounted] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
+  const chineseInputRef = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -51,7 +52,15 @@ export const SearchInput = ({
         className={`text-black bg-transparent border-none`}
       />
 
-      {showKeyboard && <ChineseInput query={query} setQuery={setQuery} />}
+      {showKeyboard && (
+        <ChineseInput
+          query={query}
+          setQuery={setQuery}
+          onClose={() => {
+            setShowKeyboard(false);
+          }}
+        />
+      )}
     </>
   );
 };
