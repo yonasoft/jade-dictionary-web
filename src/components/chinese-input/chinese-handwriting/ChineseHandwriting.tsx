@@ -96,6 +96,24 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     drawCanvas();
   }, [paths]);
 
+  const performCharacterLookup = useCallback(() => {
+    if (hanziLookupMatcher.current && paths.length > 0) {
+      const analyzedChar = new HanziLookup.AnalyzedCharacter(paths);
+      hanziLookupMatcher.current.match(
+        analyzedChar,
+        24,
+        (matches: RecognizedChar[]) => {
+          const sortedMatches = matches
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 24);
+          setRecognizedChars(sortedMatches);
+        }
+      );
+    } else {
+      setRecognizedChars([]);
+    }
+  }, [paths]);
+
   const handleMouseDown = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
       setIsDrawing(true);
@@ -126,10 +144,12 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
 
   const handleMouseUpOrLeave = useCallback(() => {
     setIsDrawing(false);
-  }, []);
+    performCharacterLookup(); // Perform character lookup when the stroke is completed
+  }, [performCharacterLookup]);
 
   const handleUndo = () => {
     setPaths((prevPaths) => prevPaths.slice(0, -1));
+    performCharacterLookup(); // Perform character lookup after undoing a stroke
   };
 
   const handleClear = () => {
@@ -175,13 +195,14 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
               Recognized characters
             </Title>
             <div className="flex justify-center items-center">
-              <Paper className="charPicker hanziLookupChars border border-gray-400 p-1 min-h-[4rem] bg-white overflow-hidden flex flex-wrap justify-center items-center">
+              <Paper className="charPicker hanziLookupChars m-4 border border-gray-400 p-1 min-h-[4rem] bg-white overflow-hidden flex flex-wrap justify-center items-center">
                 {recognizedChars.length > 0 ? (
                   recognizedChars.map((match: RecognizedChar, index) => (
                     <Text
                       key={index}
                       component="span"
                       className="cursor-pointer mx-2 p-1 hover:bg-slate-300 rounded-md"
+                      c="black"
                       onClick={() => handleCharacterClick(match.character)}
                     >
                       {match.character}
