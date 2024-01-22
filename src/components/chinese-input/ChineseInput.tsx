@@ -1,12 +1,11 @@
 "use client";
 import { ActionIcon, Center, Container } from "@mantine/core";
-import { IconWritingSign, IconX } from "@tabler/icons-react";
+import { IconKeyboard, IconWritingSign, IconX } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState } from "react";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import layout from "simple-keyboard-layouts/build/layouts/chinese";
-import { Hanzi } from "react-hanzi-lookup";
-import ChineseHandwriting from "../chinese-handwriting/ChineseHandwriting";
+import ChineseHandwriting from "./chinese-handwriting/ChineseHandwriting";
 
 type Props = {
   query: string;
@@ -50,11 +49,28 @@ const ChineseInput = ({ query, setQuery, onClose }: Props) => {
       ref={containerRef}
       onMouseDown={handleMouseDown}
     >
-      {showHandwriting && (
-        <ChineseHandwriting query={query} setQuery={setQuery} />
-      )}
       <Center>
-
+        {showHandwriting ? (
+          <ActionIcon
+            className="m-2"
+            variant="outline"
+            size="xl"
+            radius="xl"
+            onClick={() => setShowHandwriting((prev) => !prev)}
+          >
+            <IconKeyboard />
+          </ActionIcon>
+        ) : (
+          <ActionIcon
+            className="m-2"
+            variant="outline"
+            size="xl"
+            radius="xl"
+            onClick={() => setShowHandwriting((prev) => !prev)}
+          >
+            <IconWritingSign />
+          </ActionIcon>
+        )}
         <ActionIcon
           className="m-2"
           variant="filled"
@@ -67,18 +83,22 @@ const ChineseInput = ({ query, setQuery, onClose }: Props) => {
           <IconX />
         </ActionIcon>
       </Center>
-      <Keyboard
-        className="min-w-full"
-        onChange={(button) => {
-          setQuery(button);
-        }} // Use handleOnChange from the context
-        onKeyPress={(button) => {
-          console.log("Button pressed", button);
-        }}
-        input={query} // Use query from the context
-        preventMouseDownDefault
-        {...layout}
-      />
+      {showHandwriting ? (
+        <ChineseHandwriting query={query} setQuery={setQuery} />
+      ) : (
+        <Keyboard
+          className="min-w-full"
+          onChange={(button) => {
+            setQuery(button);
+          }} // Use handleOnChange from the context
+          onKeyPress={(button) => {
+            console.log("Button pressed", button);
+          }}
+          input={query} // Use query from the context
+          preventMouseDownDefault
+          {...layout}
+        />
+      )}
     </Container>
   );
 };

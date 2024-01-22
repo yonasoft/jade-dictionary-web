@@ -1,0 +1,1 @@
+export type RecognizedChar = { character: string; score: number };
