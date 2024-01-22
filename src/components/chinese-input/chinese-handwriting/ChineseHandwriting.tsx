@@ -9,8 +9,7 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { RecognizedChar } from "@/src/lib/types/hanzi-lookup";
-import { HanziLookup } from "@/public/raw/hanzi-lookup/HanziLookupWrapper";
-import { HanziCharacter, HanziPoint } from "@/src/lib/types/point";
+import { HanziCharacter, HanziPoint, HanziStroke } from "@/src/lib/types/point";
 
 type Props = {
   query: string;
@@ -132,6 +131,25 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     []
   );
 
+  const debounce = (func: (...args: any[]) => void, delay: number) => {
+    let inDebounce: ReturnType<typeof setTimeout>;
+    return function (...args: any[]) {
+      clearTimeout(inDebounce);
+      inDebounce = setTimeout(() => func(...args), delay);
+    };
+  };
+
+  const debouncedDraw = useCallback(
+    debounce((point: HanziPoint) => {
+      setPaths((prevPaths: HanziCharacter) => {
+        const lastPath = prevPaths[prevPaths.length - 1];
+        const newPath: HanziStroke = [...lastPath, point];
+        return [...prevPaths.slice(0, -1), newPath];
+      });
+    }, 7), 
+    []
+  );
+
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
       if (!isDrawing) return;
@@ -139,13 +157,9 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
         event.nativeEvent.offsetX,
         event.nativeEvent.offsetY,
       ];
-      setPaths((prevPaths) => {
-        const lastPath = prevPaths[prevPaths.length - 1];
-        const newPath = [...lastPath, point];
-        return [...prevPaths.slice(0, -1), newPath];
-      });
+      debouncedDraw(point);
     },
-    [isDrawing]
+    [isDrawing, debouncedDraw]
   );
 
   const handleMouseUpOrLeave = useCallback(() => {
