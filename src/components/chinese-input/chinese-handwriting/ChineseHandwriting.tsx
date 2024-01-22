@@ -9,7 +9,8 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { RecognizedChar } from "@/src/lib/types/hanzi-lookup";
-import { Path } from "@/src/lib/types/point";
+import { HanziLookup } from "@/public/raw/hanzi-lookup/HanziLookupWrapper";
+import { HanziCharacter, HanziPoint } from "@/src/lib/types/point";
 
 type Props = {
   query: string;
@@ -21,9 +22,9 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
   const [loading, setLoading] = useState(true);
   const [isDrawing, setIsDrawing] = useState(false);
   const [dataLoaded, setDataLoaded] = useState({ mmah: false, orig: false });
-  const [paths, setPaths] = useState<Array<Array<Path>>>([]);
+  const [paths, setPaths] = useState<HanziCharacter>([]);
+  const [matcher, setMatcher] = useState<HanziLookupMatcher | null>(null); // [1
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const hanziLookupMatcher = useRef<any>(null);
 
   useEffect(() => {
     const loadHanziLookup = async () => {
@@ -55,10 +56,11 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
         console.log(`${type} file loaded successfully.`);
         setDataLoaded((prev) => ({ ...prev, [type]: true }));
 
-        if (dataLoaded.mmah && dataLoaded.orig && !hanziLookupMatcher.current) {
+        if (dataLoaded.mmah && dataLoaded.orig && !matcher) {
           try {
-            hanziLookupMatcher.current = new window.HanziLookup.Matcher("mmah"); // you might want to choose "mmah" or "orig"
+            const newMatcher = new window.HanziLookup.Matcher("mmah");
             console.log("Matcher initialized");
+            setMatcher(newMatcher); // Initialize once and store in state
             setLoading(false);
           } catch (error) {
             console.error("Error initializing matcher: ", error);
@@ -78,15 +80,15 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     const drawCanvas = () => {
       ctx.clearRect(0, 0, canvas!.width, canvas!.height);
       ctx.strokeStyle = "black";
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 8;
 
       paths.forEach((path) => {
         ctx.beginPath();
         path.forEach((point, index) => {
           if (index === 0) {
-            ctx.moveTo(point.x, point.y);
+            ctx.moveTo(point[0], point[1]); // Access point's x and y with indices
           } else {
-            ctx.lineTo(point.x, point.y);
+            ctx.lineTo(point[0], point[1]); // Access point's x and y with indices
           }
         });
         ctx.stroke();
@@ -97,30 +99,34 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
   }, [paths]);
 
   const performCharacterLookup = useCallback(() => {
-    if (hanziLookupMatcher.current && paths.length > 0) {
-      const analyzedChar = new HanziLookup.AnalyzedCharacter(paths);
-      hanziLookupMatcher.current.match(
-        analyzedChar,
-        24,
-        (matches: RecognizedChar[]) => {
-          const sortedMatches = matches
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 24);
-          setRecognizedChars(sortedMatches);
-        }
+    if (window.HanziLookup && paths.length > 0) {
+      const convertedPaths = paths.map(
+        (path) => path.map((point) => [point[0], point[1]]) // Transform each point to the expected format
       );
+      const analyzedChar = new window.HanziLookup.AnalyzedCharacter(
+        convertedPaths
+      );
+      console.log("Formatted data for HanziLookup:", analyzedChar);
+
+      matcher!.match(analyzedChar, 42, (matches: RecognizedChar[]) => {
+        const sortedMatches = matches
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 42);
+        console.log("Recognition results:", sortedMatches);
+        setRecognizedChars(sortedMatches);
+      });
     } else {
       setRecognizedChars([]);
     }
-  }, [paths]);
+  }, [paths, matcher]);
 
   const handleMouseDown = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
       setIsDrawing(true);
-      const point = {
-        x: event.nativeEvent.offsetX,
-        y: event.nativeEvent.offsetY,
-      };
+      const point: HanziPoint = [
+        event.nativeEvent.offsetX,
+        event.nativeEvent.offsetY,
+      ];
       setPaths((prevPaths) => [...prevPaths, [point]]);
     },
     []
@@ -129,10 +135,10 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
       if (!isDrawing) return;
-      const point = {
-        x: event.nativeEvent.offsetX,
-        y: event.nativeEvent.offsetY,
-      };
+      const point: HanziPoint = [
+        event.nativeEvent.offsetX,
+        event.nativeEvent.offsetY,
+      ];
       setPaths((prevPaths) => {
         const lastPath = prevPaths[prevPaths.length - 1];
         const newPath = [...lastPath, point];
@@ -144,8 +150,9 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
 
   const handleMouseUpOrLeave = useCallback(() => {
     setIsDrawing(false);
+    console.log("Raw stroke data:", paths);
     performCharacterLookup(); // Perform character lookup when the stroke is completed
-  }, [performCharacterLookup]);
+  }, [performCharacterLookup, paths]);
 
   const handleUndo = () => {
     setPaths((prevPaths) => prevPaths.slice(0, -1));
