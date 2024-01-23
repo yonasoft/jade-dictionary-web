@@ -40,7 +40,7 @@ export const SearchInput = ({
         onChange={(e) => setQuery(e.target.value)}
         radius="xl"
         placeholder="Search..."
-        size="md"
+        size="sm"
         leftSection={<IconSearch />}
         rightSection={
           <ActionIcon variant="filled" onClick={handleSearch} radius="lg">

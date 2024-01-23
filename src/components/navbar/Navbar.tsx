@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 
-import { Group, Burger, Container } from "@mantine/core";
+import { Group, Burger, Container, Flex, Space } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import MenuItem from "./components/menu-item/MenuItem";
 import JadeLogo from "../JadeLogo";
@@ -11,6 +11,7 @@ import NavDrawer from "./components/drawer/NavDrawer";
 import AuthItems from "../auth-items/AuthItems";
 import NavSearchBar from "./components/nav-search-bar/NavSearchBar";
 import { navLinks } from "@/src/lib/constants/navLinks";
+import { render } from "react-dom";
 
 const Navbar = () => {
   const [drawerOpened, { open, close, toggle }] = useDisclosure(false);
@@ -20,37 +21,35 @@ const Navbar = () => {
   };
 
   return (
-    <header className="h-14 mb-7 fixed top-0 z-30 w-full ">
-      <Container className="align-middle" size="lg">
-        <Group h="56" justify="space-between">
-          <Group justify="flex-start">
-            <Link href="\" replace={true} passHref>
-              <JadeLogo h={48} />
-            </Link>
-            <nav>
-              <Group visibleFrom="md">{renderMenuItems()}</Group>
-            </nav>
-          </Group>
-
-          <Group
-            className="flex flex-1 justify-center items-center max-w-full"
-            justify="center"
-          >
-            <NavSearchBar />
-          </Group>
-
-          <Group justify="flex-end" visibleFrom="sm">
-            {/* <ResultTypeSelector /> */}
-            <AuthItems />
-            <ThemeToggler />
-          </Group>
+    <header className="z-30 w-full border-green-200">
+      <Container className="flex" size="lg">
+        <JadeLogo h={64} />
+        <Flex className="w-full mt-4">
+          <Space w="lg" />
+          <Flex direction="column" className="flex-grow">
+            <Flex className="w-full   items-center" direction="row">
+              <NavSearchBar className="flex-grow " />
+              <Group visibleFrom="sm">
+                <ThemeToggler className="flex-shrink mx-4" size="xl" />
+                <AuthItems />
+              </Group>
+            </Flex>
+            <Group
+              className="flex-grow p-0  rounded-full shadow-lg "
+              justify="center"
+              visibleFrom="sm"
+            >
+              {renderMenuItems()}
+            </Group>
+          </Flex>
           <Burger
             size="sm"
             opened={drawerOpened}
             onClick={toggle}
-            hiddenFrom="md"
+            hiddenFrom="sm"
+            className="mx-4"
           />
-        </Group>
+        </Flex>
       </Container>
       <NavDrawer links={navLinks} opened={drawerOpened} onClose={close} />
     </header>

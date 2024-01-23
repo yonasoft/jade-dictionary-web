@@ -1,7 +1,7 @@
-import { createTheme, rem } from '@mantine/core';
+import { createTheme, rem } from "@mantine/core";
 
 export const theme = createTheme({
-  primaryColor: 'jadeGreen',
+  primaryColor: "jadeGreen",
   colors: {
     jadeGreen: [
       "#eafbed",
@@ -13,14 +13,15 @@ export const theme = createTheme({
       "#55b368",
       "#459d57",
       "#3a8c4c",
-      "#2c793e"
+      "#2c793e",
     ],
+    
   },
+
   headings: {
-    fontFamily: 'Roboto, Murecho, sans-serif',
+    fontFamily: "Roboto, Murecho, sans-serif",
     sizes: {
       h1: { fontSize: rem(36) },
     },
   },
-}
-);
+});

@@ -7,7 +7,11 @@ import useSearch from "@/src/hooks/useSearchBar";
 import { SearchHoverCard } from "../../../hover-cards/SearchHoverCard";
 import { handleKeyPress } from "@/src/lib/utils/events";
 
-const NavSearchBar = () => {
+type Props = {
+  className?: string;
+};
+
+const NavSearchBar = ({ className }: Props) => {
   const { query, setQuery, results, onSearch, searched } = useSearch();
 
   const onInitialSearch = () => {
@@ -23,20 +27,18 @@ const NavSearchBar = () => {
 
   return (
     <>
-      <div className="flex-1 max-w-[20rem] w-full bg-transparent border-none">
+      <div className={`${className} bg-transparent`}>
         {
           <SearchHoverCard
             searchBar={
-              <div className="flex w-full max-w-md mx-auto">
-                <SearchInput
-                  query={query}
-                  setQuery={setQuery}
-                  handleSearch={onInitialSearch}
-                  handleKeyPress={(e) => {
-                    onKeyPressSearch(e);
-                  }}
-                />
-              </div>
+              <SearchInput
+                query={query}
+                setQuery={setQuery}
+                handleSearch={onInitialSearch}
+                handleKeyPress={(e) => {
+                  onKeyPressSearch(e);
+                }}
+              />
             }
           />
         }

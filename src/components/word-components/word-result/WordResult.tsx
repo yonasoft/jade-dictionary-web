@@ -92,7 +92,7 @@ const WordResult = ({
                 </ActionIcon>
               ))}
         </div>
-        <Group className="grow p-4" align="start" wrap="wrap" grow>
+        <Group className="grow" align="start" wrap="wrap" grow>
           <Flex justify="center" align="center" direction="column">
             <Highlight
               size="xl"
