@@ -170,6 +170,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
 
   const handleTouchStart = useCallback(
     (event: React.TouchEvent<HTMLCanvasElement>) => {
+      event.preventDefault();
       setIsDrawing(true);
       const touch = event.touches[0];
       const point: HanziPoint = [
@@ -183,6 +184,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
 
   const handleTouchMove = useCallback(
     (event: React.TouchEvent<HTMLCanvasElement>) => {
+      event.preventDefault();
       if (!isDrawing) return;
       const touch = event.touches[0];
       const point: HanziPoint = [
@@ -200,7 +202,6 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     performCharacterLookup(); // Perform character lookup when the stroke is completed
   }, [performCharacterLookup, paths]);
 
-
   const handleUndo = () => {
     setPaths((prevPaths) => prevPaths.slice(0, -1));
     performCharacterLookup(); // Perform character lookup after undoing a stroke
@@ -216,9 +217,6 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     handleClear();
   };
 
-  const preventDefault = (event: React.TouchEvent<HTMLCanvasElement>) => {
-    event.preventDefault();
-  };
   return (
     <div className="flex flex-col items-center z-50">
       <LoadingOverlay visible={loading} />
