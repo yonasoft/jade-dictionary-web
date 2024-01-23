@@ -24,7 +24,7 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
     switch (getDeviceType()) {
       case "mobile":
         setShowHandwriting(true);
-        setReadOnly(true);
+        setReadOnly(false);
         break;
       case "tablet":
         setReadOnly(true);
