@@ -181,7 +181,9 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
 
   const handleTouchStart = useCallback(
     (event: React.TouchEvent<HTMLCanvasElement>) => {
+      //Prevent scrolling when touching the canvas (mobile) to properly draw strokes.
       event.preventDefault();
+      document.body.style.overflow = "hidden";
       setIsDrawing(true);
       const canvas = canvasRef.current;
       const touchPos = getTouchPos(canvas!, event);
@@ -205,7 +207,9 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
 
   const handleTouchEnd = useCallback(
     (event: React.TouchEvent<HTMLCanvasElement>) => {
+      //Restore scrolling when touching the canvas
       event.preventDefault();
+      document.body.style.overflow = "auto";
       setIsDrawing(false);
       console.log("Raw stroke data:", paths);
       performCharacterLookup(); // Perform character lookup when the stroke is completed
