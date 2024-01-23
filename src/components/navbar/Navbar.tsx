@@ -11,7 +11,7 @@ import NavDrawer from "./components/drawer/NavDrawer";
 import AuthItems from "../auth-items/AuthItems";
 import NavSearchBar from "./components/nav-search-bar/NavSearchBar";
 import { navLinks } from "@/src/lib/constants/navLinks";
-import { render } from "react-dom";
+
 
 const Navbar = () => {
   const [drawerOpened, { open, close, toggle }] = useDisclosure(false);

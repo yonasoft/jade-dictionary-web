@@ -39,7 +39,12 @@ const UserMenu = (props: Props) => {
               alt="user profile picture"
               radius="xl"
             />
-
+            <Text size="sm">
+              {trimStringWithEllipsis(
+                currentUser?.displayName || currentUser?.email || "",
+                15
+              )}
+            </Text>
             <IconChevronDown
               style={{ width: rem(14), height: rem(14) }}
               stroke={1.5}
