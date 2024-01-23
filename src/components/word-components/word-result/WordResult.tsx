@@ -48,7 +48,50 @@ const WordResult = ({
 
   return (
     <Card style={cardStyles} className="mx-2 my-1" shadow="sm" withBorder>
-      <div className="flex">
+      <div className="flex-col">
+        <div className="w-full flex justify-end">
+          {wordUsed
+            ? null
+            : (currentUser &&
+                onAddToWordList && ( // Only show if a user is logged in
+                  <Menu zIndex={30} disabled={wordUsed} withinPortal>
+                    <Menu.Target>
+                      <ActionIcon variant="outline" size="lg">
+                        <IconPlus />
+                      </ActionIcon>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                      {wordLists && wordLists.length > 0 ? (
+                        wordLists.map((list) => (
+                          <Menu.Item
+                            key={list.id}
+                            onClick={() => {
+                              onAddToWordList?.(firestore, list, word);
+                            }}
+                          >
+                            {list.title}
+                          </Menu.Item>
+                        ))
+                      ) : (
+                        <Menu.Item style={{ fontStyle: "italic" }}>
+                          No lists
+                        </Menu.Item>
+                      )}
+                    </Menu.Dropdown>
+                  </Menu>
+                )) ||
+              (onAddToPracticeList && (
+                <ActionIcon
+                  variant="outline"
+                  size="lg"
+                  onClick={() => {
+                    onAddToPracticeList(word);
+                  }}
+                >
+                  <IconPlus size={24} />
+                </ActionIcon>
+              ))}
+        </div>
         <Group className="grow p-4" align="start" wrap="wrap" grow>
           <Flex justify="center" align="center" direction="column">
             <Highlight
@@ -64,47 +107,6 @@ const WordResult = ({
             {word.definition}
           </Highlight>
         </Group>
-        {wordUsed
-          ? null
-          : (currentUser &&
-              onAddToWordList && ( // Only show if a user is logged in
-                <Menu zIndex={30} disabled={wordUsed} withinPortal>
-                  <Menu.Target>
-                    <Button variant="outline">
-                      <IconPlus />
-                    </Button>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    {wordLists && wordLists.length > 0 ? (
-                      wordLists.map((list) => (
-                        <Menu.Item
-                          key={list.id}
-                          onClick={() => {
-                            onAddToWordList?.(firestore, list, word);
-                          }}
-                        >
-                          {list.title}
-                        </Menu.Item>
-                      ))
-                    ) : (
-                      <Menu.Item style={{ fontStyle: "italic" }}>
-                        No lists
-                      </Menu.Item>
-                    )}
-                  </Menu.Dropdown>
-                </Menu>
-              )) ||
-            (onAddToPracticeList && (
-              <ActionIcon
-                variant="outline"
-                size="lg"
-                onClick={() => {
-                  onAddToPracticeList(word);
-                }}
-              >
-                <IconPlus size={24} />
-              </ActionIcon>
-            ))}
       </div>
     </Card>
   );
