@@ -9,7 +9,7 @@ export const SearchHoverCard = ({
 }): React.ReactNode => {
   return (
     <>
-      <HoverCard width={280} shadow="md" zIndex={30}>
+      <HoverCard width={280} shadow="md" zIndex={10}>
         <HoverCard.Target>{searchBar}</HoverCard.Target>
         <HoverCard.Dropdown>
           <Text size="md" fw={700}>

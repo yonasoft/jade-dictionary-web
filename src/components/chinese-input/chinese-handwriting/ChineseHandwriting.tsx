@@ -168,6 +168,39 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     performCharacterLookup(); // Perform character lookup when the stroke is completed
   }, [performCharacterLookup, paths]);
 
+  const handleTouchStart = useCallback(
+    (event: React.TouchEvent<HTMLCanvasElement>) => {
+      setIsDrawing(true);
+      const touch = event.touches[0];
+      const point: HanziPoint = [
+        touch.clientX - canvasRef.current!.offsetLeft,
+        touch.clientY - canvasRef.current!.offsetTop,
+      ];
+      setPaths((prevPaths) => [...prevPaths, [point]]);
+    },
+    []
+  );
+
+  const handleTouchMove = useCallback(
+    (event: React.TouchEvent<HTMLCanvasElement>) => {
+      if (!isDrawing) return;
+      const touch = event.touches[0];
+      const point: HanziPoint = [
+        touch.clientX - canvasRef.current!.offsetLeft,
+        touch.clientY - canvasRef.current!.offsetTop,
+      ];
+      debouncedDraw(point);
+    },
+    [isDrawing, debouncedDraw]
+  );
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDrawing(false);
+    console.log("Raw stroke data:", paths);
+    performCharacterLookup(); // Perform character lookup when the stroke is completed
+  }, [performCharacterLookup, paths]);
+
+
   const handleUndo = () => {
     setPaths((prevPaths) => prevPaths.slice(0, -1));
     performCharacterLookup(); // Perform character lookup after undoing a stroke
@@ -183,6 +216,9 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     handleClear();
   };
 
+  const preventDefault = (event: React.TouchEvent<HTMLCanvasElement>) => {
+    event.preventDefault();
+  };
   return (
     <div className="flex flex-col items-center z-50">
       <LoadingOverlay visible={loading} />
@@ -201,6 +237,9 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUpOrLeave}
               onMouseLeave={handleMouseUpOrLeave}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             />
             <Group flex="space-between" mt="md">
               <Button onClick={handleUndo} className="cmdUndo">
