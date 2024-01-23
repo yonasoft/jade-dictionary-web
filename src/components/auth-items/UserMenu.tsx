@@ -29,7 +29,7 @@ const UserMenu = (props: Props) => {
       shadow="md"
       transitionProps={{ transition: "pop" }}
       withArrow
-      zIndex={30}
+      zIndex={50}
     >
       <Menu.Target>
         <div className="cursor-pointer">

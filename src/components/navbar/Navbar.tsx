@@ -12,7 +12,6 @@ import AuthItems from "../auth-items/AuthItems";
 import NavSearchBar from "./components/nav-search-bar/NavSearchBar";
 import { navLinks } from "@/src/lib/constants/navLinks";
 
-
 const Navbar = () => {
   const [drawerOpened, { open, close, toggle }] = useDisclosure(false);
 
@@ -21,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="z-30 w-full border-green-200">
+    <header className="z-30 w-full">
       <Container className="flex" size="lg">
         <JadeLogo h={64} />
         <Flex className="w-full mt-4">
