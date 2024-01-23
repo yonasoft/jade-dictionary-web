@@ -20,6 +20,7 @@ const ChineseKeyboard = ({ query, setQuery }: Props) => {
       }}
       input={query} // Use query from the context
       preventMouseDownDefault
+    
       {...layout}
     />
   );

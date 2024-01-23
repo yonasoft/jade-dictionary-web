@@ -6,6 +6,7 @@ import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import layout from "simple-keyboard-layouts/build/layouts/chinese";
 import ChineseHandwriting from "./chinese-handwriting/ChineseHandwriting";
+import { getDeviceType } from "@/src/lib/utils/device";
 
 type Props = {
   query: string;
@@ -20,6 +21,10 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    getDeviceType() == "mobile" || "tablet"
+      ? setReadOnly(true)
+      : setReadOnly(false);
+
     const handleFocusIn = (event: FocusEvent) => {
       if (
         containerRef.current &&
@@ -59,7 +64,6 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
             radius="xl"
             onClick={() => {
               setShowHandwriting(false);
-              setReadOnly(false);
             }}
           >
             <IconKeyboard />
@@ -72,7 +76,6 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
             radius="xl"
             onClick={() => {
               setShowHandwriting(true);
-              setReadOnly(true);
             }}
           >
             <IconWritingSign />
