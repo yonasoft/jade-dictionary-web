@@ -134,7 +134,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
         const newPath: HanziStroke = [...lastPath, point];
         return [...prevPaths.slice(0, -1), newPath];
       });
-    }, 5),
+    }, 7),
     []
   );
 
