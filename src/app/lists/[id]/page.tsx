@@ -87,6 +87,7 @@ const ListDetailPage = ({ params }: Props) => {
   const [description, setDescription] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [showChineseInput, setShowChineseInput] = useState<boolean>(false);
+  const [readOnly, setReadOnly] = useState<boolean>(false);
 
   const fetchWords = useCallback(
     async (wordIds: number[]) => {
@@ -182,7 +183,6 @@ const ListDetailPage = ({ params }: Props) => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={2}
-          // Styling for Textarea
         />
       </div>
       <Group justify="center" className="mt-5 mb-2">
@@ -197,7 +197,11 @@ const ListDetailPage = ({ params }: Props) => {
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Search..."
           onFocus={() => setShowChineseInput(true)}
-          onBlur={() => setShowChineseInput(false)}
+          onBlur={() => {
+            setShowChineseInput(false);
+            setReadOnly(false);
+          }}
+          readOnly={readOnly}
         />
         <ActionIcon
           variant="outline"
@@ -231,6 +235,7 @@ const ListDetailPage = ({ params }: Props) => {
           onClose={() => {
             setShowChineseInput(false);
           }}
+          setReadOnly={setReadOnly}
         />
       )}
     </div>

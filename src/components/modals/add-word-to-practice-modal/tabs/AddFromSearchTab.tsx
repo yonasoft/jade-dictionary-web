@@ -24,6 +24,7 @@ const AddFromSearchTab = ({ isWordInPractice, addWordFromSearch }: Props) => {
   const [searched, setSearched] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [container, setContainer] = useState<HTMLElement | null>(null);
+  const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
     // Set the container state to the existing HTML element
@@ -41,6 +42,7 @@ const AddFromSearchTab = ({ isWordInPractice, addWordFromSearch }: Props) => {
             onClose={() => {
               setShowKeyboard(false);
             }}
+          setReadOnly={setReadOnly}
           />,
           container
         )
@@ -71,6 +73,7 @@ const AddFromSearchTab = ({ isWordInPractice, addWordFromSearch }: Props) => {
           }}
           onBlur={() => {
             setShowKeyboard(false);
+            setReadOnly(false);
           }}
           onChange={(e) => {
             setQuery(e.currentTarget.value);
@@ -78,6 +81,7 @@ const AddFromSearchTab = ({ isWordInPractice, addWordFromSearch }: Props) => {
           onKeyUp={(event) => {
             handleKeyPressSearch(event);
           }}
+          readOnly={readOnly}
         />
         <Button
           variant="filled"

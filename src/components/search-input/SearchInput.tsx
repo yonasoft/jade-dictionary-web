@@ -18,6 +18,7 @@ export const SearchInput = ({
   const { colorScheme } = useMantineColorScheme();
   const [isMounted, setIsMounted] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
+  const [readOnly, setReadOnly] = useState(false);
   const chineseInputRef = useRef(null);
 
   useEffect(() => {
@@ -48,8 +49,12 @@ export const SearchInput = ({
         }
         onKeyDown={handleKeyPress}
         onFocus={handleFocus}
-        onBlur={handleBlur}
+        onBlur={() => {
+          handleBlur();
+          setReadOnly(false);
+        }}
         className={`text-black bg-transparent border-none`}
+        readOnly={readOnly}
       />
 
       {showKeyboard && (
@@ -59,6 +64,7 @@ export const SearchInput = ({
           onClose={() => {
             setShowKeyboard(false);
           }}
+          setReadOnly={setReadOnly}
         />
       )}
     </>

@@ -11,9 +11,10 @@ type Props = {
   query: string;
   setQuery: (input: string) => void;
   onClose: () => void;
+  setReadOnly: (readOnly: boolean) => void;
 };
 
-const ChineseInput = ({ query, setQuery, onClose }: Props) => {
+const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
   const [showHandwriting, setShowHandwriting] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,7 +57,7 @@ const ChineseInput = ({ query, setQuery, onClose }: Props) => {
             variant="outline"
             size="xl"
             radius="xl"
-            onClick={() => setShowHandwriting((prev) => !prev)}
+            onClick={() => setShowHandwriting(false)}
           >
             <IconKeyboard />
           </ActionIcon>
@@ -66,7 +67,10 @@ const ChineseInput = ({ query, setQuery, onClose }: Props) => {
             variant="outline"
             size="xl"
             radius="xl"
-            onClick={() => setShowHandwriting((prev) => !prev)}
+            onClick={() => {
+              setShowHandwriting(true);
+              setReadOnly(true);
+            }}
           >
             <IconWritingSign />
           </ActionIcon>
