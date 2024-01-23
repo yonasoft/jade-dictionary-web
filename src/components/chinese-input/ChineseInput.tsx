@@ -17,14 +17,15 @@ type Props = {
 
 const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
   const [showHandwriting, setShowHandwriting] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+
     switch (getDeviceType()) {
+      
       case "mobile":
         setShowHandwriting(true);
-        setReadOnly(false);
+        setReadOnly(true);
         break;
       case "tablet":
         setReadOnly(true);
@@ -76,7 +77,9 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
             size="xl"
             radius="xl"
             onClick={() => {
+              //Enable keyboard either builtin or device keyboard
               setShowHandwriting(false);
+              setReadOnly(false);
             }}
           >
             <IconKeyboard />
@@ -101,6 +104,7 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
           radius="xl"
           onClick={() => {
             onClose();
+            setReadOnly(false);
           }}
         >
           <IconX />
