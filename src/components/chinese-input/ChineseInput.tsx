@@ -21,9 +21,22 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getDeviceType() == "mobile" || "tablet"
-      ? setReadOnly(true)
-      : setReadOnly(false);
+    switch (getDeviceType()) {
+      case "mobile":
+        setShowHandwriting(true);
+        setReadOnly(true);
+        break;
+      case "tablet":
+        setReadOnly(true);
+        break;
+      case "desktop":
+        setShowHandwriting(false);
+        setReadOnly(false);
+        break;
+      default:
+        setShowHandwriting(false);
+        setReadOnly(false);
+    }
 
     const handleFocusIn = (event: FocusEvent) => {
       if (
