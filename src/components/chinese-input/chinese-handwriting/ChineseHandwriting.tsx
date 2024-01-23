@@ -168,15 +168,24 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     performCharacterLookup(); // Perform character lookup when the stroke is completed
   }, [performCharacterLookup, paths]);
 
+  const getTouchPos = (
+    canvasDom: HTMLCanvasElement,
+    touchEvent: React.TouchEvent<HTMLCanvasElement>
+  ) => {
+    const rect = canvasDom.getBoundingClientRect();
+    return {
+      x: touchEvent.touches[0].clientX - rect.left,
+      y: touchEvent.touches[0].clientY - rect.top,
+    };
+  };
+
   const handleTouchStart = useCallback(
     (event: React.TouchEvent<HTMLCanvasElement>) => {
       event.preventDefault();
       setIsDrawing(true);
-      const touch = event.touches[0];
-      const point: HanziPoint = [
-        touch.clientX - canvasRef.current!.offsetLeft,
-        touch.clientY - canvasRef.current!.offsetTop,
-      ];
+      const canvas = canvasRef.current;
+      const touchPos = getTouchPos(canvas!, event);
+      const point: HanziPoint = [touchPos.x, touchPos.y];
       setPaths((prevPaths) => [...prevPaths, [point]]);
     },
     []
@@ -186,11 +195,9 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     (event: React.TouchEvent<HTMLCanvasElement>) => {
       event.preventDefault();
       if (!isDrawing) return;
-      const touch = event.touches[0];
-      const point: HanziPoint = [
-        touch.clientX - canvasRef.current!.offsetLeft,
-        touch.clientY - canvasRef.current!.offsetTop,
-      ];
+      const canvas = canvasRef.current;
+      const touchPos = getTouchPos(canvas!, event);
+      const point: HanziPoint = [touchPos.x, touchPos.y];
       debouncedDraw(point);
     },
     [isDrawing, debouncedDraw]
