@@ -57,7 +57,10 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
             variant="outline"
             size="xl"
             radius="xl"
-            onClick={() => setShowHandwriting(false)}
+            onClick={() => {
+              setShowHandwriting(false);
+              setReadOnly(false);
+            }}
           >
             <IconKeyboard />
           </ActionIcon>
