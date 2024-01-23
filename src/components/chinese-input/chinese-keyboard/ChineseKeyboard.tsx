@@ -8,7 +8,6 @@ type Props = {
 };
 
 const ChineseKeyboard = ({ query, setQuery }: Props) => {
-
   return (
     <Keyboard
       className="min-w-full"
@@ -16,11 +15,10 @@ const ChineseKeyboard = ({ query, setQuery }: Props) => {
         setQuery(button);
       }} // Use handleOnChange from the context
       onKeyPress={(button) => {
-        console.log("Button pressed", button);
+        setQuery(query + button);
       }}
       input={query} // Use query from the context
       preventMouseDownDefault
-    
       {...layout}
     />
   );
