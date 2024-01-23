@@ -119,18 +119,6 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     }
   }, [paths, matcher]);
 
-  const handleMouseDown = useCallback(
-    (event: React.MouseEvent<HTMLCanvasElement>) => {
-      setIsDrawing(true);
-      const point: HanziPoint = [
-        event.nativeEvent.offsetX,
-        event.nativeEvent.offsetY,
-      ];
-      setPaths((prevPaths) => [...prevPaths, [point]]);
-    },
-    []
-  );
-
   const debounce = (func: (...args: any[]) => void, delay: number) => {
     let inDebounce: ReturnType<typeof setTimeout>;
     return function (...args: any[]) {
@@ -146,7 +134,19 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
         const newPath: HanziStroke = [...lastPath, point];
         return [...prevPaths.slice(0, -1), newPath];
       });
-    }, 7), 
+    }, 5),
+    []
+  );
+
+  const handleMouseDown = useCallback(
+    (event: React.MouseEvent<HTMLCanvasElement>) => {
+      setIsDrawing(true);
+      const point: HanziPoint = [
+        event.nativeEvent.offsetX,
+        event.nativeEvent.offsetY,
+      ];
+      setPaths((prevPaths) => [...prevPaths, [point]]);
+    },
     []
   );
 
