@@ -203,11 +203,15 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     [isDrawing]
   );
 
-  const handleTouchEnd = useCallback(() => {
-    setIsDrawing(false);
-    console.log("Raw stroke data:", paths);
-    performCharacterLookup(); // Perform character lookup when the stroke is completed
-  }, [performCharacterLookup, paths]);
+  const handleTouchEnd = useCallback(
+    (event: React.TouchEvent<HTMLCanvasElement>) => {
+      event.preventDefault();
+      setIsDrawing(false);
+      console.log("Raw stroke data:", paths);
+      performCharacterLookup(); // Perform character lookup when the stroke is completed
+    },
+    [performCharacterLookup, paths]
+  );
 
   const handleUndo = () => {
     setPaths((prevPaths) => prevPaths.slice(0, -1));
