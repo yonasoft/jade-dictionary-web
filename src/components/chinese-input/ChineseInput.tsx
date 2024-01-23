@@ -18,11 +18,12 @@ type Props = {
 const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
   const [showHandwriting, setShowHandwriting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [deviceType, setDeviceType] = useState("");
 
   useEffect(() => {
+    setDeviceType(getDeviceType());
 
-    switch (getDeviceType()) {
-      
+    switch (deviceType) {
       case "mobile":
         setShowHandwriting(true);
         setReadOnly(true);
@@ -92,6 +93,7 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
             radius="xl"
             onClick={() => {
               setShowHandwriting(true);
+              deviceType === "mobile" && setReadOnly(true);
             }}
           >
             <IconWritingSign />
