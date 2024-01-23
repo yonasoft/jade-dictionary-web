@@ -50,8 +50,8 @@ const Home = () => {
   }, [results]);
 
   return (
-    <Container size="lg" className="my-8 mx-auto">
-      <Paper shadow="md" p="lg" radius="md" className="mb-8">
+    <Container size="lg" className="my-2 mx-auto">
+      <Paper shadow="md" radius="md" className="mb-6">
         <BackgroundImage src="/image/jade-background.jpg" radius="lg">
           <Flex direction="column" className="p-8 text-center">
             <Title c={titleColor}>Jade English-Chinese Dictionary</Title>
