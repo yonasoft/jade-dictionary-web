@@ -11,8 +11,8 @@
  2. [Technologies](#technologies)
  3. [Features & Screenshots](#screenshots)
 
-## Intro 
-&nbsp; &nbsp; &nbsp; &nbsp;While learning Mandarin to connect with my family in China for future visits, I was inspired to develop a Chinese-English dictionary application. This app features a comprehensive dictionary, lists for word storage and organization, and practice modules to aid memorization. It's crucial to use these words in real-life contexts as well to retain them and achieve fluency in speaking. My goal was to create an easy-to-use, user-friendly interface. I hope you find it helpful and enjoyable!
+## Intro duction
+&nbsp; &nbsp; &nbsp; &nbsp; While learning Mandarin to connect with my family in China for future visits, I was inspired to develop a Chinese-English dictionary application. This app features a comprehensive dictionary, lists for word storage and organization, and practice modules to aid memorization. It's crucial to use these words in real-life contexts as well to retain them and achieve fluency in speaking. My goal was to create an easy-to-use, user-friendly interface. I hope you find it helpful and enjoyable!
 
 ## Technologies 
 ### Front  End 
