@@ -12,6 +12,11 @@
  3. [Features & Screenshots](#screenshots)
 
 ## Introduction
+
+### What is Jade Dictionary?
+A bilingual Chinese-English dictionary web app with a database of over 120,000 words, with practicing and word-saving features. It also has a built-in Chinese keyboard and handwriting input!
+
+### Story
 &nbsp; &nbsp; &nbsp; &nbsp; While learning Mandarin to connect with my family in China for future visits, I was inspired to develop a Chinese-English dictionary application. This app features a comprehensive dictionary, lists for word storage and organization, and practice modules to aid memorization. It's crucial to use these words in real-life contexts as well to retain them and achieve fluency in speaking. My goal was to create an easy-to-use, user-friendly interface. I hope you find it helpful and enjoyable!
 
 ## Technologies 
