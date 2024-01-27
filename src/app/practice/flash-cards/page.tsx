@@ -1,5 +1,5 @@
 "use client";
-import { Divider, Button, Group, Flex } from "@mantine/core";
+import { Divider, Button, Group, Flex, Text, Center } from "@mantine/core";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
@@ -8,7 +8,6 @@ import AnswerButtons from "@/src/components/practice/flash-card/answer-buttons/A
 import FlashCardResults from "@/src/components/practice/flash-card/flash-card-results/FlashCardResults";
 import FlipCard from "@/src/components/practice/flash-card/flip-card/FlipCard";
 import { formatTime } from "@/src/lib/utils/practice";
-
 
 type Props = {};
 
@@ -112,25 +111,29 @@ const FlashCardsPage = () => {
           Next <IconArrowRight />
         </Button>
       </Group>
-      <div className="px-1 mb-1">
+
+      <Text className="px-1 mb-1">
         <strong>Word:</strong> {currentWordIndex + 1}/{words.length}
-      </div>
-      <Flex className="flex-grow" direction="column" align="center">
+      </Text>
+
+      <br className="mb-1" />
+
+      <Center className="w-full h-full flex flex-col ">
         {words.length > 0 && (
-          <div className="w-full h-3/4 md:w-3/4 md:h-1/2">
-            <FlipCard
-              word={words[currentWordIndex]}
-              practiceTypes={selectedPracticeTypes}
-            />
-          </div>
+          <FlipCard
+            className="w-full h-84"
+            word={words[currentWordIndex]}
+            practiceTypes={selectedPracticeTypes}
+          />
         )}
+        <br />
         <AnswerButtons
           handleAnswer={handleAnswer}
           isAnswerSelected={isAnswerSelected}
           isPaused={isPaused}
           timeUp={timeUp}
         />
-      </Flex>
+      </Center>
     </div>
   );
 };

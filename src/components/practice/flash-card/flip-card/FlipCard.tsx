@@ -3,50 +3,23 @@ import React, { useState, useEffect } from "react";
 import { Card, Text } from "@mantine/core";
 import { PracticeType } from "@/src/lib/types/practice";
 import { Word } from "@/src/lib/types/word";
+import { randomizeFlashCard } from "@/src/lib/utils/practice";
 
 type Props = {
+  className: string;
   word: Word;
   practiceTypes: PracticeType[];
 };
 
-const FlipCard = ({ word, practiceTypes }: Props) => {
+const FlipCard = ({ className, word, practiceTypes }: Props) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [frontText, setFrontText] = useState("");
   const [backText, setBackText] = useState("");
 
   useEffect(() => {
-    if (word && practiceTypes.length > 0) {
-      const randomPracticeType =
-        practiceTypes[Math.floor(Math.random() * practiceTypes.length)];
-      let text1, text2;
-
-      switch (randomPracticeType) {
-        case PracticeType.HanziToDefinition:
-          text1 = `${word.simplified}${
-            word.traditional !== word.simplified ? ` (${word.traditional})` : ""
-          }`;
-          text2 = word.definition;
-          break;
-        case PracticeType.HanziToPinyin:
-          text1 = `${word.simplified}${
-            word.traditional !== word.simplified ? ` (${word.traditional})` : ""
-          }`;
-          text2 = word.pinyin;
-          break;
-        default:
-          text1 = "";
-          text2 = "";
-      }
-
-      // Randomize front and back text
-      if (Math.random() > 0.5) {
-        setFrontText(text1);
-        setBackText(text2);
-      } else {
-        setFrontText(text2);
-        setBackText(text1);
-      }
-    }
+    const { front, back } = randomizeFlashCard(word, practiceTypes);
+    setFrontText(front);
+    setBackText(back);
   }, [word, practiceTypes]);
 
   const handleFlip = () => {
@@ -56,7 +29,7 @@ const FlipCard = ({ word, practiceTypes }: Props) => {
   return (
     <div
       onClick={handleFlip}
-      className="w-full h-full cursor-pointer"
+      className={`${className} cursor-pointer`}
       style={{
         perspective: "1000px",
         backgroundColor: "transparent",

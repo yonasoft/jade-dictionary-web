@@ -73,3 +73,34 @@ export const formatTime = (seconds: number) => {
   const remainingSeconds = seconds % 60;
   return `${minutes}m ${remainingSeconds}s`;
 };
+
+export const randomizeFlashCard = (
+  word: Word,
+  practiceTypes: PracticeType[]
+): { front: string; back: string } => {
+  const randomPracticeType =
+    practiceTypes[Math.floor(Math.random() * practiceTypes.length)];
+  let text1, text2;
+
+  switch (randomPracticeType) {
+    case PracticeType.HanziToDefinition:
+      text1 = `${word.simplified}${
+        word.traditional !== word.simplified ? ` (${word.traditional})` : ""
+      }`;
+      text2 = word.definition;
+      break;
+    case PracticeType.HanziToPinyin:
+      text1 = `${word.simplified}${
+        word.traditional !== word.simplified ? ` (${word.traditional})` : ""
+      }`;
+      text2 = word.pinyin;
+      break;
+    default:
+      text1 = "";
+      text2 = "";
+  }
+
+  return Math.random() > 0.5
+    ? { front: text1, back: text2 }
+    : { front: text2, back: text1 };
+};

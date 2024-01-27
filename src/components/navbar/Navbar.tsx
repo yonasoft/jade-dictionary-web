@@ -22,7 +22,9 @@ const Navbar = () => {
   return (
     <header className="z-30 w-full">
       <Container className="flex" size="lg">
-        <JadeLogo h={64} />
+        <Link href="/" passHref>
+          <JadeLogo h={64} />
+        </Link>
         <Flex className="w-full mt-4">
           <Space w="lg" />
           <Flex direction="column" className="flex-grow">
