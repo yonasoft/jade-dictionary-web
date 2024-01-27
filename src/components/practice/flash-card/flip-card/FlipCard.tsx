@@ -54,35 +54,37 @@ const FlipCard = ({ word, practiceTypes }: Props) => {
   };
 
   return (
-    <Card
+    <div
       onClick={handleFlip}
-      className="relative w-full h-full bg-white shadow-md cursor-pointer"
-      style={{ perspective: "1000px" }}
-      shadow="md"
+      className="w-full h-full cursor-pointer"
+      style={{
+        perspective: "1000px",
+        backgroundColor: "transparent",
+      }}
     >
-      <div
-        className="w-full h-full transition-transform duration-500"
+      <Card
+        className="w-full h-full relative transition-transform duration-200 ease-out"
         style={{
           transformStyle: "preserve-3d",
           transform: isFlipped ? "rotateX(180deg)" : "rotateX(0deg)",
         }}
+        shadow="md"
+        color="white"
       >
         <div
-          className="absolute w-full h-full p-4 flex items-center justify-center text-2xl font-bold"
-          style={{ backfaceVisibility: "hidden", transform: "rotateX(0)" }}
+          className="absolute w-full h-full p-4 flex items-center justify-center "
+          style={{
+            WebkitBackfaceVisibility: isFlipped ? "visible" : "hidden",
+            backfaceVisibility: isFlipped ? "visible" : "hidden",
+            transform: isFlipped ? "rotateX(180deg)" : "rotateX(0deg)",
+          }}
         >
           <Text size="xl" fw={700}>
-            {frontText}
+            {isFlipped ? backText : frontText}
           </Text>
         </div>
-        <div
-          className="absolute w-full h-full p-4 flex items-center justify-center text-xl"
-          style={{ backfaceVisibility: "hidden", transform: "rotateX(180deg)" }}
-        >
-          <Text size="xl">{backText}</Text>
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 };
 
