@@ -22,8 +22,8 @@ const Navbar = () => {
   return (
     <>
       <Container className="my-0" size="lg">
-        <header className="m-0 z-30 w-full flex flex-row items-center">
-          <Link className="mx-2" href="/" passHref>
+        <header className="m-0 z-30 w-full flex flex-row justify-start items-center">
+          <Link className="me-2" href="/" passHref>
             <JadeLogo h={52} />
           </Link>
           <NavSearchBar className="flex-grow" />
