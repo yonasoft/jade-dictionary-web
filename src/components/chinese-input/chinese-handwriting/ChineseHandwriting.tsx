@@ -233,16 +233,16 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-center w-full">
+    <div className="flex justify-center items-center w-full p-2">
       <LoadingOverlay visible={loading} />
-      <div className="flex flex-col lg:flex-row items-center justify-center bg-green-500 text-white rounded-lg w-full max-w-xl lg:max-w-4xl p-3">
-        <div className="flex flex-col items-center w-full lg:w-1/2">
+      <div className="flex flex-col sm:flex-row items-center justify-center bg-green-500 text-white rounded-lg w-full max-w-4xl">
+        <div className="flex flex-col items-center w-full sm:w-1/2 p-2">
           <Title order={2} className="text-lg sm:text-xl text-center mb-2">
             Stroke Input
           </Title>
           <canvas
             ref={canvasRef}
-            className="drawingBoard bg-white w-[200px] h-[200px]"
+            className="drawingBoard bg-white w-[150px] h-[150px] sm:w-[200px] sm:h-[200px]"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUpOrLeave}
@@ -261,7 +261,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
           </Group>
         </div>
 
-        <div className="mt-4 lg:mt-0 lg:w-1/2">
+        <div className="w-full sm:w-1/2 p-2">
           <Title order={2} className="text-lg sm:text-xl text-center mb-2">
             Recognized Characters
           </Title>
