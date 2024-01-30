@@ -200,6 +200,11 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
       const canvas = canvasRef.current;
       const touchPos = getTouchPos(canvas!, event);
       const point: HanziPoint = [touchPos.x, touchPos.y];
+      setPaths((prevPaths: HanziCharacter) => {
+        const lastPath = prevPaths[prevPaths.length - 1];
+        const newPath: HanziStroke = [...lastPath, point];
+        return [...prevPaths.slice(0, -1), newPath];
+      });
     },
     [isDrawing]
   );
