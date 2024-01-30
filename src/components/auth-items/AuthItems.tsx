@@ -6,14 +6,15 @@ import AuthButtons from "./buttons/AuthButtons";
 
 type Props = {
   additionalOnClick?: () => void;
+  shrinkUser?: boolean;
 };
 
-const AuthItems = ({ additionalOnClick }: Props) => {
+const AuthItems = ({ additionalOnClick, shrinkUser= false }: Props) => {
   const firebase = useFirebaseContext();
   useEffect(() => {}, [firebase.currentUser]);
 
   return firebase.currentUser ? (
-    <UserMenu />
+    <UserMenu shrink={shrinkUser} />
   ) : (
     <AuthButtons additionalOnClick={additionalOnClick} />
   );

@@ -3,19 +3,17 @@ import { WordList } from "@/src/lib/types/word-list";
 import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
 import {
   ActionIcon,
-  Button,
   Card,
   Flex,
   Group,
   Highlight,
   Menu,
-  useMantineColorScheme,
-  useMantineTheme,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { Firestore } from "firebase/firestore";
-import React, { useState } from "react";
-import WordDetailModal from "../WordDetailModal";
+import React, { lazy, useState } from "react";
+
+const WordDetailModal = lazy(() => import("../word-detail/WordDetailModal"));
 
 type Props = {
   query: string;
@@ -85,7 +83,7 @@ const WordResult = ({
   };
 
   const renderAddToPracticeList = () => {
-    if (!currentUser) return null;
+    if (wordUsed) return null;
 
     return (
       <ActionIcon
@@ -101,8 +99,10 @@ const WordResult = ({
   };
 
   const renderWordLists = () => {
+    if (!currentUser) return null;
+
     return (
-      <Menu zIndex={30} disabled={wordUsed} withinPortal>
+      <Menu zIndex={30} withinPortal>
         <Menu.Target>
           <ActionIcon variant="subtle" size="md">
             <IconPlus />
@@ -132,8 +132,7 @@ const WordResult = ({
     <>
       <Card className="mx-2" style={cardStyles} shadow="sm" h="120">
         <div className="w-full flex justify-end">
-          {!wordUsed &&
-            (onAddToWordList ? renderWordLists() : renderAddToPracticeList())}
+          {onAddToWordList ? renderWordLists() : renderAddToPracticeList()}
         </div>
         {renderWordInformation()}
       </Card>

@@ -20,41 +20,50 @@ const Navbar = () => {
   };
 
   return (
-    <header className="z-30 w-full">
-      <Container className="flex" size="lg">
-        <Link href="/" passHref>
-          <JadeLogo h={64} />
-        </Link>
-        <Flex className="w-full mt-4">
-          <Space w="lg" />
-          <Flex direction="column" className="flex-grow">
-            <Flex className="w-full   items-center" direction="row">
-              <NavSearchBar className="flex-grow " />
-              <Group visibleFrom="sm">
-                <ThemeToggler className="flex-shrink mx-4" size="xl" />
-                <AuthItems />
-              </Group>
-            </Flex>
-            <Group
-              className="flex-grow p-0  rounded-full shadow-lg "
-              justify="center"
-              visibleFrom="sm"
-            >
-              {renderMenuItems()}
-            </Group>
-          </Flex>
+    <>
+      <Container className="my-0" size="lg">
+        <header className="m-0 z-30 w-full flex flex-row items-center">
+          <Link href="/" passHref>
+            <JadeLogo h={52} />
+          </Link>
+          <NavSearchBar className="flex-grow" />
+
+          <Group visibleFrom="xs">
+            <ThemeToggler className="flex-shrink ms-2" size="xl" />
+            <AuthItems shrinkUser />
+          </Group>
           <Burger
             size="sm"
             opened={drawerOpened}
             onClick={toggle}
-            hiddenFrom="sm"
+            hiddenFrom="xs"
             className="mx-4"
           />
-        </Flex>
+        </header>
+        <Group
+          className="flex w-full rounded-full shadow-md justify-center"
+          visibleFrom="xs"
+        >
+          {renderMenuItems()}
+        </Group>
       </Container>
       <NavDrawer links={navLinks} opened={drawerOpened} onClose={close} />
-    </header>
+    </>
   );
 };
 
 export default Navbar;
+
+// <Container className="flex" size="lg">
+
+//   <Flex className="w-full mt-4">
+//     <Space w="lg" />
+//     <Flex direction="column" className="flex-grow">
+//       <Flex className="w-full   items-center" direction="row">
+//
+
+//       </Flex>
+//     </Flex>
+
+//   </Flex>
+// </Container>

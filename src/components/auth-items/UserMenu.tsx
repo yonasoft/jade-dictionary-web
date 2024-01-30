@@ -10,9 +10,11 @@ import {
 import Link from "next/link";
 import React, { useEffect } from "react";
 
-type Props = {};
+type Props = {
+  shrink: boolean;
+};
 
-const UserMenu = (props: Props) => {
+const UserMenu = ({ shrink }: Props) => {
   const { currentUser, auth } = useFirebaseContext();
 
   useEffect(() => {}, [currentUser]);
@@ -39,7 +41,7 @@ const UserMenu = (props: Props) => {
               alt="user profile picture"
               radius="xl"
             />
-            <Text size="sm">
+            <Text size="sm" visibleFrom={shrink ? "sm" : ""}>
               {trimStringWithEllipsis(
                 currentUser?.displayName || currentUser?.email || "",
                 15

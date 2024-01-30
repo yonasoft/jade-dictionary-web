@@ -10,7 +10,7 @@ const DrawerHeader = () => (
   <Drawer.Header>
     <Group className="grow" justify="space-between">
       <JadeLogo h={48} />
-      <Box hiddenFrom="sm">
+      <Box>
         <ThemeToggler />
       </Box>
     </Group>
@@ -27,8 +27,8 @@ const DrawerBody = ({
 }) => (
   <Drawer.Body>
     <DrawerNavLinks links={links} onClick={onClose} />
-    <Divider className="my-3" size="sm" hiddenFrom="sm" />
-    <Group className="grow my-2" justify="center" hiddenFrom="sm">
+    <Divider className="my-3" size="sm" />
+    <Group className="grow my-2" justify="center">
       <AuthItems additionalOnClick={onClose} />
     </Group>
   </Drawer.Body>
@@ -55,6 +55,7 @@ const NavDrawer = ({ links, opened, onClose }: Props) => {
       }}
       closeOnClickOutside
       closeOnEscape
+      hiddenFrom="xs"
     >
       <Drawer.Content
         className={`${RemoveScroll.classNames.fullWidth} ${RemoveScroll.classNames.zeroRight}`}
