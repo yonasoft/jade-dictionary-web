@@ -14,7 +14,8 @@ import {
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { Firestore } from "firebase/firestore";
-import React from "react";
+import React, { useState } from "react";
+import WordDetailModal from "../WordDetailModal";
 
 type Props = {
   query: string;
@@ -36,79 +37,114 @@ const WordResult = ({
   isWordUsed,
 }: Props) => {
   const wordUsed = isWordUsed?.(word);
-  const { colorScheme } = useMantineColorScheme();
-  const theme = useMantineTheme();
   const { firestore, wordLists, currentUser } = useFirebaseContext();
   const traditional = `(${word.traditional})`;
+  const [showModal, setShowModal] = useState(false);
   query = query.toLowerCase();
 
   const cardStyles = {
     opacity: wordUsed ? 0.5 : 1,
   };
 
-  return (
-    <Card style={cardStyles} className="mx-2 my-1" shadow="sm" withBorder>
-      <div className="flex-col">
-        <div className="w-full flex justify-end">
-          {wordUsed
-            ? null
-            : (currentUser &&
-                onAddToWordList && ( // Only show if a user is logged in
-                  <Menu zIndex={30} disabled={wordUsed} withinPortal>
-                    <Menu.Target>
-                      <ActionIcon variant="outline" size="lg">
-                        <IconPlus />
-                      </ActionIcon>
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                      {wordLists && wordLists.length > 0 ? (
-                        wordLists.map((list) => (
-                          <Menu.Item
-                            key={list.id}
-                            onClick={() => {
-                              onAddToWordList?.(firestore, list, word);
-                            }}
-                          >
-                            {list.title}
-                          </Menu.Item>
-                        ))
-                      ) : (
-                        <Menu.Item style={{ fontStyle: "italic" }}>
-                          No lists
-                        </Menu.Item>
-                      )}
-                    </Menu.Dropdown>
-                  </Menu>
-                )) ||
-              (onAddToPracticeList && (
-                <ActionIcon
-                  variant="outline"
-                  size="lg"
-                  onClick={() => {
-                    onAddToPracticeList(word);
-                  }}
-                >
-                  <IconPlus size={24} />
-                </ActionIcon>
-              ))}
-        </div>
-        <Group className="grow" align="start" wrap="wrap" grow>
-          <Flex justify="center" align="center" direction="column">
-            <Highlight
-              size="xl"
-              fw="500"
-              highlight={query}
-            >{`${word.simplified} ${traditional}`}</Highlight>
-            <Highlight size="md" highlight={query}>
-              {word.pinyin}
-            </Highlight>
-          </Flex>
-          <Highlight className="h-auto align-middle" highlight={query}>
-            {word.definition}
+  const renderWordInformation = () => {
+    return (
+      <Group
+        className="cursor-pointer"
+        align="start"
+        wrap="wrap"
+        grow
+        onClick={() => {
+          setShowModal(true);
+        }}
+      >
+        <Flex
+          className="flex-1"
+          justify="center"
+          align="center"
+          direction="column"
+        >
+          <Highlight
+            size="sm"
+            fw="700"
+            highlight={query}
+          >{`${word.simplified} ${traditional}`}</Highlight>
+          <Highlight size="sm" highlight={query}>
+            {word.pinyin}
           </Highlight>
-        </Group>
-      </div>
-    </Card>
+        </Flex>
+        <Highlight
+          className="h-auto align-middle flex-2"
+          size="xs"
+          highlight={query}
+          fs="italic"
+        >
+          {word.definition}
+        </Highlight>
+      </Group>
+    );
+  };
+
+  const renderAddToPracticeList = () => {
+    if (!currentUser) return null;
+
+    return (
+      <ActionIcon
+        variant="subtle"
+        size="md"
+        onClick={() => {
+          onAddToPracticeList!(word);
+        }}
+      >
+        <IconPlus />
+      </ActionIcon>
+    );
+  };
+
+  const renderWordLists = () => {
+    return (
+      <Menu zIndex={30} disabled={wordUsed} withinPortal>
+        <Menu.Target>
+          <ActionIcon variant="subtle" size="md">
+            <IconPlus />
+          </ActionIcon>
+        </Menu.Target>
+        <Menu.Dropdown>
+          {wordLists && wordLists.length > 0 ? (
+            wordLists.map((list) => (
+              <Menu.Item
+                key={list.id}
+                onClick={() => {
+                  onAddToWordList?.(firestore, list, word);
+                }}
+              >
+                {list.title}
+              </Menu.Item>
+            ))
+          ) : (
+            <Menu.Item fs="italic">No lists</Menu.Item>
+          )}
+        </Menu.Dropdown>
+      </Menu>
+    );
+  };
+
+  return (
+    <>
+      <Card className="mx-2" style={cardStyles} shadow="sm" h="120">
+        <div className="w-full flex justify-end">
+          {!wordUsed &&
+            (onAddToWordList ? renderWordLists() : renderAddToPracticeList())}
+        </div>
+        {renderWordInformation()}
+      </Card>
+      <WordDetailModal
+        word={word}
+        opened={showModal}
+        onClose={() => {
+          setShowModal(false);
+        }}
+      />
+    </>
   );
 };
 

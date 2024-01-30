@@ -59,7 +59,7 @@ const WordRow = ({ word, onWordRemove, query }: Props) => {
         )}
 
         <Flex direction="column">
-          <Group justify="space-between">
+          <Group >
             <Highlight highlight={query.toLowerCase()} fw={600} size="md">
               {`${word.simplified}(${word.traditional})`}
             </Highlight>
