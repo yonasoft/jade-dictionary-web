@@ -7,6 +7,7 @@ import "react-simple-keyboard/build/css/index.css";
 import layout from "simple-keyboard-layouts/build/layouts/chinese";
 import ChineseHandwriting from "./chinese-handwriting/ChineseHandwriting";
 import { getDeviceType } from "@/src/lib/utils/device";
+import ChineseKeyboard from "./chinese-keyboard/ChineseKeyboard";
 
 type Props = {
   query: string;
@@ -64,72 +65,62 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
   };
 
   return (
-    <Container
-      size="lg"
-      className="fixed bottom-0 left-0 right-0 z-50"
-      tabIndex={0}
-      ref={containerRef}
-      onMouseDown={handleMouseDown}
-    >
-      <Center>
-        {showHandwriting ? (
+    <div className="mx-0 fixed inset-0 z-50 flex items-center justify-center">
+      <div
+        className="fixed bottom-0 z-50 w-full md:w-4/5 max-h-screen "
+        tabIndex={0}
+        ref={containerRef}
+        onMouseDown={handleMouseDown}
+      >
+        <Center>
+          {showHandwriting ? (
+            <ActionIcon
+              className="m-2"
+              variant="outline"
+              size="xl"
+              radius="xl"
+              onClick={() => {
+                //Enable keyboard either builtin or device keyboard
+                setShowHandwriting(false);
+                setReadOnly(false);
+              }}
+            >
+              <IconKeyboard />
+            </ActionIcon>
+          ) : (
+            <ActionIcon
+              className="m-2"
+              variant="outline"
+              size="xl"
+              radius="xl"
+              onClick={() => {
+                setShowHandwriting(true);
+                deviceType === "mobile" && setReadOnly(true);
+              }}
+            >
+              <IconWritingSign />
+            </ActionIcon>
+          )}
           <ActionIcon
             className="m-2"
-            variant="outline"
+            variant="filled"
             size="xl"
             radius="xl"
             onClick={() => {
-              //Enable keyboard either builtin or device keyboard
-              setShowHandwriting(false);
+              onClose();
               setReadOnly(false);
             }}
           >
-            <IconKeyboard />
+            <IconX />
           </ActionIcon>
+        </Center>
+        {showHandwriting ? (
+          <ChineseHandwriting query={query} setQuery={setQuery} />
         ) : (
-          <ActionIcon
-            className="m-2"
-            variant="outline"
-            size="xl"
-            radius="xl"
-            onClick={() => {
-              setShowHandwriting(true);
-              deviceType === "mobile" && setReadOnly(true);
-            }}
-          >
-            <IconWritingSign />
-          </ActionIcon>
+          <ChineseKeyboard query={query} setQuery={setQuery} />
         )}
-        <ActionIcon
-          className="m-2"
-          variant="filled"
-          size="xl"
-          radius="xl"
-          onClick={() => {
-            onClose();
-            setReadOnly(false);
-          }}
-        >
-          <IconX />
-        </ActionIcon>
-      </Center>
-      {showHandwriting ? (
-        <ChineseHandwriting query={query} setQuery={setQuery} />
-      ) : (
-        <Keyboard
-          className="min-w-full"
-          onChange={(button) => {
-            setQuery(button);
-          }} // Use handleOnChange from the context
-          onKeyPress={(button) => {
-            console.log("Button pressed", button);
-          }}
-          input={query} // Use query from the context
-          preventMouseDownDefault
-          {...layout}
-        />
-      )}
-    </Container>
+      </div>
+    </div>
   );
 };
 

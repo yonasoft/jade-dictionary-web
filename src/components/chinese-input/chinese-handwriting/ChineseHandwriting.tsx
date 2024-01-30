@@ -233,7 +233,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
   };
 
   return (
-    <div className="flex flex-col items-center z-50">
+    <div className="flex flex-col items-center z-50 max-w-full">
       <LoadingOverlay visible={loading} />
       <Paper className="content mx-auto p-3 bg-green-500 text-white rounded-lg w-full max-w-2xl sm:max-w-xl">
         <div className="flex flex-col md:flex-row">

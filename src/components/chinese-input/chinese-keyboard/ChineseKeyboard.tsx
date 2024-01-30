@@ -10,12 +10,12 @@ type Props = {
 const ChineseKeyboard = ({ query, setQuery }: Props) => {
   return (
     <Keyboard
-      className="min-w-full"
+      className=" "
       onChange={(button) => {
         setQuery(button);
       }} // Use handleOnChange from the context
       onKeyPress={(button) => {
-        setQuery(query + button);
+        console.log("Button pressed", button);
       }}
       input={query} // Use query from the context
       preventMouseDownDefault
@@ -23,5 +23,4 @@ const ChineseKeyboard = ({ query, setQuery }: Props) => {
     />
   );
 };
-
 export default ChineseKeyboard;
