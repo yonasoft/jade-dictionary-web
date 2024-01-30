@@ -233,19 +233,20 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
   };
 
   return (
-    <div className="flex flex-col items-center z-50 max-w-full">
+    <div className="flex flex-col md:flex-row items-center justify-center z-50 max-w-full max-h-4/5">
       <LoadingOverlay visible={loading} />
-      <Paper className="content mx-auto p-3 bg-green-500 text-white rounded-lg w-full max-w-2xl sm:max-w-xl">
-        <div className="flex flex-col md:flex-row">
-          <div className="colLeft w-full md:w-1/3 pr-3 mb-4 md:mb-0">
-            <Title order={2} className="text-lg sm:text-xl">
-              Stroke input
+      <Paper className="content p-3 bg-green-500 text-white rounded-lg w-full md:max-w-xl">
+        <div className="flex flex-col md:flex-row items-center justify-center">
+          <div className="flex flex-col items-center w-full md:w-1/2">
+            <Title order={2} className="text-lg sm:text-xl text-center">
+              Stroke Input
             </Title>
+
             <canvas
               ref={canvasRef}
-              width={250}
-              height={250}
-              className="drawingBoard bg-white"
+              width={200}
+              height={200}
+              className="drawingBoard bg-white mt-2"
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUpOrLeave}
@@ -254,7 +255,8 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             />
-            <Group flex="space-between" mt="md">
+
+            <Group align="center" mt="md">
               <Button onClick={handleUndo} className="cmdUndo">
                 Undo
               </Button>
@@ -263,31 +265,30 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
               </Button>
             </Group>
           </div>
-          <div className="colRight w-full md:w-2/3 pl-3 flex flex-col justify-center">
-            <Title order={2} className="text-lg sm:text-xl">
-              Recognized characters
+
+          <div className="flex flex-col items-center w-full md:w-1/2 mt-4 md:mt-0">
+            <Title order={2} className="text-lg sm:text-xl text-center">
+              Recognized Characters
             </Title>
-            <div className="flex justify-center items-center">
-              <Paper className="charPicker hanziLookupChars m-4 border border-gray-400 p-1 min-h-[4rem] bg-white overflow-hidden flex flex-wrap justify-center items-center">
-                {recognizedChars.length > 0 ? (
-                  recognizedChars.map((match: RecognizedChar, index) => (
-                    <Text
-                      key={index}
-                      component="span"
-                      className="cursor-pointer mx-2 p-1 hover:bg-slate-300 rounded-md"
-                      c="black"
-                      onClick={() => handleCharacterClick(match.character)}
-                    >
-                      {match.character}
-                    </Text>
-                  ))
-                ) : (
-                  <Text component="span" className="text-center text-gray-400">
-                    Draw a character to begin recognition...
+            <Paper className="charPicker hanziLookupChars m-4 border border-gray-400 p-1 min-h-[4rem] bg-white overflow-hidden flex flex-wrap justify-center items-center">
+              {recognizedChars.length > 0 ? (
+                recognizedChars.map((match: RecognizedChar, index) => (
+                  <Text
+                    key={index}
+                    component="span"
+                    className="cursor-pointer mx-2 p-1 hover:bg-slate-300 rounded-md"
+                    c="black"
+                    onClick={() => handleCharacterClick(match.character)}
+                  >
+                    {match.character}
                   </Text>
-                )}
-              </Paper>
-            </div>
+                ))
+              ) : (
+                <Text component="span" className="text-center text-gray-400">
+                  Draw a character to begin recognition...
+                </Text>
+              )}
+            </Paper>
           </div>
         </div>
       </Paper>

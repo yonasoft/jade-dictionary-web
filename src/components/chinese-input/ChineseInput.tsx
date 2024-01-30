@@ -65,7 +65,7 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
   };
 
   return (
-    <div className="mx-0 fixed inset-0 z-50 flex items-center justify-center">
+    <div className="mx-0 fixed inset-0 z-50 flex items-center justify-center max-h-screen">
       <div
         className="fixed bottom-0 z-50 w-full md:w-4/5 max-h-screen "
         tabIndex={0}
