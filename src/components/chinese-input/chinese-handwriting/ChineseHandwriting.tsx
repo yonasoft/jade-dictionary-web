@@ -26,6 +26,17 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // Resize the canvas when the component mounts
+    resizeCanvas();
+
+    // Resize the canvas when the window is resized
+    window.addEventListener("resize", resizeCanvas);
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+    };
+  }, []);
+
+  useEffect(() => {
     const loadHanziLookup = async () => {
       const script = document.createElement("script");
       script.src = "/raw/hanzi-lookup/hanzilookup.min.js";
@@ -96,6 +107,15 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
 
     drawCanvas();
   }, [paths]);
+
+  const resizeCanvas = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+  };
 
   const performCharacterLookup = useCallback(() => {
     if (window.HanziLookup && paths.length > 0) {
@@ -188,7 +208,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
       const canvas = canvasRef.current;
       const touchPos = getTouchPos(canvas!, event);
       const point: HanziPoint = [touchPos.x, touchPos.y];
-      setPaths((prevPaths) => [...prevPaths, [point]]);
+      debouncedDraw(point);
     },
     []
   );
