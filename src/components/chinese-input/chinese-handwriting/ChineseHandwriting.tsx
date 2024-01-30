@@ -25,6 +25,15 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
   const [matcher, setMatcher] = useState<HanziLookupMatcher | null>(null); // [1
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const resizeCanvas = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+  };
+
   useEffect(() => {
     // Resize the canvas when the component mounts
     resizeCanvas();
@@ -108,15 +117,6 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
     drawCanvas();
   }, [paths]);
 
-  const resizeCanvas = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-    }
-  };
-
   const performCharacterLookup = useCallback(() => {
     if (window.HanziLookup && paths.length > 0) {
       const convertedPaths = paths.map(
@@ -154,7 +154,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
         const newPath: HanziStroke = [...lastPath, point];
         return [...prevPaths.slice(0, -1), newPath];
       });
-    }, 7),
+    }, 6),
     []
   );
 
@@ -201,38 +201,29 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
 
   const handleTouchStart = useCallback(
     (event: React.TouchEvent<HTMLCanvasElement>) => {
-      //Prevent scrolling when touching the canvas (mobile) to properly draw strokes.
-      event.preventDefault();
       document.body.style.overflow = "hidden";
       setIsDrawing(true);
       const canvas = canvasRef.current;
       const touchPos = getTouchPos(canvas!, event);
       const point: HanziPoint = [touchPos.x, touchPos.y];
-      debouncedDraw(point);
+      setPaths((prevPaths) => [...prevPaths, [point]]);
     },
     []
   );
 
   const handleTouchMove = useCallback(
     (event: React.TouchEvent<HTMLCanvasElement>) => {
-      event.preventDefault();
       if (!isDrawing) return;
       const canvas = canvasRef.current;
       const touchPos = getTouchPos(canvas!, event);
       const point: HanziPoint = [touchPos.x, touchPos.y];
-      setPaths((prevPaths: HanziCharacter) => {
-        const lastPath = prevPaths[prevPaths.length - 1];
-        const newPath: HanziStroke = [...lastPath, point];
-        return [...prevPaths.slice(0, -1), newPath];
-      });
+      debouncedDraw(point);
     },
-    [isDrawing]
+    [isDrawing, debouncedDraw]
   );
 
   const handleTouchEnd = useCallback(
     (event: React.TouchEvent<HTMLCanvasElement>) => {
-      //Restore scrolling when touching the canvas
-      event.preventDefault();
       document.body.style.overflow = "auto";
       setIsDrawing(false);
       console.log("Raw stroke data:", paths);
@@ -266,7 +257,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
           </Title>
           <canvas
             ref={canvasRef}
-            className="drawingBoard bg-white w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[180px] md:h-[180px]"
+            className="drawingBoard bg-white w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[180px] md:h-[180px] touch-none"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUpOrLeave}
