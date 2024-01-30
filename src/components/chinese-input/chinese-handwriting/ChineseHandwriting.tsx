@@ -200,7 +200,6 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
       const canvas = canvasRef.current;
       const touchPos = getTouchPos(canvas!, event);
       const point: HanziPoint = [touchPos.x, touchPos.y];
-      debouncedDraw(point);
     },
     [isDrawing]
   );
