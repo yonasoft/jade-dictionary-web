@@ -246,7 +246,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
           </Title>
           <canvas
             ref={canvasRef}
-            className="drawingBoard bg-white w-[150px] h-[150px] sm:w-[200px] sm:h-[200px]"
+            className="drawingBoard bg-white mt-2 w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px]"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUpOrLeave}
@@ -269,7 +269,7 @@ const ChineseHandwriting = ({ query, setQuery }: Props) => {
           <Title order={2} className="text-lg sm:text-xl text-center mb-2">
             Recognized Characters
           </Title>
-          <div className="charPicker hanziLookupChars border border-gray-400 p-1 min-h-[4rem] bg-white overflow-hidden flex flex-wrap justify-center items-center">
+          <div className="charPicker hanziLookupChars border border-gray-400 p-1 min-h-[3rem] sm:min-h-[4rem] bg-white overflow-hidden flex flex-wrap justify-center items-center">
             {recognizedChars.length > 0 ? (
               recognizedChars.map((match: RecognizedChar, index) => (
                 <Text
