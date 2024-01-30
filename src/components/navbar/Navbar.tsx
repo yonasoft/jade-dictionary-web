@@ -23,7 +23,7 @@ const Navbar = () => {
     <>
       <Container className="my-0" size="lg">
         <header className="m-0 z-30 w-full flex flex-row items-center">
-          <Link href="/" passHref>
+          <Link className="mx-2" href="/" passHref>
             <JadeLogo h={52} />
           </Link>
           <NavSearchBar className="flex-grow" />
