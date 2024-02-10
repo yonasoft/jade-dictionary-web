@@ -16,7 +16,6 @@ const WordSearchResults = lazy(
   () => import("../components/results/word-search-results/WordSearchResults")
 );
 
-
 const Home = () => {
   const {
     query,
@@ -34,12 +33,12 @@ const Home = () => {
   } = useHome();
 
   useEffect(() => {
-    setTitleColor(colorScheme === "dark" ? "black" : "white");
-  }, [colorScheme]);
-
-  useEffect(() => {
     loadHomeSessionStorage();
   }, []);
+
+  useEffect(() => {
+    setTitleColor(colorScheme === "dark" ? "black" : "white");
+  }, [colorScheme]);
 
   useEffect(() => {
     saveQuery();

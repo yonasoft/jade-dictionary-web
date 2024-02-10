@@ -118,10 +118,10 @@ const FlashCardsPage = () => {
 
       <br className="mb-1" />
 
-      <Center className="w-full h-full flex flex-col ">
+      <Center className="w-full h-full flex flex-col">
         {words.length > 0 && (
           <FlipCard
-            className="w-full h-84"
+            className="w-full h-full min-h-64"
             word={words[currentWordIndex]}
             practiceTypes={selectedPracticeTypes}
           />

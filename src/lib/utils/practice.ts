@@ -15,7 +15,7 @@ export const generateMultipleChoice = (words: Word[], currentWord: Word) => {
 
   return choices;
 };
-
+// Randomizes the question and answer for the current practice type.
 export const randomizeQAWordAspects = (
   practiceType: PracticeType,
   setQAWordAspects: React.Dispatch<

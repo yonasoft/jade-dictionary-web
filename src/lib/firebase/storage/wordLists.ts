@@ -15,10 +15,8 @@ export const createWordList = async (userUid: string, db: Firestore, title: stri
       lastUpdatedAt: serverTimestamp(),
     };
 
-    // Add the new word list to Firestore and get the reference
     const docRef = await addDoc(collection(db, "wordLists"), newWordList);
 
-    // Update the document with its ID
     await updateDoc(docRef, { id: docRef.id });
 
     console.log("Word list created successfully with ID:", docRef.id);
@@ -29,20 +27,17 @@ export const createWordList = async (userUid: string, db: Firestore, title: stri
 
 export const addWordToWordList = async (db: Firestore, wordListRef: DocumentReference, wordId: number): Promise<void> => {
   try {
-    // Get the word list document
     const wordListSnapshot = await getDoc(wordListRef);
 
     if (!wordListSnapshot.exists()) {
       throw new Error("Word list not found");
     }
 
-    // Check if the wordId already exists in the wordIds array
     const wordListData = wordListSnapshot.data() as WordList;
     if (wordListData.wordIds.includes(wordId)) {
       throw new Error("Word already exists in the word list");
     }
 
-    // Update the wordIds array in Firestore to add the new wordId
     await updateDoc(wordListRef, {
       wordIds: arrayUnion(wordId)
     });
@@ -50,13 +45,12 @@ export const addWordToWordList = async (db: Firestore, wordListRef: DocumentRefe
     console.log("Word added to the word list successfully");
   } catch (error) {
     console.error("Error adding word to word list: ", error);
-    throw error; // Re-throw the error to handle it in the front end
+    throw error; 
   }
 };
 
 export const removeWordFromWordList = async (db: Firestore, wordListRef: DocumentReference, wordId: number): Promise<void> => {
   try {
-    // Update the wordIds array in Firestore to remove the wordId
     await updateDoc(wordListRef, {
       wordIds: arrayRemove(wordId)
     });
@@ -93,7 +87,6 @@ export const getUserWordLists = async (
 
     switch (sortOption) {
       case SortOption.Recent:
-        // Replace 'createdAt' with the actual field name used in your Firestore collection
         q = query(collection(db, "wordLists"), where("userUid", "==", userUid), orderBy("lastUpdatedAt", "desc"));
         break;
       case SortOption.Oldest:
@@ -156,7 +149,6 @@ export const removeWordFromList = async (db: Firestore, wordListId:string, wordI
   const wordListRef = doc(db, "wordLists", wordListId);
 
   try {
-    // Update the wordIds array in Firestore to remove the wordId
     await updateDoc(wordListRef, {
       wordIds: arrayRemove(wordId)
     });

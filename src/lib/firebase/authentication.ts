@@ -74,7 +74,6 @@ export const signInWithGoogle = async (auth: Auth, db:Firestore, ): Promise< Use
 };
 
 export const signInWithFacebook = async (auth: Auth, db:Firestore): Promise< UserCredential | any > => { 
-
   const provider = new FacebookAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider)
@@ -115,7 +114,6 @@ export const sendVerificationEmail = async (auth: Auth) => {
 }
 
 export const updateUserEmail = async (auth: Auth, email: string) => { 
-
     await verifyBeforeUpdateEmail(auth.currentUser as User, email).then(() => {
       console.log("Email updated successfully to: ", email)
     }).catch((error) => {
@@ -142,7 +140,6 @@ export const monitorAuthState = async(auth:Auth, action:Dispatch<SetStateAction<
 };
   
 export const sendResetPassword = async (auth: Auth, email: string) => {
-
     await sendPasswordResetEmail(auth, email)
       .then(() => {
         console.log("Password reset email sent successfully")
@@ -150,7 +147,6 @@ export const sendResetPassword = async (auth: Auth, email: string) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        // ..
       });
 }
  
