@@ -9,12 +9,12 @@ type Props = {
   shrinkUser?: boolean;
 };
 
-const AuthItems = ({ additionalOnClick, shrinkUser= false }: Props) => {
+const AuthItems = ({ additionalOnClick, shrinkUser = false }: Props) => {
   const firebase = useFirebaseContext();
   useEffect(() => {}, [firebase.currentUser]);
 
   return firebase.currentUser ? (
-    <UserMenu shrink={shrinkUser} />
+    <UserMenu shrink={shrinkUser} onClose={() => additionalOnClick?.()} />
   ) : (
     <AuthButtons additionalOnClick={additionalOnClick} />
   );

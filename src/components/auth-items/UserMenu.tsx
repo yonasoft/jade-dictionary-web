@@ -12,9 +12,10 @@ import React, { useEffect } from "react";
 
 type Props = {
   shrink: boolean;
+  onClose?: () => void;
 };
 
-const UserMenu = ({ shrink }: Props) => {
+const UserMenu = ({ shrink, onClose }: Props) => {
   const { currentUser, auth } = useFirebaseContext();
 
   useEffect(() => {}, [currentUser]);
@@ -69,8 +70,9 @@ const UserMenu = ({ shrink }: Props) => {
         </div>
       </Menu.Target>
       <Menu.Dropdown>
-        <Link href="/profile">
+        <Link href="/profile" passHref>
           <Menu.Item
+            onClick={() => onClose?.()}
             rightSection={
               <IconChevronRight
                 style={{ width: rem(16), height: rem(16) }}
