@@ -41,7 +41,7 @@ const Navbar = () => {
           />
         </header>
         <Group
-          className="flex w-full rounded-full shadow-md justify-center"
+          className="flex w-full rounded-full shadow-md justify-center align-middle"
           visibleFrom="xs"
         >
           {renderMenuItems()}
