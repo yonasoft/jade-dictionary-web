@@ -15,11 +15,9 @@ export const SearchInput = ({
   handleSearch: () => void;
   handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }) => {
-  const { colorScheme } = useMantineColorScheme();
   const [isMounted, setIsMounted] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
-  const chineseInputRef = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
