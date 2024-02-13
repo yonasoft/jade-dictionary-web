@@ -12,7 +12,7 @@ import {
 } from "firebase/auth";
 import React, { useState } from "react";
 import { GoogleButton } from "../../auth-items/buttons/GoogleButton";
-import { FacebookButton } from "../../auth-items/buttons/FacebookButton";
+import FacebookButton from "../../auth-items/buttons/FacebookButton";
 
 const ReauthenticateModal = ({
   context,
