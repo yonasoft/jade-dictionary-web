@@ -44,7 +44,7 @@ const PracticeSettings = () => {
     <div className="p-4 h-full">
       <div className="flex justify-between items-center mb-4">
         <Title order={2}>Select Practice Mode</Title>
-        <Link href={`practice/${selectedMode}`}>
+        <Link href={`practice/${selectedMode}`} >
           {isMobile ? (
             <Button
               variant="filled"

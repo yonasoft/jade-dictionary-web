@@ -1,29 +1,10 @@
 "use client";
-import {
-  Box,
-  Card,
-  Container,
-  Flex,
-  Grid,
-  Group,
-  rem,
-  Text,
-  Image,
-  Center,
-  FileInput,
-  Input,
-  Button,
-  Space,
-  Title,
-} from "@mantine/core";
-import React, { useEffect, useState } from "react";
-import classes from "./page.module.css";
-import Account from "./account-section/AccountSection";
+import { Container, Center, Space, Title } from "@mantine/core";
+import React, { useEffect } from "react";
 import ProfileSection from "./profile-section/ProfileSection";
 import AccountSection from "./account-section/AccountSection";
 import UserNotVerified from "@/src/components/user-not-verified/UserNotVerified";
 import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
-
 
 type Props = {};
 

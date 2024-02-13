@@ -41,6 +41,7 @@ const AnswerButtons = ({
           handleAnswer("correct");
         }}
         disabled={timeUp || isPaused}
+        
       >
         <IconCheck color={isAnswerSelected("correct") ? "white" : "green"} />
       </Button>

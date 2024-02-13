@@ -56,7 +56,7 @@ const UserMenu = ({ shrink, onClose }: Props) => {
           <Group className="bg-stone-800 rounded-xl" lightHidden>
             <Avatar
               src={currentUser?.photoURL || ""}
-              alt="no image here"
+              alt="profile image"
               radius="xl"
             />
             <Text size="sm">

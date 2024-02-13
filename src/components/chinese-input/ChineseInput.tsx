@@ -13,6 +13,7 @@ type Props = {
   query: string;
   setQuery: (input: string) => void;
   onClose: () => void;
+  //Used to enable disable device keyboard
   setReadOnly: (readOnly: boolean) => void;
 };
 
@@ -22,6 +23,7 @@ const ChineseInput = ({ query, setQuery, onClose, setReadOnly }: Props) => {
   const [deviceType, setDeviceType] = useState("");
 
   useEffect(() => {
+    // Adjust read only or not based on device type and handwriting or keyboard
     const initDeviceType = getDeviceType();
     setDeviceType(initDeviceType);
 
