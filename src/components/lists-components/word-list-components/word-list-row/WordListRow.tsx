@@ -2,15 +2,11 @@
 import { WordList } from "@/src/lib/types/word-list";
 import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
 import {
-  Accordion,
   Button,
   Card,
   Flex,
   Group,
   Highlight,
-  MantineThemeProvider,
-  Menu,
-  Text,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";

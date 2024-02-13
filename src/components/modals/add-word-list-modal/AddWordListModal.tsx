@@ -16,8 +16,6 @@ const AddWordListModal = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // Inside AddWordListModal
-
   const onSave = async () => {
     try {
       await createWordList(

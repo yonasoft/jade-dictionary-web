@@ -2,7 +2,6 @@
 import { Button, Input } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import WordSearchResults from "../../../results/word-search-results/WordSearchResults";
-
 import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
 import { IconSearch } from "@tabler/icons-react";
 import { Word } from "@/src/lib/types/word";

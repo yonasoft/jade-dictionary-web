@@ -2,7 +2,8 @@ import { signInWithGoogle } from "@/src/lib/firebase/authentication";
 import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
 import { Button, ButtonProps } from "@mantine/core";
 
-function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
+//Button to sign in with Google
+const GoogleIcon = (props: React.ComponentPropsWithoutRef<"svg">) =>{
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -56,3 +57,5 @@ export const GoogleButton = ({ onClick, ...buttonProps }: Props) => {
     />
   );
 };
+
+export default GoogleButton;

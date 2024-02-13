@@ -4,7 +4,6 @@ import {
   Button,
   Center,
   Text,
-  useMantineColorScheme,
   Flex,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
@@ -15,7 +14,6 @@ type Props = {
 };
 
 const AddNewListCard = ({ onListAdded }: Props) => {
-  const { colorScheme } = useMantineColorScheme();
 
   const onAddNew = () => {
     openContextModal({

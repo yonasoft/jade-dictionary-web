@@ -7,7 +7,9 @@ type Props = ButtonProps & {
   onClick?: () => void;
 };
 
-export function FacebookButton({ onClick, ...buttonProps }: Props) {
+
+//Button to sign in with Facebook
+const FacebookButton = ({ onClick, ...buttonProps }: Props) => {
   const { auth, firestore } = useFirebaseContext();
 
   const handleClick = () => {
@@ -34,3 +36,5 @@ export function FacebookButton({ onClick, ...buttonProps }: Props) {
     />
   );
 }
+
+export default FacebookButton;
