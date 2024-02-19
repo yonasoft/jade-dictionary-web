@@ -37,7 +37,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
-    "react-simple-keyboard": "^3.7.69",
+    "react-simple-keyboard": "^3.7.84",
     "react-sketch-canvas": "^6.2.0",
     "react-timer-hook": "^3.0.7",
     "simple-keyboard-layouts": "^3.3.58"

@@ -83,6 +83,21 @@ const About = (props: Props) => {
             </Anchor>
             &nbsp;- for email contact form.
           </Text>
+          <Text>
+            <Anchor href="https://virtual-keyboard.js.org/" target="_blank">
+              Simple Keyboard
+            </Anchor>
+            &nbsp;- for Chinese character input.
+          </Text>
+          <Text>
+            <Anchor
+              href="https://github.com/gugray/HanziLookupJS"
+              target="_blank"
+            >
+              HanziLookupJS
+            </Anchor>
+            &nbsp;- for Chinesehand writing input.
+          </Text>
         </Flex>
       </Section>
 
