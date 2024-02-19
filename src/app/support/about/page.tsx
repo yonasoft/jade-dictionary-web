@@ -67,11 +67,11 @@ const About = (props: Props) => {
             <Anchor href="https://react.dev/" target="_blank">
               ReactJS
             </Anchor>
-            &nbsp;
+            &nbsp;,&nbsp;
             <Anchor href="https://tailwindcss.com/" target="_blank">
               Tailwind CSS
             </Anchor>
-            &nbsp;
+            &nbsp;,&nbsp;
             <Anchor href="https://mantine.dev/" target="_blank">
               Mantine
             </Anchor>
