@@ -45,7 +45,7 @@ A bilingual Chinese-English dictionary web app with a database of over 120,000 w
 **Save and organize words for later.**
 <a href="https://ibb.co/0jzb4px"><img src="https://i.ibb.co/27p4V0T/Screenshot-2024-01-25-194846.png" alt="Screenshot-2024-01-25-194846" border="0" /></a>
 
-**Variety of practice options and modes to help you learn the words!**
+**2 practice options with other settings to help you learn the words.**
 <a href="https://ibb.co/ggT1LH9"><img src="https://i.ibb.co/8853LTs/Screenshot-2024-01-25-194939.png" alt="Screenshot-2024-01-25-194939" border="0" /></a>
 <a href="https://ibb.co/fNn7vNs"><img src="https://i.ibb.co/DM8npMZ/Screenshot-2024-01-25-195009.png" alt="Screenshot-2024-01-25-195009" border="0" /></a>
 <a href="https://ibb.co/Wg8m8jD"><img src="https://i.ibb.co/2gVGVH8/Screenshot-2024-01-25-195025.png" alt="Screenshot-2024-01-25-195025" border="0" /></a>
