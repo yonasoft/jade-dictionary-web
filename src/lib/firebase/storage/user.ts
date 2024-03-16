@@ -56,28 +56,20 @@ export const deleteOldProfilePicture = async (
   storage: FirebaseStorage,
   db: Firestore,
   userUid: string
-): Promise<void> => {
-  try {
-    const userInDB = await getDoc(doc(db, "users", userUid));
-    const userData = userInDB.data();
-    if (!userData || !userData.photoURL) {
-      throw new Error("No photoURL found for the user.");
-    }
-    const fileName = userData.photoURL.split("/").pop();
-    if (!fileName) {
-      throw new Error("Failed to extract file name from photoURL.");
-    }
-    const storageRef = ref(storage, `${userUid}/profile_pictures/${fileName}`);
-    await deleteObject(storageRef);
-    console.log("Profile picture deleted successfully.");
-  } catch (error) {
-    console.error("Error deleting profile picture:", error);
-    throw error; // Re-throw the error if you want the caller to handle it as well.
-  }
+) => {
+  const userInDB = await getDoc(doc(db, "users", userUid));
+  const userData = userInDB.data();
+  const fileName = userData?.photoFileName || "";
+  const storageRef = ref(storage, `${userUid}/profile_pictures/${fileName}`);
+
+  deleteObject(storageRef)
+    .then(() => {})
+    .catch((error) => {});
 };
 
 export const uploadNewProfilePicture = async (
   storage: FirebaseStorage,
+  db:Firestore,
   file: File,
   userUid: string
 ): Promise<string> => {
@@ -85,6 +77,7 @@ export const uploadNewProfilePicture = async (
   const snapshot = await uploadBytes(storageRef, file);
   console.log("Uploaded a blob or file!");
   const url = await getDownloadURL(snapshot.ref);
+  setDoc(doc(db, "users", userUid), { photoFileName: file.name }, { merge: true })
   console.log("Profile picture URL:", url);
   return url;
 };

@@ -40,6 +40,7 @@ export const deleteAndUploadNewPhoto = async (
     );
     return await uploadNewProfilePicture(
       storage,
+      firestore,
       photoFile,
       currentUser?.uid as string
     );
