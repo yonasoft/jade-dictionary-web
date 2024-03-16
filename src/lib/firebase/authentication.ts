@@ -155,7 +155,7 @@ export const deleteAUser = async (firestore:Firestore, storage:FirebaseStorage, 
     .then(() => {
       console.log("User deleted successfully")
       if (auth.currentUser?.photoURL) {
-        deleteOldProfilePicture(storage, firestore, auth.currentUser?.uid as string)
+        deleteOldProfilePicture(storage, firestore, auth.currentUser)
       }
       deleteuserFromDB(firestore, auth.currentUser?.uid as string)
     })
