@@ -59,7 +59,7 @@ export const deleteOldProfilePicture = async (
 ) => {
   const userInDB = await getDoc(doc(db, "users", userUid));
   const userData = userInDB.data();
-  const fileName = userData?.photoFileName || "";
+  const fileName = userData?.photoFileName ;
   const storageRef = ref(storage, `${userUid}/profile_pictures/${fileName}`);
 
   deleteObject(storageRef)
@@ -77,7 +77,11 @@ export const uploadNewProfilePicture = async (
   const snapshot = await uploadBytes(storageRef, file);
   console.log("Uploaded a blob or file!");
   const url = await getDownloadURL(snapshot.ref);
-  setDoc(doc(db, "users", userUid), { photoFileName: file.name }, { merge: true })
+  let oldFileName = ""
+  await getDoc(doc(db, "users", userUid)).then((doc) => { 
+    oldFileName = doc.data()?.photoFileName
+  });
+  setDoc(doc(db, "users", userUid), { photoFileName: file.name || oldFileName }, { merge: true })
   console.log("Profile picture URL:", url);
   return url;
 };
