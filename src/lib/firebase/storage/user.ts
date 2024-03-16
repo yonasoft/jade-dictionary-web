@@ -42,11 +42,11 @@ export const updateUserToDB = async (db: Firestore, userData: User) => {
     uid: userData.uid,
     email: userData.email,
     displayName: userData.displayName,
-    photoURL: userData.photoURL,
+    photoUrl: userData.photoURL,
   };
 
   try {
-    await setDoc(doc(db, "users", userData.uid), dataToSave);
+    await setDoc(doc(db, "users", userData.uid), dataToSave, { merge: true });
   } catch (e) {
     console.error("Error updating user in DB:", e);
   }
@@ -55,12 +55,12 @@ export const updateUserToDB = async (db: Firestore, userData: User) => {
 export const deleteOldProfilePicture = async (
   storage: FirebaseStorage,
   db: Firestore,
-  userUid: string
+  user: User
 ) => {
-  const userInDB = await getDoc(doc(db, "users", userUid));
+  const userInDB = await getDoc(doc(db, "users", user.uid));
   const userData = userInDB.data();
-  const fileName = userData?.photoFileName ;
-  const storageRef = ref(storage, `${userUid}/profile_pictures/${fileName}`);
+  const fileName = userData?.photoFileName;
+  const storageRef = ref(storage, `${user.uid}/profile_pictures/${fileName}`);
 
   deleteObject(storageRef)
     .then(() => {})
@@ -69,21 +69,37 @@ export const deleteOldProfilePicture = async (
 
 export const uploadNewProfilePicture = async (
   storage: FirebaseStorage,
-  db:Firestore,
+  db: Firestore,
   file: File,
-  userUid: string
+  user: User
 ): Promise<string> => {
-  const storageRef = ref(storage, `${userUid}/profile_pictures/${file.name}`);
-  const snapshot = await uploadBytes(storageRef, file);
-  console.log("Uploaded a blob or file!");
-  const url = await getDownloadURL(snapshot.ref);
-  let oldFileName = ""
-  await getDoc(doc(db, "users", userUid)).then((doc) => { 
-    oldFileName = doc.data()?.photoFileName
-  });
-  setDoc(doc(db, "users", userUid), { photoFileName: file.name || oldFileName }, { merge: true })
-  console.log("Profile picture URL:", url);
-  return url;
+  try {
+    const storageRef = ref(
+      storage,
+      `${user.uid}/profile_pictures/${file.name}`
+    );
+    const snapshot = await uploadBytes(storageRef, file);
+    console.log(file.name, "uploaded to Firebase Storage");
+
+    const url = await getDownloadURL(snapshot.ref);
+
+    const upload = {
+      photoFileName: file.name,
+      uid: user.uid,
+      displayName: user.displayName,
+      photoUrl: url, // Assuming you want to update the photoURL with the new URL
+    };
+
+    console.log("upload", upload);
+
+    await setDoc(doc(db, "users", user.uid), upload, { merge: true });
+    console.log("Document successfully updated with ID:", user.uid);
+
+    return url;
+  } catch (error) {
+    console.error("Error uploading new profile picture:", error);
+    throw error; // Re-throw the error so the caller can handle it
+  }
 };
 
 export const checkEmailExists = async (

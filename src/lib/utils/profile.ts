@@ -33,16 +33,12 @@ export const deleteAndUploadNewPhoto = async (
   firestore: Firestore
 ): Promise<string | null> => {
   if (photoFile) {
-    await deleteOldProfilePicture(
-      storage,
-      firestore,
-      currentUser?.uid as string
-    );
+    await deleteOldProfilePicture(storage, firestore, currentUser);
     return await uploadNewProfilePicture(
       storage,
       firestore,
       photoFile,
-      currentUser?.uid as string
+      currentUser
     );
   } else {
     return null;
