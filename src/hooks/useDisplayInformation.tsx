@@ -53,7 +53,7 @@ export const useDisplayInformation = () => {
       if (auth.currentUser) {
         await updateUserProfile(auth, {
           displayName: displayName,
-          photoUrl: photoURL as string,
+          photoURL: photoURL as string,
         });
 
         const updatedUserData: User = {

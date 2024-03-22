@@ -98,10 +98,10 @@ export const signOutUser = async (auth: Auth): Promise<void> => {
   });
 };
 
-export const updateUserProfile = async (auth: Auth, data: { displayName: string, photoUrl: string }) => {
-  const { displayName, photoUrl } = data
+export const updateUserProfile = async (auth: Auth, data: { displayName: string, photoURL: string }) => {
+  const { displayName, photoURL} = data
   updateProfile(auth.currentUser as User, {
-    displayName: displayName, photoURL: photoUrl
+    displayName: displayName, photoURL: photoURL
   }).then(() => {
 
   }).catch((error) => {

@@ -1,10 +1,12 @@
-
-
 import { PracticeType } from "@/src/lib/types/practice";
 import { Word, WordAspect } from "@/src/lib/types/word";
-import { randomizePracticeType, randomizeQAWordAspects, generateMultipleChoice } from "@/src/lib/utils/practice";
+import {
+  randomizePracticeType,
+  randomizeQAWordAspects,
+  generateMultipleChoice,
+} from "@/src/lib/utils/practice";
 import { extractWordAspect } from "@/src/lib/utils/words";
-import { Center, Radio, Title } from "@mantine/core";
+import { Card, Center, Flex, Radio, Title, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
 type Props = {
@@ -39,33 +41,48 @@ const MultipleChoiceCard = ({
   useEffect(() => {
     const practiceType = randomizePracticeType(practiceTypes);
     randomizeQAWordAspects(practiceType, setQAWordAspects);
-	  setChoices(generateMultipleChoice(words, currentWord));
+    setChoices(generateMultipleChoice(words, currentWord));
   }, [currentWord, practiceTypes]);
 
   return (
-    <fieldset className="p-4 border border-gray-200 rounded-md">
-      <label className="block text-lg font-bold mb-3">
-        Match the {qaWordAspects.question} with the correct{" "}
-        {qaWordAspects.answer}
-      </label>
-      <Center className="my-3">
-        <Title order={3} className="text-xl">
-          {extractWordAspect(currentWord, qaWordAspects.question)}
-        </Title>
-      </Center>
-      {choices.map((choice, index) => (
-        <Radio
-          key={index}
-          className="mb-3"
-          label={extractWordAspect(choice, qaWordAspects.answer)}
-          color="teal"
-          variant="outline"
-          checked={selectedWord === choice}
-          onChange={() => setSelectedWord(choice)}
-          disabled={timeUp || isPaused}
-        />
-      ))}
-    </fieldset>
+    <Card className="w-full h-full">
+      <Flex
+        className="w-full h-full"
+        align="center"
+        justify="center"
+        direction="column"
+      >
+        <fieldset>
+          <Center>
+            <label>
+              <Text>
+                Match the {qaWordAspects.question} with the correct{" "}
+                {qaWordAspects.answer}
+              </Text>
+            </label>
+          </Center>
+          <Center className="my-3">
+            <Title order={3} className="text-xl">
+              {extractWordAspect(currentWord, qaWordAspects.question)}
+            </Title>
+          </Center>
+          {choices.map((choice, index) => (
+            <Center className="my-3">
+              <Radio
+                key={index}
+                className="mb-3"
+                label={extractWordAspect(choice, qaWordAspects.answer)}
+                color="teal"
+                variant="outline"
+                checked={selectedWord === choice}
+                onChange={() => setSelectedWord(choice)}
+                disabled={timeUp || isPaused}
+              />
+            </Center>
+          ))}
+        </fieldset>
+      </Flex>
+    </Card>
   );
 };
 

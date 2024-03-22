@@ -1,5 +1,5 @@
 "use client";
-import { Button, Divider, Flex, Group } from "@mantine/core";
+import { Button, Center, Divider, Flex, Group } from "@mantine/core";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
@@ -111,7 +111,7 @@ const MultipleChoicePage = () => {
       <div className="px-1 mb-1">
         <strong>Word:</strong> {currentWordIndex + 1}/{words.length}
       </div>
-      <Flex className="flex-grow" direction="column" align="center">
+      <Flex className="w-full h-2/3" direction="column" align="center" justify="center">
         {words.length > 0 && (
           <MultipleChoiceCard
             words={words}
