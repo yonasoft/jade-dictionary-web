@@ -1,6 +1,6 @@
 
 
-##  Jade Chinese-English Dictionary
+##  Jade Chinese-English Dictionary (Web)
 
  [![image](https://i.ibb.co/XDT9C6t/jadelogo.png)](https://jadedictionary.com/)  
  Link: https://jadedictionary.com/
