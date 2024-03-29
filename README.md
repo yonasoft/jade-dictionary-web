@@ -1,6 +1,6 @@
 
 
-##  AniTier 
+##  Jade Chinese-English Dictionary
 
  [![image](https://i.ibb.co/XDT9C6t/jadelogo.png)](https://jadedictionary.com/)  
  Link: https://jadedictionary.com/
