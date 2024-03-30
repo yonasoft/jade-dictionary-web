@@ -2,12 +2,15 @@
 ##  Jade Chinese-English Dictionary (Web)
 
  [![image](https://i.ibb.co/XDT9C6t/jadelogo.png)](https://jadedictionary.com/)  
- Link: https://jadedictionary.com/
+ Website: https://jadedictionary.com/
+ <br/>
+ GitHub(Android): https://github.com/KevC000/jade-dictionary-android
+ <br/>
 
 ## Contents
 
  1. [Introduction](#intro)
- 2. [Technologies](#technologies)
+ 2. [Technologies and Resources](#technologies)
  3. [Features & Screenshots](#screenshots)
 
 ## Introduction
@@ -27,7 +30,7 @@ A bilingual Chinese-English dictionary web app with a database of over 120,000 w
 ### Back End
 - [**Firebase**](https://firebase.google.com/) for authentication, file and data storage.
   
-### Other
+### Resources
 - [**CC-EDICT**](https://www.mdbg.net/chinese/dictionary?page=cc-cedict) is the source of word data
 
 ## Screenshots
