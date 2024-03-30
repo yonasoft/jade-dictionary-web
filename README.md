@@ -15,7 +15,7 @@
 ### What is Jade Dictionary?
 A bilingual Chinese-English dictionary web app with a database of over 120,000 words, with practicing and word-saving features. It also has a built-in Chinese keyboard and handwriting input.
 
-## Technologies 
+## Technologies and Resources
 ### Front End 
 
  - Built with **[Next.js](https://nextjs.org/)/[React](https://react.dev/)**, [**Tailwind CSS**](https://tailwindcss.com/), [**Mantine**](https://mantine.dev/).
