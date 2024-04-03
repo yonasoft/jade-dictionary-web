@@ -4,7 +4,7 @@
  [![image](https://i.ibb.co/XDT9C6t/jadelogo.png)](https://jadedictionary.com/)  
  Website: https://jadedictionary.com/
  <br/>
- GitHub(Android): https://github.com/KevC000/jade-dictionary-android
+ GitHub (Android): https://github.com/KevC000/jade-dictionary-android
  <br/>
 
 ## Contents
@@ -16,24 +16,24 @@
 ## Introduction
 
 ### What is Jade Dictionary?
-A bilingual Chinese-English dictionary web app with a database of over 120,000 words, with practicing and word-saving features. It also has a built-in Chinese keyboard and handwriting input.
+A bilingual Chinese-English dictionary web app with a database of over 120,000 words, with practicing and word-saving features. Users can improve vocabulary retention with practice modules to practice words through flashcards or quizzes. User word lists can also be synchronized across different devices and platforms. Features built-in Chinese keyboard and handwriting input so users don't need to install it.
 
 ## Technologies and Resources
 ### Front End 
 
  - Built with **[Next.js](https://nextjs.org/)/[React](https://react.dev/)**, [**Tailwind CSS**](https://tailwindcss.com/), [**Mantine**](https://mantine.dev/).
- - Deployed in [**Vercel**](https://vercel.com/)
+ - Deployed to [**Vercel**](https://vercel.com/)
  - [**EmailJS**](https://www.emailjs.com/) for contact forms.
  -  [**simple-keyboard**](https://www.npmjs.com/package/simple-keyboard) for built-in Chinese keyboard.
  - [**HanziLookupJS**](https://github.com/gugray/HanziLookupJS) for Chinese handwriting input.
 
 ### Back End
-- [**Firebase**](https://firebase.google.com/) for authentication, file and data storage.
+- [**Firebase**](https://firebase.google.com/) for authentication, user profiles, file and data storage.
   
 ### Resources
 - [**CC-EDICT**](https://www.mdbg.net/chinese/dictionary?page=cc-cedict) is the source of word data
 
-## Screenshots
+## Features and Screenshots
 
 **Built-in Chinese keyboard so you don't need to download your own.**
 <br/>
