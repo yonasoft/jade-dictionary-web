@@ -36,7 +36,7 @@ A bilingual Chinese-English dictionary web and Android app with a database of ov
 ### Resources
 - [**CC-EDICT**](https://www.mdbg.net/chinese/dictionary?page=cc-cedict) is the source of word data
 
-## Features and Screenshots
+## Features and Screenshots(#screenshots)
 
 **Built-in Chinese keyboard so you don't need to download your own.**
 <br/>
