@@ -16,12 +16,12 @@
  2. [Technologies and Resources](#technologies)
  3. [Features & Screenshots](#screenshots)
 
-## Introduction
+## <a id="intro">Introduction </a>
 
 ### What is Jade Dictionary?
 A bilingual Chinese-English dictionary web and Android app with a database of over 120,000 words, with practicing and word-saving features. Users can improve vocabulary retention with practice modules to practice words through flashcards or quizzes. User word lists can also be synchronized across different devices and platforms. Features built-in Chinese keyboard and handwriting input so users don't need to install it.
 
-## Technologies and Resources
+## <a id="technologies">Technologies and Resources </a>
 ### Front End 
 
  - Built with **[Next.js](https://nextjs.org/)/[React](https://react.dev/)**, [**Tailwind CSS**](https://tailwindcss.com/), [**Mantine**](https://mantine.dev/).
@@ -36,7 +36,8 @@ A bilingual Chinese-English dictionary web and Android app with a database of ov
 ### Resources
 - [**CC-EDICT**](https://www.mdbg.net/chinese/dictionary?page=cc-cedict) is the source of word data
 
-## Features and Screenshots(#screenshots)
+
+## <a id="screenshots">Features and Screenshots </a>
 
 **Built-in Chinese keyboard so you don't need to download your own.**
 <br/>
