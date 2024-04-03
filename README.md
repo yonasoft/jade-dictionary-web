@@ -7,7 +7,7 @@
  ### For Android:
  Play Store: (Currently Under Review)
  <br/>
- GitHub (Android): https://github.com/KevC000/jade-dictionary-android
+ GitHub: https://github.com/KevC000/jade-dictionary-android
  <br/>
 
 ## Contents
