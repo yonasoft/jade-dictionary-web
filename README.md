@@ -5,7 +5,7 @@
  Website: https://jadedictionary.com/
 
  ### For Android:
- Play Store: (Currently Under Review)
+ Play Store: https://play.google.com/store/apps/details?id=com.yonasoft.jadedictionary
  <br/>
  GitHub: https://github.com/KevC000/jade-dictionary-android
  <br/>
