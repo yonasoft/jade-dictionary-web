@@ -51,8 +51,9 @@ export const SearchInput = ({
           handleBlur();
           setReadOnly(false);
         }}
-        className={`text-black bg-transparent border-none`}
         readOnly={readOnly}
+        className={`text-black bg-transparent border-none`}
+        
       />
 
       {showKeyboard && (
