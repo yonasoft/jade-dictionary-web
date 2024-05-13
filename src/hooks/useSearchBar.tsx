@@ -11,8 +11,12 @@ const useSearch = () => {
 
   const onSearch = async () => {
     if (query.trim() === "") return;
-    const searchResults = await performSearch(firestore, query);
-    setResults(searchResults);
+    try {
+      const searchResults = await performSearch(firestore, query);
+      setResults(searchResults);
+    } catch (e: any) {
+      console.error(e);
+    } 
   };
 
   return { query, setQuery, results, onSearch, searched };

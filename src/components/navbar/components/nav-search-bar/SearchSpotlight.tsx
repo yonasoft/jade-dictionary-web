@@ -72,7 +72,7 @@ const SearchSpotlight = ({
           size="md"
         />
         <Button
-          onClick={() => onSearch}
+          onClick={() => { onSearch() }}
           variant="outline"
           className="me-3 shrink-0"
         >
