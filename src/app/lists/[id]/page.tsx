@@ -1,6 +1,6 @@
-"use client";
-import React, { useEffect, useState, useCallback } from "react";
-import { useFirebaseContext } from "@/src/providers/FirebaseProvider";
+'use client';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useFirebaseContext } from '@/src/providers/FirebaseProvider';
 
 import {
   Button,
@@ -11,24 +11,22 @@ import {
   Center,
   Grid,
   ActionIcon,
-} from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
-import { doc } from "firebase/firestore";
-import { notifications } from "@mantine/notifications";
-import WordCard from "@/src/components/word-components/word-card/WordCard";
+} from '@mantine/core';
+import { IconX } from '@tabler/icons-react';
+import { doc } from 'firebase/firestore';
+import { notifications } from '@mantine/notifications';
+import WordCard from '@/src/components/word-components/word-card/WordCard';
 import {
   getWordListByDocId,
   removeWordFromList,
   editWordList,
-} from "@/src/lib/firebase/storage/wordLists";
-import { getWordsByIds } from "@/src/lib/firebase/storage/words";
-import { Word } from "@/src/lib/types/word";
-import { WordList } from "@/src/lib/types/word-list";
-import ChineseInput from "@/src/components/chinese-input/ChineseInput";
+} from '@/src/lib/firebase/storage/wordLists';
+import { getWordsByIds } from '@/src/lib/firebase/storage/words';
+import { Word } from '@/src/lib/types/word';
+import { WordList } from '@/src/lib/types/word-list';
+import ChineseInput from '@/src/components/chinese-input/ChineseInput';
 
-type Props = {
-  params: { id: string };
-};
+type paramsType = Promise<{ id: string }>;
 
 const applyFilter = (words: Word[], query: string): Word[] => {
   const queryLower = query.toLowerCase();
@@ -62,9 +60,9 @@ const FilteredWords = ({
                   notifications.show({
                     withCloseButton: true,
                     autoClose: 3000,
-                    title: "Word Removed",
+                    title: 'Word Removed',
                     message: `${word.simplified} has been removed from the list.`,
-                    color: "green",
+                    color: 'green',
                     loading: false,
                   });
                 }
@@ -78,14 +76,16 @@ const FilteredWords = ({
   );
 };
 
-const ListDetailPage = ({ params }: Props) => {
+const ListDetailPage = async (props: { params: paramsType }) => {
+  const { id } = await props.params;
+
   const { firestore, currentUser } = useFirebaseContext();
   const [wordList, setWordList] = useState<WordList | null>(null);
   const [words, setWords] = useState<Word[]>([]);
   const [filteredWords, setFilteredWords] = useState<Word[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [query, setQuery] = useState<string>("");
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [query, setQuery] = useState<string>('');
   const [showChineseInput, setShowChineseInput] = useState<boolean>(false);
   const [readOnly, setReadOnly] = useState<boolean>(false);
 
@@ -99,8 +99,8 @@ const ListDetailPage = ({ params }: Props) => {
   );
 
   useEffect(() => {
-    if (params.id) {
-      getWordListByDocId(firestore, params.id).then((fetchedWordList) => {
+    if (id) {
+      getWordListByDocId(firestore, id).then((fetchedWordList) => {
         if (fetchedWordList) {
           setTitle(fetchedWordList.title);
           setDescription(fetchedWordList.description);
@@ -109,7 +109,7 @@ const ListDetailPage = ({ params }: Props) => {
         }
       });
     }
-  }, [params.id]);
+  }, [id]);
 
   useEffect(() => {
     setFilteredWords(applyFilter(words, query));
@@ -129,11 +129,11 @@ const ListDetailPage = ({ params }: Props) => {
           );
           return true;
         } catch (error) {
-          console.error("Error removing word from list: ", error);
+          console.error('Error removing word from list: ', error);
           return false;
         }
       } else {
-        console.error("Word list or word list ID is undefined");
+        console.error('Word list or word list ID is undefined');
         return false;
       }
     },
@@ -141,61 +141,61 @@ const ListDetailPage = ({ params }: Props) => {
   );
 
   const handleSave = async () => {
-    if (wordList && params.id) {
+    if (wordList && id) {
       try {
         await editWordList(
-          doc(firestore, "wordLists", params.id),
+          doc(firestore, 'wordLists', id),
           title,
           description
         );
-        console.log("Word list updated successfully");
+        console.log('Word list updated successfully');
         // Redirect logic...
       } catch (error) {
-        console.error("Error updating word list: ", error);
+        console.error('Error updating word list: ', error);
       }
     }
   };
 
   if (!wordList) {
     return (
-      <Center style={{ height: "100vh" }}>
+      <Center style={{ height: '100vh' }}>
         <Text>Loading word list details...</Text>
       </Center>
     );
   }
 
   return (
-    <div className="p2- max-w-7xl mx-auto">
-      <div className="flex flex-col gap-4">
-        <Input.Wrapper label="Title" size="lg" fw={900} />
+    <div className='p2- max-w-7xl mx-auto'>
+      <div className='flex flex-col gap-4'>
+        <Input.Wrapper label='Title' size='lg' fw={900} />
         <Input
-          id="title"
-          name="title"
-          type="text"
+          id='title'
+          name='title'
+          type='text'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <Input.Wrapper label="Description" size="lg" fw={900} />
+        <Input.Wrapper label='Description' size='lg' fw={900} />
 
         <Textarea
-          id="description"
-          name="description"
+          id='description'
+          name='description'
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={2}
         />
       </div>
-      <Group justify="center" className="mt-5 mb-2">
-        <Button variant="filled" onClick={handleSave}>
+      <Group justify='center' className='mt-5 mb-2'>
+        <Button variant='filled' onClick={handleSave}>
           Save
         </Button>
       </Group>
-      <div className="flex items-center gap-2 my-5">
+      <div className='flex items-center gap-2 my-5'>
         <Input
-          className="flex-grow"
+          className='flex-grow'
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
-          placeholder="Search..."
+          placeholder='Search...'
           onFocus={() => setShowChineseInput(true)}
           onBlur={() => {
             setShowChineseInput(false);
@@ -204,17 +204,17 @@ const ListDetailPage = ({ params }: Props) => {
           readOnly={readOnly}
         />
         <ActionIcon
-          variant="outline"
-          onClick={() => setQuery("")}
-          title="Clear"
+          variant='outline'
+          onClick={() => setQuery('')}
+          title='Clear'
         >
           <IconX size={24} />
         </ActionIcon>
       </div>
 
       {words.length === 0 ? (
-        <Center className="h-full">
-          <Text color="dimmed" size="md">
+        <Center className='h-full'>
+          <Text color='dimmed' size='md'>
             Your word list is empty. Search for words using the search bar
             (Ctrl+K) and add them from there.
           </Text>
