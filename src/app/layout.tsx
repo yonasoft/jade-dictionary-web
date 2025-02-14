@@ -1,24 +1,24 @@
-import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
-import Head from "next/head";
-import { ReactNode, FC } from "react";
-import { MantineProvider, Space } from "@mantine/core";
-import { ContextModalProps, ModalsProvider } from "@mantine/modals";
+import type { Metadata } from 'next';
+import { Roboto } from 'next/font/google';
+import Head from 'next/head';
+import { ReactNode, FC } from 'react';
+import { MantineProvider, Space } from '@mantine/core';
+import { ContextModalProps, ModalsProvider } from '@mantine/modals';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import "@mantine/core/styles.css";
-import "./globals.css";
-import AddWordListModal from "../components/modals/add-word-list-modal/AddWordListModal";
-import DeleteUserConfirmation from "../components/modals/confirm-delete-user-modal/DeleteUserConfirmation";
-import ReauthenticateModal from "../components/modals/reauth-modal/ReauthenticateModal";
-import ResetPasswordModal from "../components/modals/reset-password-modal/ResetPasswordModal";
-import Navbar from "../components/navbar/Navbar";
-import { theme } from "../lib/theme";
-import { FirebaseContextProvider } from "../providers/FirebaseProvider";
+import '@mantine/core/styles.css';
+import './globals.css';
+import AddWordListModal from '../components/modals/add-word-list-modal/AddWordListModal';
+import DeleteUserConfirmation from '../components/modals/confirm-delete-user-modal/DeleteUserConfirmation';
+import ReauthenticateModal from '../components/modals/reauth-modal/ReauthenticateModal';
+import ResetPasswordModal from '../components/modals/reset-password-modal/ResetPasswordModal';
+import Navbar from '../components/navbar/Navbar';
+import { theme } from '../lib/theme';
+import { FirebaseContextProvider } from '../providers/FirebaseProvider';
 
 const roboto = Roboto({
-  subsets: ["latin"],
-  weight: "400",
+  subsets: ['latin'],
+  weight: '400',
 });
 
 interface RootLayoutProps {
@@ -26,8 +26,8 @@ interface RootLayoutProps {
 }
 
 const metadata: Metadata = {
-  title: "Jade Dictionary",
-  description: "Chinese dictionary and language tools",
+  title: 'Jade Dictionary',
+  description: 'Chinese dictionary and language tools',
 };
 
 const modals: Record<string, FC<ContextModalProps<any>>> = {
@@ -70,7 +70,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
           </FirebaseContextProvider>
         </MantineProvider>
         <Analytics />
-         <SpeedInsights />
+        <SpeedInsights />
       </body>
     </html>
   );
