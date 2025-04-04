@@ -4,6 +4,8 @@
  [![image](https://i.ibb.co/XDT9C6t/jadelogo.png)](https://jadedictionary.com/)  
  Website: https://jadedictionary.com/
 
+ ### Jade 2 for web is in the making (ETR: July/August 2025)!
+
  ### For Android:
  Play Store: https://play.google.com/store/apps/details?id=com.yonasoft.jadedictionary
  <br/>
