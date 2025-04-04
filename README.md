@@ -7,7 +7,7 @@
  ### For Android:
  Play Store: https://play.google.com/store/apps/details?id=com.yonasoft.jadedictionary
  <br/>
- GitHub: https://github.com/KevC000/jade-dictionary-android
+ GitHub: https://github.com/yonasoft/jade-dictionary-android2
  <br/>
 
 ## Contents
