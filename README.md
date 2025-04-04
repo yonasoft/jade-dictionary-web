@@ -9,7 +9,7 @@
  <br/>
  GitHub(NEW): https://github.com/yonasoft/jade-dictionary-android2
  <br/>
- GitHub(OLD): https://github.com/yonasoft/jade-dictionary-android2
+ GitHub(OLD): https://github.com/yonasoft/jade-dictionary-android
  <br/>
  
 ## Contents
